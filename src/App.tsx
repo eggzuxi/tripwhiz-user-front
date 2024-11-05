@@ -4,8 +4,8 @@ function App() {
 
   return (
       <>
-          <h1 className="text-3xl font-bold underline">
-              Tripwhiz user page
+          <h1 className="text-3xl font-bold">
+              Tripwhiz
           </h1>
       </>
   )
