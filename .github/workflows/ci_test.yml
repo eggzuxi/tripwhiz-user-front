@@ -1,0 +1,37 @@
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # 원하는 Node.js 버전을 선택하세요
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run build
+        run: npm run build
+
+
+      - name: Log in to Docker Hub
+        run:
+          echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+
+      - name: Build the Docker image
+        run: docker build -t eggzuxi/tripwhiz_front_image:latest .
+
+      - name: Push the Docker image to Docker Hub
+        run: docker push eggzuxi/tripwhiz_front_image:latest
