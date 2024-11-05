@@ -1,10 +1,11 @@
 import './App.css';
-import HeaderLayout from "./layouts/HeaderLayout.tsx";
+import BaseLayout from "./layouts/BaseLayout.tsx";
 
 function App() {
     return (
         <div>
-            <HeaderLayout />
+            <BaseLayout/>
+
         </div>
     );
 }
