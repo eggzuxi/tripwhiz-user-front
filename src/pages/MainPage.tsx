@@ -1,8 +1,9 @@
+import BaseLayout from "../layouts/BaseLayout.tsx";
 
 function MainPage() {
     return (
         <div>
-            Main Page
+            <BaseLayout/>
         </div>
     );
 }
