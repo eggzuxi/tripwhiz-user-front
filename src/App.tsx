@@ -1,14 +1,12 @@
-import './App.css'
+import './App.css';
+import HeaderLayout from "./layouts/HeaderLayout.tsx";
 
 function App() {
-
-  return (
-      <>
-          <h1 className="text-3xl font-bold underline">
-              Tripwhiz user page
-          </h1>
-      </>
-  )
+    return (
+        <div>
+            <HeaderLayout />
+        </div>
+    );
 }
 
-export default App
+export default App;
