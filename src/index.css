@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 화면을 중앙에 고정하고 배경 색상을 설정 */
+html, body {
+    @apply h-screen w-screen bg-gray-100 flex justify-center items-center;
+}

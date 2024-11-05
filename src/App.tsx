@@ -1,14 +1,13 @@
-import './App.css'
+import './App.css';
+import BaseLayout from "./layouts/BaseLayout.tsx";
 
 function App() {
+    return (
+        <div>
+            <BaseLayout/>
 
-  return (
-      <>
-          <h1 className="text-3xl font-bold">
-              Tripwhiz
-          </h1>
-      </>
-  )
+        </div>
+    );
 }
 
-export default App
+export default App;
