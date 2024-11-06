@@ -1,6 +1,8 @@
 import {createBrowserRouter} from "react-router-dom";
 import {lazy, Suspense} from "react";
 
+import PaymentCheckout from "../pages/payment/PaymentCheckout.tsx";
+
 
 const MainPage = lazy(() => import("../pages/MainPage"))
 const LoadingPage = lazy(() => import("../pages/LoadingPage"))
@@ -26,7 +28,11 @@ const mainRouter = createBrowserRouter([
     {
         path: "/member/kakao",
         element: <Suspense fallback={Loading}><KakaoRedirect/></Suspense>
-    }
+    },
+    {
+        path: "/payment",
+        element: <Suspense fallback={Loading}><PaymentCheckout /></Suspense>
+    },
 ])
 
 export default mainRouter
