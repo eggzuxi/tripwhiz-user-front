@@ -13,7 +13,7 @@ function PaymentCheckout() {
 
     const amount = {
         currency: "KRW",
-        value: 50000,
+        value: 1,
     };
 
     useEffect(() => {
