@@ -4,7 +4,7 @@ import kakaoLoginImage from '/static/kakao_login_medium_wide.png';
 
 function KakaoLoginComponent() {
 
-    const link = getKakaoLoginLink()
+    const kakaolink = getKakaoLoginLink()
 
     return (
         <div className="flex flex-col">
@@ -12,7 +12,7 @@ function KakaoLoginComponent() {
                 로그인 시에 자동 가입처리됩니다
             </div>
             <div className="flex justify-center  w-full">
-                <Link to={link} className="flex justify-center w-3/4 m-6">
+                <Link to={kakaolink} className="flex justify-center w-3/4 m-6">
                     <img
                         src={kakaoLoginImage}
                     />
