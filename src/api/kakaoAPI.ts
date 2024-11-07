@@ -19,9 +19,8 @@ export const getMemberWithAccessToken = async (accessToken:string)  => {
     const res = await axios.get(`${host}?accessToken=${accessToken}`)
 
     return res.data
-
-
 }
+
 
 // 카카오 로그인 링크 생성 함수
 export const getKakaoLoginLink = () => {
