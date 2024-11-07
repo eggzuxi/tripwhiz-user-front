@@ -1,5 +1,6 @@
 import {createBrowserRouter} from "react-router-dom";
 import {lazy, Suspense} from "react";
+import memberRouter from "./memberRouter.tsx";
 
 import PaymentCheckout from "../pages/payment/PaymentCheckout.tsx";
 import PaymentSuccess from "../pages/payment/PaymentSuccess.tsx";
@@ -9,12 +10,7 @@ import PaymentFail from "../pages/payment/PaymentFail.tsx";
 const MainPage = lazy(() => import("../pages/MainPage"))
 const LoadingPage = lazy(() => import("../pages/LoadingPage"))
 
-const LoginPage = lazy(() => import("../pages/member/LoginPage"))
-const KakaoRedirect = lazy(() => import("../pages/member/KakaoRedirectPage"))
-
-
 export const Loading = <LoadingPage/>
-
 
 
 const mainRouter = createBrowserRouter([
@@ -22,6 +18,7 @@ const mainRouter = createBrowserRouter([
         path: "/",
         element: <Suspense fallback={Loading}><MainPage/></Suspense> ,
     },
+
     {
         path: "/member/login",
         element: <Suspense fallback={Loading}><LoginPage/></Suspense>
@@ -44,6 +41,7 @@ const mainRouter = createBrowserRouter([
         path: "/fail",
         element: <Suspense fallback={Loading}><PaymentFail /></Suspense>  // 결제 실패 시 표시할 페이지
     },
+    memberRouter
 ])
 
 export default mainRouter
