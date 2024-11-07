@@ -1,4 +1,5 @@
 import KakaoLoginComponent from "../../components/member/KakaoLoginComponent.tsx";
+import GoogleLoginComponent from "../../components/member/GoogleLoginComponent.tsx";
 
 function LoginPage() {
     return (
@@ -6,6 +7,7 @@ function LoginPage() {
             Login Page
 
             <KakaoLoginComponent/>
+            <GoogleLoginComponent/>
         </div>
     );
 }
