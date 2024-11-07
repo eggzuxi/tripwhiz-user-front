@@ -1,6 +1,6 @@
 import {createBrowserRouter} from "react-router-dom";
 import {lazy, Suspense} from "react";
-
+import productRouter from "./productRouter.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage"))
 const LoadingPage = lazy(() => import("../pages/LoadingPage"))
@@ -8,10 +8,7 @@ const LoadingPage = lazy(() => import("../pages/LoadingPage"))
 const LoginPage = lazy(() => import("../pages/member/LoginPage"))
 const KakaoRedirect = lazy(() => import("../pages/member/KakaoRedirectPage"))
 
-
 export const Loading = <LoadingPage/>
-
-
 
 const mainRouter = createBrowserRouter([
     {
@@ -26,7 +23,8 @@ const mainRouter = createBrowserRouter([
     {
         path: "/member/kakao",
         element: <Suspense fallback={Loading}><KakaoRedirect/></Suspense>
-    }
+    },
+    productRouter
 ])
 
 export default mainRouter
