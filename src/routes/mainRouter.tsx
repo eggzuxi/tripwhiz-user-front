@@ -19,15 +19,6 @@ const mainRouter = createBrowserRouter([
         element: <Suspense fallback={Loading}><MainPage/></Suspense> ,
     },
 
-    {
-        path: "/member/login",
-        element: <Suspense fallback={Loading}><LoginPage/></Suspense>
-
-    },
-    {
-        path: "/member/kakao",
-        element: <Suspense fallback={Loading}><KakaoRedirect/></Suspense>
-    },
     //from here_SA
     {
         path: "/payment",
