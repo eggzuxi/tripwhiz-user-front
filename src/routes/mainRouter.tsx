@@ -5,7 +5,6 @@ import memberRouter from "./memberRouter.tsx";
 import PaymentCheckout from "../pages/payment/PaymentCheckout.tsx";
 import PaymentSuccess from "../pages/payment/PaymentSuccess.tsx";
 import PaymentFail from "../pages/payment/PaymentFail.tsx";
-import PickupPage from "../pages/pickup/PickupPage.tsx";
 
 
 const MainPage = lazy(() => import("../pages/MainPage"))
@@ -19,6 +18,8 @@ const mainRouter = createBrowserRouter([
         path: "/",
         element: <Suspense fallback={Loading}><MainPage/></Suspense> ,
     },
+
+
     //from here_SA
     {
         path: "/payment",
@@ -37,7 +38,10 @@ const mainRouter = createBrowserRouter([
         element: <Suspense fallback={Loading}><PickupPage /></Suspense>
     },
 
-    memberRouter
+
+    productRouter,
+    memberRouter,
+    cartRouter
 ])
 
 export default mainRouter

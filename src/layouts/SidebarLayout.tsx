@@ -14,7 +14,7 @@ function SidebarLayout({ onClose }: SidebarProps) {
     };
 
     const menuItems = [
-        { name: '메뉴 1', subItems: ['하위 메뉴', '하위 메뉴', '하위 메뉴'] },
+        { name: 'Pickup', subItems: ['하위 메뉴', '하위 메뉴', '하위 메뉴'] },
         { name: '메뉴 2', subItems: ['하위 메뉴', '하위 메뉴', '하위 메뉴'] },
         { name: '메뉴 3', subItems: ['하위 메뉴', '하위 메뉴', '하위 메뉴'] },
         { name: '메뉴 4', subItems: ['하위 메뉴', '하위 메뉴', '하위 메뉴'] },
