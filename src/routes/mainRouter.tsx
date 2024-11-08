@@ -1,6 +1,8 @@
 import {createBrowserRouter} from "react-router-dom";
-import React, {lazy, Suspense} from "react";
+import {lazy, Suspense} from "react";
+import productRouter from "./productRouter.tsx";
 import memberRouter from "./memberRouter.tsx";
+import cartRouter from "./cartRouter.tsx";
 
 import PaymentCheckout from "../pages/payment/PaymentCheckout.tsx";
 import PaymentSuccess from "../pages/payment/PaymentSuccess.tsx";
@@ -32,7 +34,9 @@ const mainRouter = createBrowserRouter([
         path: "/fail",
         element: <Suspense fallback={Loading}><PaymentFail /></Suspense>  // 결제 실패 시 표시할 페이지
     },
-    memberRouter
+    productRouter,
+    memberRouter,
+    cartRouter
 ])
 
 export default mainRouter
