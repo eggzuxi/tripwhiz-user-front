@@ -2,11 +2,11 @@ import {createBrowserRouter} from "react-router-dom";
 import {lazy, Suspense} from "react";
 import productRouter from "./productRouter.tsx";
 import memberRouter from "./memberRouter.tsx";
+import cartRouter from "./cartRouter.tsx";
 
 import PaymentCheckout from "../pages/payment/PaymentCheckout.tsx";
 import PaymentSuccess from "../pages/payment/PaymentSuccess.tsx";
 import PaymentFail from "../pages/payment/PaymentFail.tsx";
-import cartRouter from "./cartRouter.tsx";
 
 
 const MainPage = lazy(() => import("../pages/MainPage"))
