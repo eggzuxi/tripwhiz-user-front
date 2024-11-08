@@ -22,9 +22,9 @@ function ProductReadComponent() {
 
     const {pno} = useParams()
 
-    const moveToList = () => {
+    const moveToCart = () => {
         navigate({
-            pathname: `/product/list`,
+            pathname: `/cart`,
         })
     }
 
@@ -78,9 +78,9 @@ function ProductReadComponent() {
             <div className='flex justify-center gap-2'>
                 <button type="button"
                         className="bg-amber-300 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-amber-400 focus:outline-none transition duration-300"
-                        onClick={moveToList}
+                        onClick={moveToCart}
                 >
-                    LIST
+                    CART
                 </button>
 
             </div>

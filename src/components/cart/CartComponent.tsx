@@ -1,5 +1,5 @@
 
-function SampleCartComponent() {
+function CartComponent() {
     return (
         <div>
             cart component
@@ -7,4 +7,4 @@ function SampleCartComponent() {
     );
 }
 
-export default SampleCartComponent;
+export default CartComponent;
