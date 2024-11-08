@@ -7,7 +7,6 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
     "preview": "vite preview",
     "start": "cross-env TOSS_SECRET_KEY=test_sk_E92LAa5PVb95gnz64PbP37YmpXyJ PORT=4000 node dist/server.js"
   },
