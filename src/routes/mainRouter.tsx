@@ -5,6 +5,9 @@ import memberRouter from "./memberRouter.tsx";
 import PaymentCheckout from "../pages/payment/PaymentCheckout.tsx";
 import PaymentSuccess from "../pages/payment/PaymentSuccess.tsx";
 import PaymentFail from "../pages/payment/PaymentFail.tsx";
+import productRouter from "./productRouter.tsx";
+import cartRouter from "./cartRouter.tsx";
+import PickupPage from "../pages/pickup/PickupPage.tsx";
 
 
 const MainPage = lazy(() => import("../pages/MainPage"))
@@ -41,7 +44,7 @@ const mainRouter = createBrowserRouter([
 
     productRouter,
     memberRouter,
-    cartRouter
+    cartRouter,
 ])
 
 export default mainRouter

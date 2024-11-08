@@ -4,7 +4,7 @@ import axios from 'axios';
 const host = 'http://localhost:8080/api/order';
 
 // 주문을 완료하고 QR 코드를 생성하는 함수
-export const completeOrder = async (ono: string, totalAmount: number) => {
+export const completeOrder = async (ono: number, totalAmount: number) => {
     try {
         const res = await axios.post(`${host}/complete`, {
             ono,
