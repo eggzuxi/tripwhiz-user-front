@@ -1,5 +1,5 @@
 import {createBrowserRouter} from "react-router-dom";
-import {lazy, Suspense} from "react";
+import React, {lazy, Suspense} from "react";
 import memberRouter from "./memberRouter.tsx";
 
 import PaymentCheckout from "../pages/payment/PaymentCheckout.tsx";
@@ -19,15 +19,6 @@ const mainRouter = createBrowserRouter([
         element: <Suspense fallback={Loading}><MainPage/></Suspense> ,
     },
 
-    {
-        path: "/member/login",
-        element: <Suspense fallback={Loading}><LoginPage/></Suspense>
-
-    },
-    {
-        path: "/member/kakao",
-        element: <Suspense fallback={Loading}><KakaoRedirect/></Suspense>
-    },
     //from here_SA
     {
         path: "/payment",
