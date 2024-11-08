@@ -10,3 +10,8 @@ export interface IProduct {
     img?: string,
     delflag: boolean
 }
+
+export interface ICartItem {
+    product: IProduct
+    qty: number
+}
