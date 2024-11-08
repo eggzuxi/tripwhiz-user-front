@@ -1,7 +1,8 @@
 import axios from "axios";
+import {IProduct} from "../types/product.ts";
 // import jwtAxios from "../util/jwtUtil.ts";
 
-const host ='http://10.10.10.104:8080/api/v1/product';
+const host ='http://localhost:8080/api/v1/product';
 
 // const header = {
 //     headers: {
@@ -9,12 +10,13 @@ const host ='http://10.10.10.104:8080/api/v1/product';
 //     }
 // }
 
-export const getList = async (page:number = 1, size:number = 10) => {
 
-    const res = await axios.get(`${host}/list?page=${page}&size=${size}`)
+export const getList = (dno: number, page: number, size: number) => {
+    return axios.get<{ dtoList: IProduct[], totalCount: number }>(`${host}/list/${dno}`, {
+        params: { page, size },
+    }).then(response => response.data);
+};
 
-    return res.data
-}
 
 export const getOne = async (pno: number) => {
 
