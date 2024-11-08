@@ -2,6 +2,8 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {IProduct} from "../../types/product.ts";
 import {getOne} from "../../api/productAPI.ts";
+import {useCartStore} from "../../store/useCartStore.ts";
+
 
 const initialState:IProduct = {
     cno: 0,
@@ -22,7 +24,11 @@ function ProductReadComponent() {
 
     const {pno} = useParams()
 
+    const addToCart = useCartStore((state) => state.addToCart);
+
     const moveToCart = () => {
+        addToCart(product)
+        console.log('Added to cart:', product);
         navigate({
             pathname: `/cart`,
         })
