@@ -21,9 +21,6 @@ const mainRouter = createBrowserRouter([
         path: "/",
         element: <Suspense fallback={Loading}><MainPage/></Suspense> ,
     },
-
-
-    //from here_SA
     {
         path: "/payment",
         element: <Suspense fallback={Loading}><PaymentCheckout /></Suspense>
