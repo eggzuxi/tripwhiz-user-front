@@ -15,7 +15,6 @@ const LoadingPage = lazy(() => import("../pages/LoadingPage"))
 export const Loading = <LoadingPage/>
 
 
-
 const mainRouter = createBrowserRouter([
     {
         path: "/",
