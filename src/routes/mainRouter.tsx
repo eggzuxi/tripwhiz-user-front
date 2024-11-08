@@ -1,12 +1,13 @@
 import {createBrowserRouter} from "react-router-dom";
 import {lazy, Suspense} from "react";
-import productRouter from "./productRouter.tsx";
 import memberRouter from "./memberRouter.tsx";
-import cartRouter from "./cartRouter.tsx";
 
 import PaymentCheckout from "../pages/payment/PaymentCheckout.tsx";
 import PaymentSuccess from "../pages/payment/PaymentSuccess.tsx";
 import PaymentFail from "../pages/payment/PaymentFail.tsx";
+import productRouter from "./productRouter.tsx";
+import cartRouter from "./cartRouter.tsx";
+import PickupPage from "../pages/pickup/PickupPage.tsx";
 
 
 const MainPage = lazy(() => import("../pages/MainPage"))
@@ -20,6 +21,8 @@ const mainRouter = createBrowserRouter([
         path: "/",
         element: <Suspense fallback={Loading}><MainPage/></Suspense> ,
     },
+
+
     //from here_SA
     {
         path: "/payment",
@@ -33,9 +36,15 @@ const mainRouter = createBrowserRouter([
         path: "/fail",
         element: <Suspense fallback={Loading}><PaymentFail /></Suspense>  // 결제 실패 시 표시할 페이지
     },
+    {
+        path: "/pickup",
+        element: <Suspense fallback={Loading}><PickupPage /></Suspense>
+    },
+
+
     productRouter,
     memberRouter,
-    cartRouter
+    cartRouter,
 ])
 
 export default mainRouter
