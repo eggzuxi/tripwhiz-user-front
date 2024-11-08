@@ -18,7 +18,7 @@ export const getList = async (page:number = 1, size:number = 10) => {
 
 export const getOne = async (pno: number) => {
 
-    const res = await axios.get(`${host}/${pno}`)
+    const res = await axios.get(`${host}/read/${pno}`)
 
     return res.data
 
