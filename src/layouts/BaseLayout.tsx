@@ -2,10 +2,9 @@ import HeaderLayout from "./HeaderLayout.tsx";
 import SampleChatUI from "../components/chatbot/SampleChatUI.tsx";
 
 
-
 function BaseLayout() {
     return (
-        <div className="min-h-screen bg-white">
+        <div>
             <HeaderLayout />
             <SampleChatUI />
         </div>
