@@ -1,9 +1,13 @@
-import {useSearchParams} from "react-router-dom";
-import {useEffect} from "react";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 import {getAccessToken, getMemberWithAccessToken} from "../../api/kakaoAPI.ts";
+import LoadingPage from "../LoadingPage.tsx";
 
 
 function KakaoRedirectPage() {
+
+    const [loading, setLoading] = useState(true); // JH
+    const navigate = useNavigate(); // JH
 
     // URL의 쿼리 파라미터를 읽기 위한 React Router 훅
     const [searchParams] = useSearchParams()
@@ -22,19 +26,27 @@ function KakaoRedirectPage() {
             console.log(accessToken)
             // 액세스 토큰을 사용해 사용자 정보를 가져옴
             getMemberWithAccessToken(accessToken).then(result => {
-                console.log("======================")
-                console.log(result)
+                console.log("======================");
+                console.log(result);
+                setLoading(false); // JH
             })
         })
       }//end if
 
     },[authCode]) // authCode가 변경될 때마다 실행
 
+    // JH
+    useEffect(() => {
+        if (!loading) {
+            navigate("/product/list"); // Replace "/product-list" with the actual route for the product list page
+        }
+    }, [loading, navigate]);
+
 
     return (
         <div>
-            <div>Kakao Login Redirect</div>
-            <div>{authCode}</div>
+            {/*JH*/}
+            {loading && <LoadingPage/>}
         </div>
     );
 }
