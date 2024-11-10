@@ -7,14 +7,12 @@ import {useCartStore} from "../../store/useCartStore.ts";
 
 const initialState:IProduct = {
     cno: 0,
-    dno: 0,
     pno: 0,
-    cname: '',
-    dname: '',
     pname: '',
     pdesc: '',
     price: 0,
-    img: '',
+    fileName: '',
+    category: '',
     delflag: false
 }
 
@@ -46,7 +44,7 @@ function ProductReadComponent() {
     return (
         <div className='w-full h-full flex flex-col space-y-4 w-96 mx-auto'>
 
-            <span>{product.cname}</span>
+            <span>{product.category}</span>
 
             <label className="text-sm font-semibold text-gray-700">PNO</label>
             <input
