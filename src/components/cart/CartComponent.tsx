@@ -20,7 +20,7 @@ function CartComponent(): ReactElement {
         return (
             <li key={product.pno} className='flex flex-wrap border-2 gap-3'>
                 {/* 제품 이미지가 있을 경우 표시합니다. */}
-                {product.img && <img className='w-1/4' src={product.img}/>}
+                {product.fileName && <img className='w-1/4' src={product.fileName}/>}
                 {product.pname} - {product.price} - {qty} - {product.price * qty}
                 <button onClick={() => changeQty(product.pno, 1)}> +</button>
                 <button onClick={() => changeQty(product.pno, -1)}> -</button>
