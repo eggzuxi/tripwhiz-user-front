@@ -1,14 +1,16 @@
 import {ReactElement} from "react";
-import {useCartStore} from "../../store/useCartStore.ts";
+import {cartStore} from "../../store/CartStore.ts";
+import {useNavigate} from "react-router-dom";
 
 
 
 function CartComponent(): ReactElement {
 
-    const cartItems = useCartStore((state) => state.cartItems);
-    const changeQty = useCartStore((state) => state.changeQty);
-    const removeFromCart = useCartStore((state) => state.removeFromCart);
-    const clearCart = useCartStore((state) => state.clearCart);
+    const cartItems = cartStore((state) => state.cartItems);
+    const changeQty = cartStore((state) => state.changeQty);
+    const removeFromCart = cartStore((state) => state.removeFromCart);
+    const clearCart = cartStore((state) => state.clearCart);
+    const navigate = useNavigate();
 
     console.log(cartItems);
 
@@ -36,9 +38,14 @@ function CartComponent(): ReactElement {
                 {listLI}
             </ul>
             {cartItems.length > 0 && (
-                <button onClick={clearCart} className="bg-red-500 text-white px-4 py-2 mt-4">
-                    Clear Cart
-                </button>
+                <div className="mt-4">
+                    <button onClick={clearCart} className="bg-red-500 text-white px-4 py-2 mr-2">
+                        Clear Cart
+                    </button>
+                    <button onClick={() => navigate('/product/list')} className="bg-yellow-500 text-white px-4 py-2">
+                        List
+                    </button>
+                </div>
             )}
         </div>
     );

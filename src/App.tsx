@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import QRCodeComponent from './components/QRCodeComponent';
+import QRCodeComponent from './components/qrcode/QRCodeComponent';
 
 function App() {
     return (

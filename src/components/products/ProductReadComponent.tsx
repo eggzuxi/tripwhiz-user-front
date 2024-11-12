@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {IProduct} from "../../types/product.ts";
 import {getOne} from "../../api/productAPI.ts";
-import {useCartStore} from "../../store/useCartStore.ts";
+import {cartStore} from "../../store/CartStore.ts";
 
 
 const initialState:IProduct = {
@@ -23,7 +23,7 @@ function ProductReadComponent() {
 
     const {pno} = useParams()
 
-    const addToCart = useCartStore((state) => state.addToCart);
+    const addToCart = cartStore((state) => state.addToCart);
 
     const moveToCart = () => {
         addToCart(product)

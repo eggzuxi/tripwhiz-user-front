@@ -4,7 +4,6 @@ import memberRouter from "./memberRouter.tsx";
 import productRouter from "./productRouter.tsx";
 import cartRouter from "./cartRouter.tsx";
 import paymentRouter from "./paymentRouter.tsx";
-import PickupPage from "../pages/pickup/PickupPage.tsx";
 import GoogleMapsPage from "../pages/map/GoogleMapsPage.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage"))
