@@ -4,6 +4,8 @@ import memberRouter from "./memberRouter.tsx";
 import productRouter from "./productRouter.tsx";
 import cartRouter from "./cartRouter.tsx";
 import paymentRouter from "./paymentRouter.tsx";
+import PickupPage from "../pages/pickup/PickupPage.tsx";
+import GoogleMapsPage from "../pages/map/GoogleMapsPage.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage"))
 const LoadingPage = lazy(() => import("../pages/LoadingPage"))
@@ -20,6 +22,10 @@ const mainRouter = createBrowserRouter([
     {
         path: "/pickup",
         element: <Suspense fallback={Loading}><PickupPage/></Suspense>
+    },
+    {
+        path: "/maps",
+        element: <Suspense fallback={Loading}><GoogleMapsPage /></Suspense>
     },
     productRouter,
     memberRouter,
