@@ -9,7 +9,7 @@ const port = 4000;
 app.use(cors());
 app.use(express.json());
 
-const apiSecretKey = "your_secret_key";
+const apiSecretKey = "test_sk_E92LAa5PVb95gnz64PbP37YmpXyJ";
 const encryptedApiSecretKey = "Basic " + Buffer.from(apiSecretKey + ":").toString("base64");
 
 app.post("/api/verify-payment", async (req: Request, res: Response) => {
