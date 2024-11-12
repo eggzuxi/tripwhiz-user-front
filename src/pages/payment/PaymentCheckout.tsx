@@ -1,15 +1,20 @@
 
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";  // useLocation을 추가
+
 
 function PaymentCheckout() {
 
     const clientKey = "test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq";
     const customerKey = generateRandomString();
 
+    const location = useLocation();  // useLocation 사용하여 전달된 state 받기
+    const cartItems = location.state?.cartItems || [];  // 전달된 장바구니 정보
+
     const amount = {
         currency: "KRW",
-        value: 1,
+        value: cartItems.reduce((acc, item) => acc + item.product.price * item.qty, 0), // 금액 계산
     };
 
     useEffect(() => {
@@ -44,23 +49,24 @@ function PaymentCheckout() {
         setSelectedPaymentMethod(method);
     }
 
-    async function requestPayment() {
+    const orderName = cartItems.map(item => `${item.product.pname} (${item.qty}개)`).join(", ");  // 상품명과 수량을 결제명으로 생성
 
+
+    async function requestPayment() {
 
         console.log("==============================3");
         console.log(payment)
 
+
         payment.requestPayment({
             method: "CARD", // 카드 및 간편결제
             amount,
-            orderId: generateRandomString(), // 고유 주문번호
-            orderName: "토스 티셔츠 외 2건",
-            successUrl: window.location.origin + "/payment/success", // 결제 요청이 성공하면 리다이렉트되는 URL
-            failUrl: window.location.origin + "/fail", // 결제 요청이 실패하면 리다이렉트되는 URL
+            orderId: generateRandomString(),
+            orderName: orderName,  // 결제명
+            successUrl: window.location.origin + "/payment/success",
+            failUrl: window.location.origin + "/fail",
             customerEmail: "customer123@gmail.com",
             customerName: "김토스",
-            // 가상계좌 안내, 퀵계좌이체 휴대폰 번호 자동 완성에 사용되는 값입니다. 필요하다면 주석을 해제해 주세요.
-            // customerMobilePhone: "01012341234",
             card: {
                 useEscrow: false,
                 flowMode: "DEFAULT",
@@ -100,12 +106,6 @@ function PaymentCheckout() {
                 </div>
                 <button className="button" onClick={() => requestPayment()}>
                     결제하기
-                </button>
-            </div>
-            <div className="box_section">
-                <h1>정기 결제</h1>
-                <button className="button" onClick={() => requestBillingAuth()}>
-                    빌링키 발급하기
                 </button>
             </div>
         </div>
