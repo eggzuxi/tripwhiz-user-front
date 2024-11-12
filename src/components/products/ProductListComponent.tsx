@@ -14,10 +14,12 @@ const ProductListComponent = () => {
     const observerRef = useRef<IntersectionObserver | null>(null);
     const lastProductRef = useRef<HTMLDivElement | null>(null);
 
+    // 상세 페이지로 이동하는 함수
     const moveToDetails = (pno: number) => {
         navigate(`/product/read/${pno}`);
     };
 
+    // 제품 목록을 가져오는 함수
     const fetchProducts = useCallback(async () => {
         if (!hasMore) return;
 
@@ -34,6 +36,7 @@ const ProductListComponent = () => {
         }, 600);
     }, [page, hasMore]);
 
+    // 무한 스크롤 설정
     useEffect(() => {
         if (loading || !hasMore) return;
 
@@ -50,6 +53,7 @@ const ProductListComponent = () => {
         return () => observerRef.current?.disconnect();
     }, [loading, hasMore]);
 
+    // 페이지가 변경될 때 데이터 fetch
     useEffect(() => {
         if (hasMore) fetchProducts();
     }, [page, fetchProducts, hasMore]);
@@ -65,14 +69,14 @@ const ProductListComponent = () => {
                     {products.length > 0 ? (
                         products.map((product, index) => (
                             <div
-                                key={product.pno}
+                                key={`${product.pno}-${index}`}  // `pno`와 `index` 결합하여 고유한 key 설정
                                 className="relative border p-6 rounded-lg shadow-md"
                                 onClick={() => moveToDetails(product.pno)}
                                 ref={index === products.length - 1 ? lastProductRef : null}
                             >
-                                {product.img && (
+                                {product.fileName && (
                                     <img
-                                        src={`/images/${product.img}`}
+                                        src={`http://localhost/uploads/${product.fileName}`}  // 파일 이름을 경로에 사용
                                         alt={product.pname}
                                         className="w-full h-40 object-cover mb-3"
                                     />

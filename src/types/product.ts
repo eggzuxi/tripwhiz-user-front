@@ -5,7 +5,7 @@ export interface IProduct {
     pname: string,
     pdesc: string,
     price: number,
-    img?: string,
+    fileName?: string,
     delflag: boolean
 }
 
