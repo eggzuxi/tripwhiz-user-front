@@ -1,13 +1,11 @@
 export interface IProduct {
     cno: number,
-    dno: number,
     pno: number,
-    cname: string,
-    dname: string,
+    category: string,
     pname: string,
     pdesc: string,
     price: number,
-    img?: string,
+    fileName?: string,
     delflag: boolean
 }
 
