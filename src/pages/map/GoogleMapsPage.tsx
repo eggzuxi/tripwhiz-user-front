@@ -5,10 +5,10 @@ import GoogleMapContainer from "../../components/map/GoogleMapContainer.tsx";
 
 function GoogleMapsPage() {
     return (
-       <div>
-        <BaseLayout/>
-      <GoogleMapContainer/>
-       </div>
+        <div>
+            <BaseLayout/>
+            <GoogleMapContainer/>
+        </div>
     );
 }
 
