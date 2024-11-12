@@ -7,10 +7,8 @@ import {useCartStore} from "../../store/useCartStore.ts";
 
 const initialState:IProduct = {
     cno: 0,
-    dno: 0,
     pno: 0,
     cname: '',
-    dname: '',
     pname: '',
     pdesc: '',
     price: 0,
