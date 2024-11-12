@@ -12,7 +12,7 @@ function GoogleLoginComponent() {
             getGoolgeWithAccessToken(tokenResponse.access_token);
 
             //로그인 후 리다이렉션 처리
-            window.location.href = 'http://localhost:5173/member/google';
+            window.location.href = 'http://localhost:5173/product/list'; // JH
         },
         onError: () => console.error("Failed Login.."),
         scope: "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"

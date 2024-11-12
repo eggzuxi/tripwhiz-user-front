@@ -1,4 +1,5 @@
 
+import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 import { useEffect, useState } from "react";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 import axios from "axios"; // axios를 이용해 백엔드와 통신

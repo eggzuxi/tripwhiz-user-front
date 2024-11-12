@@ -27,17 +27,30 @@ function HeaderLayout() {
 
     return (
         <div>
-            <header className="fixed top-0 left-0 w-full h-[60px] bg-white shadow-md flex items-center justify-between px-4">
-                <div className="text-yellow-500 text-2xl font-bold" onClick={moveToHome}>
+            <header
+                className="fixed top-0 left-0 w-full h-[60px] bg-white shadow-md flex items-center justify-between px-4 z-50">
+                <div className="text-yellow-500 text-2xl font-bold cursor-pointer" onClick={moveToHome}>
                     e<span className="text-gray-800">mart</span>24
                 </div>
-                <div className="flex items-center cursor-pointer" onClick={toggleSidebar}>
-                    <FontAwesomeIcon icon={faCartShopping} onClick={moveToCart} className="text-gray-700 mr-2 text-xl" />
-                    <FontAwesomeIcon icon={faBell} className="text-gray-700 mr-2 text-xl" />
-                    <div className="text-yellow-500 text-3xl">&#9776;</div> {/* 햄버거 메뉴 아이콘 */}
+                <div className="flex items-center">
+                    <FontAwesomeIcon
+                        icon={faCartShopping}
+                        onClick={moveToCart}
+                        className="text-gray-700 mr-4 text-xl cursor-pointer"
+                    />
+                    <FontAwesomeIcon
+                        icon={faBell}
+                        className="text-gray-700 mr-4 text-xl cursor-pointer"
+                    />
+                    <div
+                        className="text-yellow-500 text-3xl cursor-pointer"
+                        onClick={toggleSidebar}
+                    >
+                        &#9776; {/* Hamburger menu icon */}
+                    </div>
                 </div>
             </header>
-            {isSidebarOpen && <Sidebar onClose={toggleSidebar} />}
+            {isSidebarOpen && <Sidebar onClose={toggleSidebar}/>}
         </div>
     );
 }
