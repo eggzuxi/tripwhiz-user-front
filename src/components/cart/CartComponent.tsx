@@ -1,6 +1,6 @@
 import {ReactElement} from "react";
 import {useCartStore} from "../../store/useCartStore.ts";
-
+import {useNavigate} from "react-router-dom";
 
 
 function CartComponent(): ReactElement {
@@ -10,12 +10,19 @@ function CartComponent(): ReactElement {
     const removeFromCart = useCartStore((state) => state.removeFromCart);
     const clearCart = useCartStore((state) => state.clearCart);
 
+    const navigate = useNavigate();
+
+    const handleCheckout = () => {
+        // 결제 페이지로 이동하면서 cartItems를 state로 전달
+        navigate("/payment", { state: { cartItems } });
+    };
+
     console.log(cartItems);
 
     const listLI = cartItems.map(item => {
 
         //아이템 객체에서 product와 qty 구조분해할당
-        const { product, qty } = item;
+        const {product, qty} = item;
 
         return (
             <li key={product.pno} className='flex flex-wrap border-2 gap-3'>
@@ -32,13 +39,16 @@ function CartComponent(): ReactElement {
     return (
         <div>
             <h2>Cart Component</h2>
-            <ul>
-                {listLI}
-            </ul>
+            <ul>{listLI}</ul>
             {cartItems.length > 0 && (
-                <button onClick={clearCart} className="bg-red-500 text-white px-4 py-2 mt-4">
-                    Clear Cart
-                </button>
+                <div className="mt-4">
+                    <button onClick={clearCart} className="bg-red-500 text-white px-4 py-2">
+                        Clear Cart
+                    </button>
+                    <button onClick={handleCheckout} className="bg-blue-500 text-white px-4 py-2 ml-4">
+                        Check Out
+                    </button>
+                </div>
             )}
         </div>
     );
