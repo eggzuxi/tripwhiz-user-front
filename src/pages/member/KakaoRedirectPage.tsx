@@ -20,25 +20,25 @@ function KakaoRedirectPage() {
 
         if(authCode != null){
 
-            // 인증 코드를 이용해 액세스 토큰을 요청
-            getAccessToken(authCode).then(accessToken => {
+        // 인증 코드를 이용해 액세스 토큰을 요청
+        getAccessToken(authCode).then(accessToken => {
 
-                console.log(accessToken)
-                // 액세스 토큰을 사용해 사용자 정보를 가져옴
-                getMemberWithAccessToken(accessToken).then(result => {
-                    console.log("======================");
-                    console.log(result);
-                    setLoading(false); // JH
-                })
+            console.log(accessToken)
+            // 액세스 토큰을 사용해 사용자 정보를 가져옴
+            getMemberWithAccessToken(accessToken).then(result => {
+                console.log("======================");
+                console.log(result);
+                setLoading(false); // JH
             })
-        }//end if
+        })
+      }//end if
 
     },[authCode]) // authCode가 변경될 때마다 실행
 
     // JH
     useEffect(() => {
         if (!loading) {
-            navigate("/product/list"); // JH
+            navigate("/product/list"); // Replace "/product-list" with the actual route for the product list page
         }
     }, [loading, navigate]);
 

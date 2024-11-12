@@ -4,9 +4,11 @@ import {IProduct} from "../../types/product.ts";
 import {getOne} from "../../api/productAPI.ts";
 import {useCartStore} from "../../store/useCartStore.ts";
 
+
 const initialState:IProduct = {
     cno: 0,
     pno: 0,
+    cname: '',
     pname: '',
     pdesc: '',
     price: 0,

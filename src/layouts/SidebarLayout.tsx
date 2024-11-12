@@ -22,7 +22,7 @@ function SidebarLayout({ onClose }: SidebarProps) {
     ];
 
     return (
-        <div className="fixed top-0 right-0 w-[250px] h-full bg-white shadow-lg flex flex-col p-4">
+        <div className="fixed top-0 right-0 w-[250px] h-full bg-white shadow-lg flex flex-col p-4 z-50">
             {/* 환영 메시지 */}
             <div className="text-gray-800 font-semibold mb-4 flex items-center justify-between">
                 ㅇㅇㅇ님 환영합니다

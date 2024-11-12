@@ -5,10 +5,7 @@ import HeaderLayout from "../../layouts/HeaderLayout.tsx";
 function LoginPage() {
     return (
         <div>
-            Login Page
-
             <HeaderLayout />
-
             <KakaoLoginComponent/>
             <GoogleLoginComponent/>
         </div>
