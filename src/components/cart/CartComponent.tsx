@@ -1,6 +1,6 @@
 import {ReactElement} from "react";
 import {useCartStore} from "../../store/useCartStore.ts";
-
+import {useNavigate} from "react-router-dom";
 
 
 function CartComponent(): ReactElement {
@@ -8,7 +8,12 @@ function CartComponent(): ReactElement {
     const cartItems = useCartStore((state) => state.cartItems);
     const changeQty = useCartStore((state) => state.changeQty);
     const removeFromCart = useCartStore((state) => state.removeFromCart);
-    const clearCart = useCartStore((state) => state.clearCart);
+    const navigate = useNavigate();
+
+    const handleCheckout = () => {
+        // 결제 페이지로 이동하면서 cartItems를 state로 전달
+        navigate("/payment", { state: { cartItems } });
+    };
 
     console.log(cartItems);
 
@@ -36,9 +41,11 @@ function CartComponent(): ReactElement {
                 {listLI}
             </ul>
             {cartItems.length > 0 && (
-                <button onClick={clearCart} className="bg-red-500 text-white px-4 py-2 mt-4">
-                    Clear Cart
-                </button>
+                <div className="mt-4">
+                    <button onClick={handleCheckout} className="bg-blue-500 text-white px-4 py-2 ml-4">
+                        Check Out
+                    </button>
+                </div>
             )}
         </div>
     );
