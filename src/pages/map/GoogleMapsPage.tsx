@@ -7,7 +7,7 @@ function GoogleMapsPage() {
     return (
        <div>
         <BaseLayout/>
-      <GoogleMapContainer/>
+        <GoogleMapContainer/>
        </div>
     );
 }
