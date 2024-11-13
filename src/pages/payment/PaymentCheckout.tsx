@@ -1,5 +1,5 @@
 
-import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
+import {loadTossPayments, ANONYMOUS, TossPaymentsPayment} from "@tosspayments/tosspayments-sdk";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";  // useLocation을 추가
 
@@ -12,10 +12,10 @@ function PaymentCheckout() {
 
     const amount = {
         currency: "KRW",
-        value: cartItems.reduce((acc, item) => acc + item.product.price * item.qty, 0), // 금액 계산
+        value: cartItems.reduce((acc: number, item: { product: { price: number }; qty: number }) => acc + item.product.price * item.qty, 0),
     };
 
-    const orderName = cartItems.map(item => `${item.product.pname} (${item.qty}개)`).join(", ");  // 상품명과 수량을 결제명으로 생성
+    const orderName = cartItems.map((item: { product: { pname: string }; qty: number }) => `${item.product.pname} (${item.qty}개)`).join(", ");
 
     useEffect(() => {
         async function fetchPayment() {
@@ -40,10 +40,10 @@ function PaymentCheckout() {
     }, [clientKey]);
 
 
-    const [payment, setPayment] = useState(null);
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+    const [payment, setPayment] = useState<TossPaymentsPayment | null>(null);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
 
-    function selectPaymentMethod(method) {
+    function selectPaymentMethod(method: string) {
 
         console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + method)
         setSelectedPaymentMethod(method);
@@ -55,17 +55,20 @@ function PaymentCheckout() {
         console.log("==============================3");
         console.log(payment)
 
+        if (!payment) {
+            console.error("Payment is not initialized.");
+            return;
+        }
+
         payment.requestPayment({
-            method: "CARD", // 카드 및 간편결제
+            method: "CARD",
             amount,
             orderId: generateRandomString(),
-            orderName: orderName,  // 결제명
+            orderName: orderName,
             successUrl: window.location.origin + "/payment/success",
             failUrl: window.location.origin + "/fail",
             customerEmail: "customer123@gmail.com",
             customerName: "김토스",
-            // 가상계좌 안내, 퀵계좌이체 휴대폰 번호 자동 완성에 사용되는 값입니다. 필요하다면 주석을 해제해 주세요.
-            // customerMobilePhone: "01012341234",
             card: {
                 useEscrow: false,
                 flowMode: "DEFAULT",
