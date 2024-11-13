@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const host ='http://10.10.10.215:8080/api/product';
-const host ='http://localhost:8080/api/product';
+const host ='http://10.10.10.215:8080/api/product';
+// const host ='http://localhost:8080/api/product';
 
 // const header = {
 //     headers: {
