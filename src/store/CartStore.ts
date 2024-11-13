@@ -18,16 +18,16 @@ type CartStorePersist = (
 
 
 // Custom storage for Zustand to handle JSON serialization
-const customLocalStorage = {
+const customSessionStorage = {
     getItem: (name: string) => {
-        const item = localStorage.getItem(name);
+        const item = sessionStorage.getItem(name);
         return item ? JSON.parse(item) : null;
     },
     setItem: (name: string, value: any) => {
-        localStorage.setItem(name, JSON.stringify(value));
+        sessionStorage.setItem(name, JSON.stringify(value));
     },
     removeItem: (name: string) => {
-        localStorage.removeItem(name);
+        sessionStorage.removeItem(name);
     }
 };
 
@@ -65,8 +65,8 @@ export const cartStore = create<CartStore>(
             clearCart: () => set({ cartItems: [] })
         }),
         {
-            name: 'cart-storage', // localStorage에 저장될 키 이름
-            storage: customLocalStorage, // 기본값이 localStorage
+            name: 'cart-storage', // 세션 스토리지에 저장될 키 이름
+            storage: customSessionStorage, // 세션 스토리지 사용
         }
     )
 );

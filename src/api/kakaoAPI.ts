@@ -11,14 +11,30 @@ const auth_code_path = `https://kauth.kakao.com/oauth/authorize`
 const access_token_url = 'https://kauth.kakao.com/oauth/token'
 
 // 백엔드 서버의 API URL. 액세스 토큰을 사용하여 사용자 정보를 요청할 때 사용
-const host = 'http://localhost:8080/api/v1/member/kakao'
+const host = 'http://localhost:8080/api/member/kakao'
 
 // 액세스 토큰을 사용해 사용자 정보를 가져오는 함수
-export const getMemberWithAccessToken = async (accessToken:string)  => {
+export const getKakaoWithAccessToken = async (
+    accessToken: string,
+    setUser: (name: string, email: string, accessToken: string) => void
+) => {
+    try {
+        const res = await axios.get(`${host}?accessToken=${accessToken}`);
+        console.log("카카오 백엔드 응답 데이터:", res.data);  // 응답 데이터 확인
 
-    const res = await axios.get(`${host}?accessToken=${accessToken}`)
+        const { name, email } = res.data;
 
-    return res.data
+        console.log("---------------------------------------0", name, email)
+
+        if (name && email) {
+            setUser(name, email, accessToken);  // 액세스 토큰도 함께 상태에 저장
+        }
+
+        return res.data;
+    } catch (error) {
+        console.error("API 호출 오류:", error);
+        throw error;
+    }
 }
 
 

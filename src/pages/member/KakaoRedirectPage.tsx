@@ -1,7 +1,8 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getAccessToken, getMemberWithAccessToken} from "../../api/kakaoAPI.ts";
+import {getAccessToken, getKakaoWithAccessToken} from "../../api/kakaoAPI.ts";
 import LoadingPage from "../LoadingPage.tsx";
+import useAuthStore from "../../store/AuthStore.ts";
 
 
 function KakaoRedirectPage() {
@@ -15,6 +16,8 @@ function KakaoRedirectPage() {
     // URL의 "code" 파라미터 (카카오 인증 코드)를 가져옴
     const authCode:string|null = searchParams.get("code")
 
+    const { setUser } = useAuthStore(state => state);
+
     // authCode가 변경될 때마다 액세스 토큰 요청 및 사용자 정보 요청을 실행
     useEffect(() => {
 
@@ -25,8 +28,8 @@ function KakaoRedirectPage() {
 
             console.log(accessToken)
             // 액세스 토큰을 사용해 사용자 정보를 가져옴
-            getMemberWithAccessToken(accessToken).then(result => {
-                console.log("======================");
+            getKakaoWithAccessToken(accessToken, setUser).then(result => {
+                console.log("======================2");
                 console.log(result);
                 setLoading(false); // JH
             })
