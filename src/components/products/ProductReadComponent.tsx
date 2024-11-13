@@ -28,7 +28,7 @@ function ProductReadComponent() {
         addToCart(product)
         console.log('Added to cart:', product);
         navigate({
-            pathname: `/cart`,
+            pathname: `/cart/list`,
         })
     }
 

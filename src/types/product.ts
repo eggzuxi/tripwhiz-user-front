@@ -8,8 +8,3 @@ export interface IProduct {
     fileName?: string,
     delflag: boolean
 }
-
-export interface ICartItem {
-    product: IProduct
-    qty: number
-}

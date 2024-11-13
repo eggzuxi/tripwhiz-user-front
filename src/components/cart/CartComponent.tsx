@@ -1,14 +1,45 @@
-import {ReactElement} from "react";
+import {ReactElement, useEffect, useState} from "react";
 import {useCartStore} from "../../store/useCartStore.ts";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import {ICartItems} from "../../types/cart.ts";
+import {getList} from "../../api/cartAPI.ts";
 
+const initialState:ICartItems[] = [
+
+    {
+        product: {
+            cno: 0,
+            pno: 0,
+            category: "",
+            pname: "",
+            pdesc: "",
+            price: 0,
+            delflag: false,
+        },
+        qty: 0
+    }
+
+]
 
 function CartComponent(): ReactElement {
 
-    const cartItems = useCartStore((state) => state.cartItems);
+    // const cartItems = useCartStore((state) => state.cartItems);
     const changeQty = useCartStore((state) => state.changeQty);
     const removeFromCart = useCartStore((state) => state.removeFromCart);
     const navigate = useNavigate();
+
+    const [cartItems, setCartItems] = useState(initialState);
+
+    useEffect(() => {
+
+        setTimeout(async () => {
+
+            const data = await getList();
+            setCartItems(data);
+
+        }, 600);
+
+    }, [])
 
     const handleCheckout = () => {
         // 결제 페이지로 이동하면서 cartItems를 state로 전달
