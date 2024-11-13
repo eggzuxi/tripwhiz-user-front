@@ -1,8 +1,13 @@
+import {ReactElement} from "react";
+import {cartStore} from "../../store/CartStore.ts";
+import {useNavigate} from "react-router-dom";
 import {ReactElement, useEffect, useState} from "react";
 import {useCartStore} from "../../store/useCartStore.ts";
 import {useNavigate, useParams} from "react-router-dom";
 import {ICartItems} from "../../types/cart.ts";
 import {getList} from "../../api/cartAPI.ts";
+
+const initialState:ICartItems[] = [
 
 const initialState:ICartItems[] = [
 
@@ -23,6 +28,10 @@ const initialState:ICartItems[] = [
 
 function CartComponent(): ReactElement {
 
+    const cartItems = cartStore((state) => state.cartItems);
+    const changeQty = cartStore((state) => state.changeQty);
+    const removeFromCart = cartStore((state) => state.removeFromCart);
+    const clearCart = cartStore((state) => state.clearCart);
     // const cartItems = useCartStore((state) => state.cartItems);
     const changeQty = useCartStore((state) => state.changeQty);
     const removeFromCart = useCartStore((state) => state.removeFromCart);
@@ -73,6 +82,12 @@ function CartComponent(): ReactElement {
             </ul>
             {cartItems.length > 0 && (
                 <div className="mt-4">
+                    <button onClick={clearCart} className="bg-red-500 text-white px-4 py-2 mr-2">
+                        Clear Cart
+                    </button>
+                    <button onClick={() => navigate('/product/list')} className="bg-yellow-500 text-white px-4 py-2">
+                        List
+                    </button>
                     <button onClick={handleCheckout} className="bg-blue-500 text-white px-4 py-2 ml-4">
                         Check Out
                     </button>
