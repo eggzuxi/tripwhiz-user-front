@@ -12,15 +12,15 @@ const PickupPage = lazy(() => import("../pages/pickup/PickupPage"))
 
 export const Loading = <LoadingPage/>
 
-const mainRouter = createBrowserRouter([
 
+const mainRouter = createBrowserRouter([
     {
         path: "/",
         element: <Suspense fallback={Loading}><MainPage/></Suspense> ,
     },
     {
         path: "/pickup",
-        element: <Suspense fallback={Loading}><PickupPage/></Suspense>
+        element: <Suspense fallback={Loading}><PickupPage /></Suspense>
     },
     {
         path: "/maps",

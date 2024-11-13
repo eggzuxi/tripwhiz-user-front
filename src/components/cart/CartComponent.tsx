@@ -12,6 +12,11 @@ function CartComponent(): ReactElement {
     const clearCart = cartStore((state) => state.clearCart);
     const navigate = useNavigate();
 
+    const handleCheckout = () => {
+        // 결제 페이지로 이동하면서 cartItems를 state로 전달
+        navigate("/payment", { state: { cartItems } });
+    };
+
     console.log(cartItems);
 
     const listLI = cartItems.map(item => {
@@ -44,6 +49,9 @@ function CartComponent(): ReactElement {
                     </button>
                     <button onClick={() => navigate('/product/list')} className="bg-yellow-500 text-white px-4 py-2">
                         List
+                    </button>
+                    <button onClick={handleCheckout} className="bg-blue-500 text-white px-4 py-2 ml-4">
+                        Check Out
                     </button>
                 </div>
             )}

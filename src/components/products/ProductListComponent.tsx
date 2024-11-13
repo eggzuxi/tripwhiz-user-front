@@ -65,14 +65,14 @@ const ProductListComponent = () => {
                     {products.length > 0 ? (
                         products.map((product, index) => (
                             <div
-                                key={product.pno}
+                                key={`${product.pno}-${index}`}  // `pno`와 `index` 결합하여 고유한 key 설정
                                 className="relative border p-6 rounded-lg shadow-md"
                                 onClick={() => moveToDetails(product.pno)}
                                 ref={index === products.length - 1 ? lastProductRef : null}
                             >
                                 {product.fileName && (
                                     <img
-                                        src={`/images/${product.fileName}`}
+                                        src={`http://localhost/uploads/${product.fileName}`}  // 파일 이름을 경로에 사용
                                         alt={product.pname}
                                         className="w-full h-40 object-cover mb-3"
                                     />
@@ -93,6 +93,6 @@ const ProductListComponent = () => {
             </div>
         </div>
     );
-};
+}
 
 export default ProductListComponent;
