@@ -1,15 +1,17 @@
 import {useGoogleLogin} from "@react-oauth/google";
-import {getGoolgeWithAccessToken} from "../../api/googleAPI.ts";
 import googleLoginImage from '/static/web_neutral_sq_SI@2x.png';
+import {getGoogleWithAccessToken} from "../../api/googleAPI.ts";
+import useAuthStore from "../../store/AuthStore.ts";
 
 function GoogleLoginComponent() {
 
+    const { setUser } = useAuthStore(state => state);
 
     const login = useGoogleLogin({
         onSuccess: (tokenResponse) => {
             console.log('Access Token:', tokenResponse.access_token);
             //액세스토큰을 서버 API로 보내기
-            getGoolgeWithAccessToken(tokenResponse.access_token);
+            getGoogleWithAccessToken(tokenResponse.access_token, setUser);
 
             //로그인 후 리다이렉션 처리
             window.location.href = 'http://localhost:5173/product/list'; // JH

@@ -1,14 +1,26 @@
 import axios from "axios";
 
 
-const host = 'http://10.10.10.215:8080/api/v1/member/google'
+const host = 'http://localhost:8080/api/member/google'
 
 
-//액세스 토큰을 사용해 사용자 정보를 가져오는 함수
-export const getGoolgeWithAccessToken = async (accessToken:string) => {
-
+// 액세스 토큰을 사용해 사용자 정보를 가져오는 함수
+export const getGoogleWithAccessToken = async (
+    accessToken: string,
+    setUser: (name: string, email: string, accessToken: string) => void
+) => {
     try {
         const res = await axios.get(`${host}?accessToken=${accessToken}`);
+        console.log("구글 백엔드 응답 데이터:", res.data); // 응답 데이터 확인
+
+        const { name, email } = res.data;  // 백엔드 응답에서 name, email를 받아옵니다.
+
+        console.log("---------------------------------------0", name, email)
+
+        if (name && email) {
+            setUser(name, email, accessToken);  // 액세스 토큰도 함께 상태에 저장
+        }
+
         return res.data;
     } catch (error) {
         console.error("Error fetching Google user data: ", error);
@@ -16,21 +28,3 @@ export const getGoolgeWithAccessToken = async (accessToken:string) => {
     }
 
 }
-
-// 액세스 토큰을 사용해 사용자 정보를 가져오는 함수
-// export const getGoolgeWithAccessToken = async (accessToken: string) => {
-//     try {
-//         // Google API의 사용자 정보 요청
-//         const response = await axios.get('https://www.googleapis.com/oauth2/v1/userinfo', {
-//             headers: {
-//                 Authorization: `Bearer ${accessToken}`  // Bearer 토큰 방식으로 액세스 토큰을 전달
-//             }
-//         });
-//
-//         // 사용자 정보 반환
-//         return response.data;
-//     } catch (error) {
-//         console.error("Error fetching Google user data: ", error);
-//         throw error;
-//     }
-// }

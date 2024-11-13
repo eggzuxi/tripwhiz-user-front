@@ -1,31 +1,46 @@
-import { useState } from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faUser } from '@fortawesome/free-solid-svg-icons';
+import useAuthStore from "../store/AuthStore.ts";
 
 interface SidebarProps {
     onClose: () => void;
 }
 
+
 function SidebarLayout({ onClose }: SidebarProps) {
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
-    const toggleDropdown = (menu: string) => {
-        setActiveMenu(activeMenu === menu ? null : menu);
-    };
+    const {name , email, accessToken} =
+        useAuthStore((state) => state)
 
-    const menuItems = [
-        { name: 'Pickup', subItems: ['하위 메뉴', '하위 메뉴', '하위 메뉴'] },
-        { name: '메뉴 2', subItems: ['하위 메뉴', '하위 메뉴', '하위 메뉴'] },
-        { name: '메뉴 3', subItems: ['하위 메뉴', '하위 메뉴', '하위 메뉴'] },
-        { name: '메뉴 4', subItems: ['하위 메뉴', '하위 메뉴', '하위 메뉴'] },
-        { name: '메뉴 5', subItems: ['하위 메뉴', '하위 메뉴', '하위 메뉴'] },
-    ];
+    useEffect(() => {
+        console.log("1--------------------")
+        console.log(name)
+    }, [name, email, accessToken]);
+
+    //상태 변경을 최적화하여 불필요한 렌더링을 방지
+    const toggleDropdown = (menu: string) => {
+        setActiveMenu((prevMenu) => (prevMenu === menu ? null : menu)); // 이전 상태를 참조하여 변경
+    }
+
+
+    const menuItems = useMemo(
+        () => [
+            { name: 'Pickup', subItems: ['하위 메뉴 1', '하위 메뉴 2', '하위 메뉴 3'] },
+            { name: '메뉴 2', subItems: ['하위 메뉴 1', '하위 메뉴 2', '하위 메뉴 3'] },
+            { name: '메뉴 3', subItems: ['하위 메뉴 1', '하위 메뉴 2', '하위 메뉴 3'] },
+            { name: '메뉴 4', subItems: ['하위 메뉴 1', '하위 메뉴 2', '하위 메뉴 3'] },
+            { name: '메뉴 5', subItems: ['하위 메뉴 1', '하위 메뉴 2', '하위 메뉴 3'] },
+        ],
+        []
+    );
 
     return (
         <div className="fixed top-0 right-0 w-[250px] h-full bg-white shadow-lg flex flex-col p-4 z-50">
             {/* 환영 메시지 */}
             <div className="text-gray-800 font-semibold mb-4 flex items-center justify-between">
-                ㅇㅇㅇ님 환영합니다
+                {name ? `${name}님 환영합니다` : '환영합니다'}
                 <FontAwesomeIcon icon={faUser} className="text-gray-700" />
             </div>
 
