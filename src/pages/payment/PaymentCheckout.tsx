@@ -1,5 +1,5 @@
 
-import {loadTossPayments, ANONYMOUS, TossPaymentsPayment} from "@tosspayments/tosspayments-sdk";
+import {loadTossPayments, TossPaymentsPayment} from "@tosspayments/tosspayments-sdk";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";  // useLocation을 추가
 
