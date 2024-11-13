@@ -1,6 +1,7 @@
 export interface IProduct {
     cno: number,
     pno: number,
+    cname: string,
     category: string,
     pname: string,
     pdesc: string,
