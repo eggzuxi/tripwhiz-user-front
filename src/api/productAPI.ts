@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host ='http://10.10.10.215:8080/api/product';
+const host ='http://10.10.10.73:8080/api/product';
 
 // const header = {
 //     headers: {
@@ -11,6 +11,8 @@ const host ='http://10.10.10.215:8080/api/product';
 export const getList = async (page:number) => {
 
     const res = await axios.get(`${host}/list?page=${page}`)
+
+    console.log(res.data)
 
     return res.data.dtoList
 
