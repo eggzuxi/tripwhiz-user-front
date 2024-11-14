@@ -4,6 +4,7 @@ import { getList } from "../../api/productAPI";
 import { useNavigate } from "react-router-dom";
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cartStore } from "../../store/CartStore.ts";
 
 const ProductListComponent = () => {
     const navigate = useNavigate();
@@ -13,6 +14,13 @@ const ProductListComponent = () => {
     const [hasMore, setHasMore] = useState(true);
     const observerRef = useRef<IntersectionObserver | null>(null);
     const lastProductRef = useRef<HTMLDivElement | null>(null);
+
+    // 장바구니 슬라이드 패널 상태
+    const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
+    const [quantity, setQuantity] = useState(1);
+
+    const addToCart = cartStore((state) => state.addToCart);
 
     const moveToDetails = (pno: number) => {
         navigate(`/product/read/${pno}`);
@@ -54,25 +62,53 @@ const ProductListComponent = () => {
         if (hasMore) fetchProducts();
     }, [page, fetchProducts, hasMore]);
 
+    // 슬라이드 패널 열기 함수
+    const openPanel = (product: IProduct) => {
+        setSelectedProduct(product);
+        setQuantity(1);
+        setIsPanelOpen(true);
+    };
+
+    // 슬라이드 패널 닫기 함수
+    const closePanel = () => {
+        setIsPanelOpen(false);
+        setSelectedProduct(null);
+    };
+
+    // 수량 조절 함수
+    const increaseQuantity = () => setQuantity((prev) => prev + 1);
+    const decreaseQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
+
+    // 장바구니에 선택한 수량만큼 상품 추가
+    const handleAddToCart = () => {
+        if (selectedProduct) {
+            // 선택한 상품과 수량을 장바구니에 추가
+            for (let i = 0; i < quantity; i++) {
+                addToCart(selectedProduct, 1); // 수량만큼 반복하여 추가
+            }
+            closePanel();
+        }
+    };
+
     return (
-        <div className="h-screen overflow-hidden"> {/* 바깥 스크롤 숨김 */}
+        <div className="h-screen overflow-hidden">
             <div
                 className="p-4 pt-20 h-full overflow-y-auto custom-scrollbar"
-                style={{ maxHeight: 'calc(100vh - 80px)' }} // 내부 스크롤 영역 설정
+                style={{ maxHeight: 'calc(100vh - 80px)' }}
             >
                 <h2 className="text-xl font-bold mb-4">상품 목록</h2>
                 <div className="grid grid-cols-2 gap-4">
                     {products.length > 0 ? (
                         products.map((product, index) => (
                             <div
-                                key={`${product.pno}-${index}`}  // `pno`와 `index` 결합하여 고유한 key 설정
+                                key={`${product.pno}-${index}`}
                                 className="relative border p-6 rounded-lg shadow-md"
                                 onClick={() => moveToDetails(product.pno)}
                                 ref={index === products.length - 1 ? lastProductRef : null}
                             >
                                 {product.fileName && (
                                     <img
-                                        src={`http://localhost/uploads/${product.fileName}`}  // 파일 이름을 경로에 사용
+                                        src={`http://localhost/uploads/${product.fileName}`}
                                         alt={product.pname}
                                         className="w-full h-40 object-cover mb-3"
                                     />
@@ -82,7 +118,11 @@ const ProductListComponent = () => {
                                 <p className="text-gray-700">가격: {product.price}원</p>
                                 <FontAwesomeIcon
                                     icon={faCartShopping}
-                                    className="text-gray-700 text-xl absolute bottom-2 right-2"
+                                    className="text-gray-700 text-xl absolute bottom-2 right-2 cursor-pointer"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        openPanel(product); // 슬라이드 패널 열기
+                                    }}
                                 />
                             </div>
                         ))
@@ -91,8 +131,29 @@ const ProductListComponent = () => {
                     )}
                 </div>
             </div>
+
+            {/* 장바구니 슬라이드 패널 */}
+            <div className={`fixed bottom-0 left-0 w-full bg-white border-t shadow-lg p-4 transition-transform transform ${isPanelOpen ? 'translate-y-0' : 'translate-y-full'}`}>
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-lg font-semibold">{selectedProduct?.pname}</h2>
+                    <button onClick={closePanel} className="text-gray-500 text-lg font-bold">X</button>
+                </div>
+                {selectedProduct && (
+                    <>
+                        <p className="text-gray-700 mb-4">가격: {selectedProduct.price}원</p>
+                        <div className="flex justify-end items-center mb-4">
+                            <button onClick={decreaseQuantity} className="p-2 border rounded-l">-</button>
+                            <span className="px-4 border-t border-b">{quantity}</span>
+                            <button onClick={increaseQuantity} className="p-2 border rounded-r">+</button>
+                        </div>
+                        <div className="flex justify-end">
+                            <button onClick={handleAddToCart} className="bg-blue-500 text-white px-4 py-2 rounded">장바구니 추가</button>
+                        </div>
+                    </>
+                )}
+            </div>
         </div>
     );
-}
+};
 
 export default ProductListComponent;
