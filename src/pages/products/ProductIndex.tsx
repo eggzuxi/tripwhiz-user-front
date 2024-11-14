@@ -3,11 +3,13 @@ import BaseLayout from "../../layouts/BaseLayout.tsx";
 
 function ProductIndex() {
     return (
-        <div>
-            <BaseLayout></BaseLayout>
-            Product Index
-            <Outlet></Outlet>
-        </div>
+            <BaseLayout>
+                Product Index Page
+
+                <div className='w-full'>
+                    <Outlet></Outlet>
+                </div>
+            </BaseLayout>
     );
 }
 

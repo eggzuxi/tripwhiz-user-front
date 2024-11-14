@@ -43,7 +43,9 @@ function MainPage() {
 
     return (
         <div>
-            <BaseLayout/>
+            <BaseLayout>
+                <div>Main Page</div>
+            </BaseLayout>
         </div>
     );
 }
