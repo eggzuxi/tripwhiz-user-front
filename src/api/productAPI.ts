@@ -12,6 +12,8 @@ export const getList = async (page:number) => {
 
     const res = await axios.get(`${host}/list?page=${page}`)
 
+    console.log(res.data)
+
     return res.data.dtoList
 
 };
