@@ -10,10 +10,9 @@ const ProductRead = lazy(() => import("../pages/products/ProductReadPage"))
 
 const productRouter = {
 
-    path: "/product",
+    path: '/product',
     element: <Suspense fallback={Loading}><ProductIndex/></Suspense>,
     children: [
-
         {
             path: "list",
             element: <Suspense fallback={Loading}><ProductList/></Suspense>

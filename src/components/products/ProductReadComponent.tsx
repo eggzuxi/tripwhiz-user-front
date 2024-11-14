@@ -8,6 +8,7 @@ import {cartStore} from "../../store/CartStore.ts";
 const initialState:IProduct = {
     cno: 0,
     pno: 0,
+    cname:'',
     pname: '',
     pdesc: '',
     price: 0,
