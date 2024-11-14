@@ -17,6 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@googlemaps/react-wrapper": "^1.1.42",
+    "@nlux/langchain-react": "^2.17.1",
     "@nlux/react": "^2.17.1",
     "@nlux/themes": "^2.17.1",
     "@react-google-maps/api": "^2.20.3",

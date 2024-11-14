@@ -2,14 +2,14 @@ import {lazy, Suspense} from "react";
 import LoadingPage from "../pages/LoadingPage.tsx";
 
 const Loading = <LoadingPage></LoadingPage>
-const Checkout = lazy(() => import("../pages/payment/PaymentCheckout"))
+// const Checkout = lazy(() => import("../pages/payment/PaymentCheckout"))
 const Success = lazy(() => import("../pages/payment/PaymentSuccess"))
 const Fail = lazy(() => import("../pages/payment/PaymentFail"))
 
 const paymentRouter = {
 
     path: "/payment",
-    element: <Suspense fallback={Loading}><Checkout/></Suspense>,
+    // element: <Suspense fallback={Loading}><Checkout/></Suspense>,
     children: [
 
         {

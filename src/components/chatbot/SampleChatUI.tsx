@@ -1,31 +1,17 @@
-import { useState } from 'react';
-import { AiChat, useAsStreamAdapter } from '@nlux/react'; // 필요한 컴포넌트 및 훅 임포트
+import React, { useState } from 'react';
+import { AiChat } from '@nlux/react';
+import { useChatAdapter } from '@nlux/langchain-react'; // langchain-react에서 useChatAdapter 가져오기
 import '@nlux/themes/nova.css'; // 테마 스타일 임포트
 
-// 스트리밍 어댑터 설정 (API 엔드포인트 URL)
+// 어댑터 옵션 설정 (API 엔드포인트 URL)
 const adapterOptions = {
     url: "https://main-meet-robin.ngrok-free.app/llm/" // 실제 API 엔드포인트로 수정 필요
 };
 
 // SampleChatUI 컴포넌트
-const SampleChatUI = () => {
+const SampleChatUI: React.FC = () => {
     const [isChatOpen, setIsChatOpen] = useState(false); // 채팅 UI 열림/닫힘 상태 관리
-
-    // 스트리밍 어댑터 사용
-    const adapter = useAsStreamAdapter((message, observer) => {
-        fetch(adapterOptions.url, {
-            method: 'POST',
-            body: JSON.stringify({ message }), // 메시지를 API로 전송
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                observer.next(data.chunk);  // 데이터가 스트리밍될 때마다 호출
-                observer.complete();         // 데이터 스트리밍 완료 호출
-            })
-            .catch((error) => {
-                observer.error(error);  // 에러 발생 시 호출
-            });
-    });
+    const langServeAdapter = useChatAdapter(adapterOptions); // useChatAdapter를 사용하여 어댑터 생성
 
     // 채팅 열기/닫기 함수
     const toggleChat = () => {
@@ -104,46 +90,12 @@ const SampleChatUI = () => {
                         </button>
                     </div>
 
-                    {/* AiChat 컴포넌트 - 스트리밍 어댑터 사용 */}
+                    {/* AiChat 컴포넌트 - 어댑터 전달 */}
                     <div style={{ flex: 1, overflowY: 'auto', padding: '10px' }}>
                         <AiChat
-                            adapter={adapter}  // 스트리밍 어댑터 전달
+                            adapter={langServeAdapter}  // LangChain 어댑터 전달
                             displayOptions={{ colorScheme: 'light' }}  // 밝은 색상 테마
                         />
-                    </div>
-
-                    {/* 메시지 입력 필드 및 전송 버튼 */}
-                    <div style={{ padding: '10px', borderTop: '1px solid #ddd', display: 'flex', alignItems: 'center' }}>
-                        <input
-                            type="text"
-                            placeholder="무엇을 도와 드릴까요?"
-                            style={{
-                                flex: 1,
-                                padding: '10px',
-                                borderRadius: '20px',
-                                border: '1px solid #ddd',
-                                outline: 'none',
-                                fontSize: '16px',
-                            }}
-                        />
-                        <button
-                            style={{
-                                marginLeft: '10px',
-                                backgroundColor: '#f5deb3',
-                                color: 'black',
-                                border: 'none',
-                                borderRadius: '50%',
-                                width: '40px',
-                                height: '40px',
-                                cursor: 'pointer',
-                                fontSize: '16px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            💬
-                        </button>
                     </div>
                 </div>
             )}
