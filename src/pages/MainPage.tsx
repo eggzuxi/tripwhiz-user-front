@@ -3,7 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.tsx";
 function MainPage() {
     return (
         <div>
-            <BaseLayout/>
+            <BaseLayout>
+                <div>Main Page</div>
+            </BaseLayout>
         </div>
     );
 }

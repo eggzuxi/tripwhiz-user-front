@@ -9,9 +9,10 @@ function CartPage() {
 
     return (
         <div>
-            <BaseLayout></BaseLayout>
-            cart page
-            <CartComponent/>
+            <BaseLayout>
+                cart page
+                <CartComponent/>
+            </BaseLayout>
         </div>
     );
 }
