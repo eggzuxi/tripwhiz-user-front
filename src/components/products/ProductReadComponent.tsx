@@ -5,15 +5,15 @@ import { getOne } from "../../api/productAPI.ts";
 import { cartStore } from "../../store/CartStore.ts";
 
 const initialState: IProduct = {
-    pno: 0,
-    pname: '',
-    pdesc: '',
-    price: 0,
-    categoryCno: null,
-    subCategoryScno: null,
-    themeTno: null,
-    fileName: '',
-    delflag: false,
+    pno: 0, // 상품 번호 초기값
+    pname: "", // 상품 이름 초기값
+    price: 0, // 상품 가격 초기값
+    pdesc: "", // 상품 설명 초기값
+    categoryCno: 0, // 상위 카테고리 초기값
+    subCategoryScno: 0, // 하위 카테고리 초기값
+    themeTno: 0, // 테마 카테고리 초기값
+    delflag: false, // 삭제 플래그 초기값
+    uploadFileNames: [] // 파일 배열 초기값
 };
 
 function ProductReadComponent() {
@@ -55,10 +55,10 @@ function ProductReadComponent() {
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white rounded-lg shadow-xl w-[600px] p-8">
                 {/* 이미지 */}
-                {product.fileName && (
+                {product.uploadFileNames && (
                     <div className="w-full flex justify-center mb-6">
                         <img
-                            src={`http://localhost:8081${product.fileName}`}
+                            src={`http://localhost:8081${product.uploadFileNames}`}
                             alt={product.pname}
                             className="w-80 h-80 object-cover rounded-lg"
                         />
