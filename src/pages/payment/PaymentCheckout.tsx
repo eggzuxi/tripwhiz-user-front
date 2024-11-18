@@ -9,9 +9,14 @@ function PaymentCheckout() {
     const location = useLocation();  // useLocation 사용하여 전달된 state 받기
     const cartItems = location.state?.cartItems || [];  // 전달된 장바구니 정보
 
+    // const amount = {
+    //     currency: "KRW",
+    //     value: cartItems.reduce((acc, item) => acc + item.product.price * item.qty, 0), // 금액 계산
+    // };
+
     const amount = {
         currency: "KRW",
-        value: cartItems.reduce((acc, item) => acc + item.product.price * item.qty, 0), // 금액 계산
+        value: 500, // 금액 계산
     };
 
     const orderName =
