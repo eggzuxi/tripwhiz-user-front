@@ -1,11 +1,8 @@
-import {ReactElement} from "react";
-import {cartStore} from "../../store/CartStore.ts";
-import {useNavigate} from "react-router-dom";
-
-
+import { ReactElement } from "react";
+import { cartStore } from "../../store/CartStore.ts";
+import { useNavigate } from "react-router-dom";
 
 function CartComponent(): ReactElement {
-
     const cartItems = cartStore((state) => state.cartItems);
     const changeQty = cartStore((state) => state.changeQty);
     const removeFromCart = cartStore((state) => state.removeFromCart);
@@ -17,41 +14,86 @@ function CartComponent(): ReactElement {
         navigate("/payment", { state: { cartItems } });
     };
 
-    console.log(cartItems);
-
-    const listLI = cartItems.map(item => {
-
-        //아이템 객체에서 product와 qty 구조분해할당
+    const listLI = cartItems.map((item) => {
         const { product, qty } = item;
 
         return (
-            <li key={product.pno} className='flex flex-wrap border-2 gap-3'>
-                {/* 제품 이미지가 있을 경우 표시합니다. */}
-                {product.fileName && <img className='w-1/4' src={product.fileName}/>}
-                {product.pname} - {product.price} - {qty} - {product.price * qty}
-                <button onClick={() => changeQty(product.pno, 1)}> +</button>
-                <button onClick={() => changeQty(product.pno, -1)}> -</button>
-                <button onClick={() => removeFromCart(product.pno)}> Remove</button>
+            <li
+                key={product.pno}
+                className="flex items-center gap-4 p-4 bg-white shadow-md rounded-lg mb-4"
+            >
+                {/* 제품 이미지 */}
+                {product.fileName && (
+                    <img
+                        className="w-16 h-16 object-cover rounded-md border border-gray-200"
+                        src={product.fileName}
+                        alt={product.pname}
+                    />
+                )}
+
+                {/* 제품 정보 */}
+                <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-700">
+                        {product.pname}
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                        가격: {(product.price * qty).toLocaleString()}원
+                    </p>
+                </div>
+
+                {/* 수량 변경 버튼 */}
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => changeQty(product.pno, -1)}
+                        className="px-2 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md"
+                    >
+                        -
+                    </button>
+                    <span className="text-gray-700 font-medium">{qty}</span>
+                    <button
+                        onClick={() => changeQty(product.pno, 1)}
+                        className="px-2 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md"
+                    >
+                        +
+                    </button>
+                </div>
+
+                {/* 제거 버튼 */}
+                <button
+                    onClick={() => removeFromCart(product.pno)}
+                    className="px-3 py-1 text-red-500 hover:text-red-700"
+                >
+                    Remove
+                </button>
             </li>
-        )
-    })
+        );
+    });
 
     return (
-        <div>
-            <h2>Cart Component</h2>
-            <ul>
-                {listLI}
-            </ul>
+        <div className="p-6 bg-gray-50 min-h-screen">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Cart Component</h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-6">장바구니</h2>
+            <ul className="space-y-4">{listLI}</ul>
+
             {cartItems.length > 0 && (
-                <div className="mt-4">
-                    <button onClick={clearCart} className="bg-red-500 text-white px-4 py-2 mr-2">
-                        Clear Cart
+                <div className="mt-6 flex justify-center gap-4">
+                    <button
+                        onClick={() => navigate("/product/list")}
+                        className="px-6 py-2 bg-yellow-500 text-white rounded-md shadow hover:bg-yellow-600"
+                    >
+                        목록
                     </button>
-                    <button onClick={() => navigate('/product/list')} className="bg-yellow-500 text-white px-4 py-2">
-                        List
+                    <button
+                        onClick={handleCheckout}
+                        className="px-6 py-2 bg-green-600 text-white rounded-md shadow hover:bg-green-700"
+                    >
+                        결제
                     </button>
-                    <button onClick={handleCheckout} className="bg-blue-500 text-white px-4 py-2 ml-4">
-                        Check Out
+                    <button
+                        onClick={clearCart}
+                        className="px-6 py-2 bg-gray-600 text-white rounded-md shadow hover:bg-gray-700"
+                    >
+                        비우기
                     </button>
                 </div>
             )}

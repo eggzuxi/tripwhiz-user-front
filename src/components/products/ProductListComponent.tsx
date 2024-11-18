@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cartStore } from "../../store/CartStore.ts";
 
 const ProductListComponent = () => {
+
     const navigate = useNavigate();
     const [products, setProducts] = useState<IProduct[]>([]);
     const [page, setPage] = useState(1);

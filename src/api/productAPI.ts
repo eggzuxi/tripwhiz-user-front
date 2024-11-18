@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const host ='http://10.10.10.73:8080/api/product';
-// const host ='http://localhost:8080/api/product';
+// const host ='http://10.10.10.73:8080/api/product';
+const host ='http://localhost:8080/api/product';
 
 
 // const header = {
@@ -14,7 +14,7 @@ export const getList = async (page:number) => {
 
     const res = await axios.get(`${host}/list?page=${page}`)
 
-    console.log(res.data)
+    console.log(res.data.dtoList)
 
     return res.data.dtoList
 
@@ -23,6 +23,8 @@ export const getList = async (page:number) => {
 export const getOne = async (pno: number) => {
 
     const res = await axios.get(`${host}/read/${pno}`)
+
+    console.log(res.data)
 
     return res.data
 
