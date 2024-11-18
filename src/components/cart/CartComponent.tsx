@@ -23,10 +23,10 @@ function CartComponent(): ReactElement {
                 className="flex items-center gap-4 p-4 bg-white shadow-md rounded-lg mb-4"
             >
                 {/* 제품 이미지 */}
-                {product.fileName && (
+                {product.uploadFileNames && (
                     <img
                         className="w-16 h-16 object-cover rounded-md border border-gray-200"
-                        src={product.fileName}
+                        src={"http://localhost/s_9e0ded36-caf7-423c-b6c1-48b2bbdeee6d_M5.png"}
                         alt={product.pname}
                     />
                 )}
