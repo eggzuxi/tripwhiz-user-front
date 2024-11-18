@@ -12,6 +12,7 @@ const auth_code_path = `https://kauth.kakao.com/oauth/authorize`
 const access_token_url = 'https://kauth.kakao.com/oauth/token'
 
 // 백엔드 서버의 API URL. 액세스 토큰을 사용하여 사용자 정보를 요청할 때 사용
+
 // const host = 'http://10.10.10.73:8080/api/member/kakao'
 const host = 'http://localhost:8081/api/member/kakao'
 
