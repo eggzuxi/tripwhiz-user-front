@@ -1,18 +1,90 @@
 #root {
-  width: 100%;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%; /* 레이아웃 전체에 맞추기 */
+  margin: 0; /* 중앙 정렬 제거 */
+  padding: 0; /* 여백 제거 */
+  text-align: center; /* 텍스트 정렬 유지 */
 }
+
+#Map {
+  width: 100%; /* 가로를 전체 화면으로 */
+  height: 80vh; /* 세로를 화면 높이에 맞추기 */
+}
+/* 전체 레이아웃 */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* 헤더 스타일 */
+.header {
+  background-color: #f8f8f8;
+  padding: 16px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 지도 컨테이너 */
+.map-container {
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 200px); /* 헤더와 리스트 제외 높이 */
+}
+
+/* 매장 리스트 */
+.store-list {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  padding: 16px;
+}
+
+.store-item {
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+.store-item h4 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.store-item p {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.store-item button {
+  padding: 8px 12px;
+  margin-top: 8px;
+  border: none;
+  background-color: #ffae00;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.store-item button:hover {
+  background-color: #e69600;
+}
+
+
+
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -39,11 +111,94 @@
 .read-the-docs {
   color: #888;
 }
+
 .nlux-comp-composer {
   display: none !important;
 }
+
 .nlux-composer-container {
   display: none !important;
 }
 
+/*so*/
+/*.container {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  height: 100vh;*/
+/*  font-family: Arial, sans-serif;*/
+/*}*/
 
+/*.header {*/
+/*  background-color: #f8f8f8;*/
+/*  padding: 16px;*/
+/*  text-align: center;*/
+/*  font-size: 1.2rem;*/
+/*  font-weight: bold;*/
+/*  border-bottom: 1px solid #ddd;*/
+/*}*/
+
+/*.search-bar {*/
+/*  display: flex;*/
+/*  padding: 16px;*/
+/*  gap: 8px;*/
+/*  background-color: #fff;*/
+/*  border-bottom: 1px solid #ddd;*/
+/*}*/
+
+/*.dropdown {*/
+/*  flex: 1;*/
+/*  padding: 8px;*/
+/*  border: 1px solid #ddd;*/
+/*  border-radius: 4px;*/
+/*}*/
+
+/*.search-input {*/
+/*  flex: 2;*/
+/*  padding: 8px;*/
+/*  border: 1px solid #ddd;*/
+/*  border-radius: 4px;*/
+/*}*/
+
+/*.map-container {*/
+/*  flex: 2;*/
+/*  width: 100%;*/
+/*  height: 50%;*/
+/*  border-bottom: 1px solid #ddd;*/
+/*}*/
+
+/*.store-list {*/
+/*  flex: 1;*/
+/*  overflow-y: auto;*/
+/*  background-color: #f9f9f9;*/
+/*  padding: 16px;*/
+/*}*/
+
+/*.store-item {*/
+/*  padding: 16px;*/
+/*  border-bottom: 1px solid #ddd;*/
+/*}*/
+
+/*.store-item h4 {*/
+/*  margin: 0 0 8px;*/
+/*  font-size: 1.1rem;*/
+/*}*/
+
+/*.store-item p {*/
+/*  margin: 0 0 8px;*/
+/*  font-size: 0.9rem;*/
+/*  color: #555;*/
+/*}*/
+
+/*.store-item button {*/
+/*  padding: 8px 12px;*/
+/*  margin-right: 8px;*/
+/*  border: none;*/
+/*  background-color: #ffae00;*/
+/*  color: #fff;*/
+/*  border-radius: 4px;*/
+/*  cursor: pointer;*/
+/*}*/
+
+/*.store-item button:hover {*/
+/*  background-color: #e69600;*/
+/*}*/
