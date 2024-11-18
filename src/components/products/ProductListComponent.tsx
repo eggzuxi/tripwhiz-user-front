@@ -84,6 +84,7 @@ const ProductListComponent = () => {
         if (selectedProduct) {
             // 선택한 상품과 수량을 장바구니에 추가
             for (let i = 0; i < quantity; i++) {
+                // @ts-ignore
                 addToCart(selectedProduct, 1); // 수량만큼 반복하여 추가
             }
             closePanel();
