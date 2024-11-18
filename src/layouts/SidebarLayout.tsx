@@ -1,71 +1,63 @@
-import {useEffect, useMemo, useState} from 'react';
+import { useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/AuthStore.ts";
 
 interface SidebarProps {
     onClose: () => void;
 }
 
+interface MenuItem {
+    name: string;
+    path: string;
+}
 
 function SidebarLayout({ onClose }: SidebarProps) {
-    const [activeMenu, setActiveMenu] = useState<string | null>(null);
-
-    const {name , email, accessToken} =
-        useAuthStore((state) => state)
+    const { name, email, accessToken } = useAuthStore((state) => state);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("1--------------------")
-        console.log(name)
+        console.log("1--------------------");
+        console.log(name);
     }, [name, email, accessToken]);
 
-    //상태 변경을 최적화하여 불필요한 렌더링을 방지
-    const toggleDropdown = (menu: string) => {
-        setActiveMenu((prevMenu) => (prevMenu === menu ? null : menu)); // 이전 상태를 참조하여 변경
-    }
-
-
-    const menuItems = useMemo(
+    const menuItems: MenuItem[] = useMemo(
         () => [
-            { name: 'Pickup', subItems: ['하위 메뉴 1', '하위 메뉴 2', '하위 메뉴 3'] },
-            { name: '메뉴 2', subItems: ['하위 메뉴 1', '하위 메뉴 2', '하위 메뉴 3'] },
-            { name: '메뉴 3', subItems: ['하위 메뉴 1', '하위 메뉴 2', '하위 메뉴 3'] },
-            { name: '메뉴 4', subItems: ['하위 메뉴 1', '하위 메뉴 2', '하위 메뉴 3'] },
-            { name: '메뉴 5', subItems: ['하위 메뉴 1', '하위 메뉴 2', '하위 메뉴 3'] },
+            { name: '서비스', path: '/side/service' },
+            { name: '마이페이지', path: '/side/mypage' },
+            { name: '공지사항', path: '/side/notice' },
+            { name: '고객센터', path: '/side/customerservice' },
         ],
         []
     );
 
+    const handleMenuClick = (path: string) => {
+        navigate(path);
+        onClose(); // 사이드바 닫기
+    };
+
     return (
         <div className="fixed top-0 right-0 w-[250px] h-full bg-white shadow-lg flex flex-col p-4 z-50">
-            {/* 환영 메시지 */}
-            <div className="text-gray-800 font-semibold mb-4 flex items-center justify-between">
+            <div className="text-gray-800 font-semibold mb-6 flex items-center justify-between">
                 {name ? `${name}님 환영합니다` : '환영합니다'}
                 <FontAwesomeIcon icon={faUser} className="text-gray-700" />
             </div>
 
-            {/* 닫기 버튼 */}
-            <button className="self-end mb-4 text-gray-500" onClick={onClose}>X</button>
+            <button className="self-end mb-6 text-gray-500" onClick={onClose}>
+                X
+            </button>
 
-            <ul className="space-y-2 list-none p-0 text-left">
+            <ul className="space-y-6 list-none p-0 text-left">
                 {menuItems.map((menu) => (
-                    <li key={menu.name} className="text-gray-800 cursor-pointer">
-                        <div onClick={() => toggleDropdown(menu.name)} className="flex items-center justify-between">
+                    <li
+                        key={menu.name}
+                        className="text-gray-800 cursor-pointer"
+                        onClick={() => handleMenuClick(menu.path)}
+                    >
+                        <div className="flex items-center">
                             {menu.name}
-                            <FontAwesomeIcon
-                                icon={faAngleDown}
-                                className={`transition-transform text-[#FFD400] ${
-                                    activeMenu === menu.name ? 'rotate-180' : ''
-                                }`}
-                            />
                         </div>
-                        {activeMenu === menu.name && (
-                            <ul className="space-y-1 list-none p-0">
-                                {menu.subItems.map((subItem, index) => (
-                                    <li key={index} className="text-gray-600 pl-0">{subItem}</li>
-                                ))}
-                            </ul>
-                        )}
                     </li>
                 ))}
             </ul>
