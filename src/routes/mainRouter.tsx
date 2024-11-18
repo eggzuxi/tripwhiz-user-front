@@ -6,6 +6,7 @@ import cartRouter from "./cartRouter.tsx";
 import paymentRouter from "./paymentRouter.tsx";
 import GoogleMapsPage from "../pages/map/GoogleMapsPage.tsx";
 import ThemePage from "../pages/theme/ThemePage.tsx";
+import sidebarRouter from "./sidebarRouter.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage"))
 const LoadingPage = lazy(() => import("../pages/LoadingPage"))
@@ -34,7 +35,8 @@ const mainRouter = createBrowserRouter([
     productRouter,
     memberRouter,
     cartRouter,
-    paymentRouter
+    paymentRouter,
+    sidebarRouter
 
 ])
 
