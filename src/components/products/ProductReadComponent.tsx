@@ -1,95 +1,108 @@
-import {useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {IProduct} from "../../types/product.ts";
-import {getOne} from "../../api/productAPI.ts";
-import {cartStore} from "../../store/CartStore.ts";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { IProduct } from "../../types/product.ts";
+import { getOne } from "../../api/productAPI.ts";
+import { cartStore } from "../../store/CartStore.ts";
 
-
-const initialState:IProduct = {
-    cno: 0,
+const initialState: IProduct = {
     pno: 0,
-    cname:'',
     pname: '',
     pdesc: '',
     price: 0,
+    categoryCno: null,
+    subCategoryScno: null,
+    themeTno: null,
     fileName: '',
-    category: '',
-    delflag: false
-}
+    delflag: false,
+};
 
 function ProductReadComponent() {
-
-    const navigate = useNavigate()
-
-    const {pno} = useParams()
+    const navigate = useNavigate();
+    const { pno } = useParams();
 
     const addToCart = cartStore((state) => state.addToCart);
 
-    const moveToCart = () => {
-        addToCart(product)
-        console.log('Added to cart:', product);
-        navigate({
-            pathname: `/cart`,
-        })
-    }
+    const [product, setProduct] = useState<IProduct>(initialState);
 
-    const [product, setProduct] = useState(initialState)
+    const moveToCart = () => {
+        addToCart(product);
+        console.log("Added to cart:", product);
+        navigate("/cart");
+    };
 
     useEffect(() => {
-        const pnoNum = Number(pno)
-        getOne(pnoNum).then(result => {
-            setProduct(result)
-        })
-    },[pno])
+        if (!pno) {
+            console.warn("Invalid product number");
+            return;
+        }
+
+        const pnoNum = Number(pno);
+        if (isNaN(pnoNum)) {
+            console.error("Invalid product number:", pno);
+            return;
+        }
+
+        getOne(pnoNum)
+            .then((result) => {
+                setProduct(result);
+            })
+            .catch((err) => {
+                console.error("Failed to fetch product:", err);
+            });
+    }, [pno]);
 
     return (
-        <div className='w-full h-full flex flex-col space-y-4 w-96 mx-auto'>
+        <div className="flex justify-center items-center min-h-screen bg-gray-100">
+            <div className="bg-white rounded-lg shadow-xl w-[600px] p-8">
+                {/* 이미지 */}
+                {product.fileName && (
+                    <div className="w-full flex justify-center mb-6">
+                        <img
+                            src={`http://localhost:8081${product.fileName}`}
+                            alt={product.pname}
+                            className="w-80 h-80 object-cover rounded-lg"
+                        />
+                    </div>
+                )}
 
-            <span>{product.category}</span>
+                {/* 상품 이름 */}
+                <h2 className="text-4xl font-extrabold text-gray-800 mb-4 text-center">{product.pname}</h2>
 
-            <label className="text-sm font-semibold text-gray-700">PNO</label>
-            <input
-                type="text"
-                name="pno"
-                className="border border-gray-300 rounded-lg p-3 focus:outline-none transition duration-300 cursor-default"
-                value={product.pno}
-                readOnly={true}
-            />
+                {/* 상품 설명 */}
+                <p className="text-lg text-gray-600 mb-6 text-center">{product.pdesc}</p>
 
-            <label className="text-sm font-semibold text-gray-700">Product</label>
-            <input
-                type="text"
-                name="product"
-                className="border border-gray-300 rounded-lg p-3 focus:outline-none transition duration-300 cursor-default"
-                value={product.pname}
-                readOnly={true}
-            />
-            <label className="text-sm font-semibold text-gray-700">Description</label>
-            <input
-                type="text"
-                name="pdesc"
-                className="border border-gray-300 rounded-lg p-3 focus:outline-none transition duration-300 cursor-default"
-                value={product.pdesc}
-                readOnly={true}
-            />
-            <label className="text-sm font-semibold text-gray-700">Price</label>
-            <input
-                type="text"
-                name="dueDate"
-                className="border border-gray-300 rounded-lg p-3 focus:outline-none transition duration-300 cursor-default"
-                value={product.price}
-                readOnly={true}
-            />
-            <div className='flex justify-center gap-2'>
-                <button type="button"
-                        className="bg-amber-300 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-amber-400 focus:outline-none transition duration-300"
+                {/* 가격 */}
+                <div className="text-center mb-6">
+                    <span className="text-2xl font-semibold text-amber-500">
+                        {product.price.toLocaleString()} 원
+                    </span>
+                </div>
+
+                {/* 카테고리 정보 */}
+                {product.categoryCno && (
+                    <div className="text-center mb-6">
+                        <span className="text-lg text-gray-500">Category ID: {product.categoryCno}</span>
+                    </div>
+                )}
+
+                {/* 버튼 */}
+                <div className="flex justify-center gap-6">
+                    <button
+                        type="button"
+                        className="bg-amber-400 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-amber-500 focus:outline-none transition duration-300"
                         onClick={moveToCart}
-                >
-                    CART
-                </button>
-
+                    >
+                        Add to Cart
+                    </button>
+                    <button
+                        type="button"
+                        className="bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-400 focus:outline-none transition duration-300"
+                        onClick={() => navigate("/product/list")}
+                    >
+                        Back
+                    </button>
+                </div>
             </div>
-
         </div>
     );
 }
