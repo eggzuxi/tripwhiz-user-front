@@ -14,7 +14,7 @@ function CartComponent(): ReactElement {
 
     const handleCheckout = () => {
         // 결제 페이지로 이동하면서 cartItems를 state로 전달
-        navigate("/payment", { state: { cartItems } });
+        navigate("/maps");
     };
 
     console.log(cartItems);
