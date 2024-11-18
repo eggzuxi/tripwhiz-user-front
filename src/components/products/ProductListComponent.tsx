@@ -6,9 +6,23 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cartStore } from "../../store/CartStore.ts";
 
+const initialState: IProduct[] = [
+    {
+        pno: 0, // 상품 번호 초기값
+        pname: "", // 상품 이름 초기값
+        price: 0, // 상품 가격 초기값
+        pdesc: "", // 상품 설명 초기값
+        categoryCno: 0, // 상위 카테고리 초기값
+        subCategoryScno: 0, // 하위 카테고리 초기값
+        themeTno: 0, // 테마 카테고리 초기값
+        delflag: false, // 삭제 플래그 초기값
+        uploadFileNames: [] // 파일 배열 초기값
+    }
+];
+
 const ProductListComponent = () => {
     const navigate = useNavigate();
-    const [products, setProducts] = useState<IProduct[]>([]);
+    const [products, setProducts] = useState<IProduct[]>([...initialState]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -84,6 +98,7 @@ const ProductListComponent = () => {
         if (selectedProduct) {
             // 선택한 상품과 수량을 장바구니에 추가
             for (let i = 0; i < quantity; i++) {
+                // @ts-ignore
                 addToCart(selectedProduct, 1); // 수량만큼 반복하여 추가
             }
             closePanel();
@@ -106,13 +121,11 @@ const ProductListComponent = () => {
                                 onClick={() => moveToDetails(product.pno)}
                                 ref={index === products.length - 1 ? lastProductRef : null}
                             >
-                                {product.fileName && (
                                     <img
-                                        src={`http://localhost/uploads/${product.fileName}`}
+                                        src={`http://10.10.10.169/s_9e0ded36-caf7-423c-b6c1-48b2bbdeee6d_M5.png`}
                                         alt={product.pname}
                                         className="w-full h-40 object-cover mb-3"
                                     />
-                                )}
                                 <h3 className="text-lg font-semibold">{product.pname}</h3>
                                 <p className="text-gray-700">{product.pdesc}</p>
                                 <p className="text-gray-700">가격: {product.price}원</p>

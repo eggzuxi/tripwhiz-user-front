@@ -10,7 +10,6 @@ function CartPage() {
     return (
         <div>
             <BaseLayout>
-                cart page
                 <CartComponent/>
             </BaseLayout>
         </div>
