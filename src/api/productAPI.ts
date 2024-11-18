@@ -3,7 +3,6 @@ import axios from "axios";
 const host ='http://localhost:8081/api/product';
 // const host ='http://localhost:8080/api/product';
 
-
 // const header = {
 //     headers: {
 //         'Content-Type': 'multipart/form-data', // 파일 전송 형식 지정

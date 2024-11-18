@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const host = 'http://10.10.10.73:8080/api/member/google'
+const host = 'http://10.10.10.73:8081/api/member/google'
 
 
 // 액세스 토큰을 사용해 사용자 정보를 가져오는 함수
