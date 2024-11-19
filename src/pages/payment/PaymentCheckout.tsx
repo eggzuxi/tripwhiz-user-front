@@ -90,38 +90,53 @@ function PaymentCheckout() {
     }
 
     return (
-        <div className="wrapper">
-            <div className="box_section">
-                <h1>일반 결제</h1>
-                <div id="payment-method" style={{ display: "flex" }}>
-                    <button id="CARD" className={`button2 ${selectedPaymentMethod === "CARD" ? "active" : ""}`} onClick={() => selectPaymentMethod("CARD")}>
-                        카드
-                    </button>
-                    <button id="TRANSFER" className={`button2 ${selectedPaymentMethod === "TRANSFER" ? "active" : ""}`} onClick={() => selectPaymentMethod("TRANSFER")}>
-                        계좌이체
-                    </button>
-                    <button id="VIRTUAL_ACCOUNT" className={`button2 ${selectedPaymentMethod === "VIRTUAL_ACCOUNT" ? "active" : ""}`} onClick={() => selectPaymentMethod("VIRTUAL_ACCOUNT")}>
-                        가상계좌
-                    </button>
-                    <button id="MOBILE_PHONE" className={`button2 ${selectedPaymentMethod === "MOBILE_PHONE" ? "active" : ""}`} onClick={() => selectPaymentMethod("MOBILE_PHONE")}>
-                        휴대폰
-                    </button>
-                    <button
-                        id="CULTURE_GIFT_CERTIFICATE"
-                        className={`button2 ${selectedPaymentMethod === "CULTURE_GIFT_CERTIFICATE" ? "active" : ""}`}
-                        onClick={() => selectPaymentMethod("CULTURE_GIFT_CERTIFICATE")}
-                    >
-                        문화상품권
-                    </button>
-                    <button id="FOREIGN_EASY_PAY" className={`button2 ${selectedPaymentMethod === "FOREIGN_EASY_PAY" ? "active" : ""}`} onClick={() => selectPaymentMethod("FOREIGN_EASY_PAY")}>
-                        해외간편결제
-                    </button>
-                </div>
-                <button className="button" onClick={() => requestPayment()}>
-                    결제하기
-                </button>
-            </div>
+        <div className="flex flex-col items-center mb-6 w-full p-20 bg-white rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold mb-6">일반 결제</h2>  {/* mb-6 추가하여 간격 확장 */}
+            <button
+                className={`button2 ${selectedPaymentMethod === "CARD" ? "active" : ""}`}
+                onClick={() => selectPaymentMethod("CARD")}
+            >
+                카드
+            </button>
+            <button
+                className={`button2 ${selectedPaymentMethod === "TRANSFER" ? "active" : ""}`}
+                onClick={() => selectPaymentMethod("TRANSFER")}
+            >
+                계좌이체
+            </button>
+            <button
+                className={`button2 ${selectedPaymentMethod === "VIRTUAL_ACCOUNT" ? "active" : ""}`}
+                onClick={() => selectPaymentMethod("VIRTUAL_ACCOUNT")}
+            >
+                가상계좌
+            </button>
+            <button
+                className={`button2 ${selectedPaymentMethod === "MOBILE_PHONE" ? "active" : ""}`}
+                onClick={() => selectPaymentMethod("MOBILE_PHONE")}
+            >
+                휴대폰
+            </button>
+            <button
+                className={`button2 ${selectedPaymentMethod === "CULTURE_GIFT_CERTIFICATE" ? "active" : ""}`}
+                onClick={() => selectPaymentMethod("CULTURE_GIFT_CERTIFICATE")}
+            >
+                문화상품권
+            </button>
+            <button
+                className={`button2 ${selectedPaymentMethod === "FOREIGN_EASY_PAY" ? "active" : ""}`}
+                onClick={() => selectPaymentMethod("FOREIGN_EASY_PAY")}
+            >
+                해외간편결제
+            </button>
+            <button
+                className="w-full py-2 bg-blue-600 text-white text-md font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 mt-6"
+                onClick={() => requestPayment()}
+            >
+                결제하기
+            </button>
         </div>
+
+
     );
 }
 
