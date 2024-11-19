@@ -4,9 +4,11 @@ import BaseLayout from "../../layouts/BaseLayout.tsx";
 function CartIndex() {
     return (
         <div>
-            <BaseLayout></BaseLayout>
-            Cart Index
-            <Outlet></Outlet>
+            <BaseLayout>
+                Cart Index
+                <Outlet></Outlet>
+            </BaseLayout>
+
         </div>
     );
 }
