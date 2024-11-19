@@ -1,21 +1,32 @@
 
 import {loadTossPayments, TossPaymentsPayment} from "@tosspayments/tosspayments-sdk";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";  // useLocation을 추가
+import {cartStore} from "../../store/CartStore.ts";  // useLocation을 추가
 
 function PaymentCheckout() {
 
     const clientKey = "test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq";
     const customerKey = generateRandomString();
-    const location = useLocation();  // useLocation 사용하여 전달된 state 받기
-    const cartItems = location.state?.cartItems || [];  // 전달된 장바구니 정보
+    const cartItems = cartStore((state) => state.cartItems);
+
+    console.log("Received cart items:", cartItems);
 
     const amount = {
         currency: "KRW",
         value: cartItems.reduce((acc: number, item: { product: { price: number }; qty: number }) => acc + item.product.price * item.qty, 0),
     };
 
-    const orderName = cartItems.map((item: { product: { pname: string }; qty: number }) => `${item.product.pname} (${item.qty}개)`).join(", ");
+    // const orderName = cartItems.map((item: { product: { pname: string }; qty: number }) => `${item.product.pname} (${item.qty}개)`).join(", ");
+    const orderName =
+        cartItems.length > 0
+            ? cartItems
+                .map(
+                    (item: { product: { pname: string }; qty: number }) =>
+                        `${item.product.pname} (${item.qty}개)`
+                )
+                .join(", ")
+            : "기본 상품명"; // 비어 있을 경우 기본 상품명을 설정
+
 
     useEffect(() => {
         async function fetchPayment() {
@@ -45,7 +56,7 @@ function PaymentCheckout() {
 
     function selectPaymentMethod(method: string) {
 
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + method)
+        console.log("선택된 결제 방법" + method)
         setSelectedPaymentMethod(method);
     }
 
