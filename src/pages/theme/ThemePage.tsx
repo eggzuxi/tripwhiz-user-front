@@ -62,9 +62,9 @@ function ThemePage(): JSX.Element {
             {/* 테마 선택 건너뛰기 버튼 */}
             <button
                 onClick={handleSkipClick}
-                className="fixed bottom-4 right-4 bg-[#87CEEB] hover:bg-[#FFD400] text-white font-semibold rounded-full px-6 py-3 shadow-lg transition-colors duration-300"
+                className="fixed bottom-4 right-4 bg-gray-400 text-white font-semibold rounded-full px-4 py-2 shadow-lg transition-colors duration-300 hover:bg-gray-500"
             >
-                건너뛰기
+                Skip >
             </button>
         </div>
     );
