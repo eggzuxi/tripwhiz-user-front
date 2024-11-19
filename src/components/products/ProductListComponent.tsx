@@ -122,7 +122,7 @@ const ProductListComponent = () => {
                                 ref={index === products.length - 1 ? lastProductRef : null}
                             >
                                     <img
-                                        src={`http://10.10.10.169/s_9e0ded36-caf7-423c-b6c1-48b2bbdeee6d_M5.png`}
+                                        src={`http://10.10.10.169/859dd622-b246-47f1-aa7d-859f89c475ce_c6_m4_01.jpg`}
                                         alt={product.pname}
                                         className="w-full h-40 object-cover mb-3"
                                     />

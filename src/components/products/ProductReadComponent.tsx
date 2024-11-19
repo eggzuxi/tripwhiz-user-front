@@ -55,16 +55,13 @@ function ProductReadComponent() {
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white rounded-lg shadow-xl w-[600px] p-8">
                 {/* 이미지 */}
-                {product.uploadFileNames && (
                     <div className="w-full flex justify-center mb-6">
                         <img
-                            src={`http://localhost:8081${product.uploadFileNames}`}
+                            src={`http://10.10.10.169/a6189c02-9628-444d-b86d-48d6753e3d17_c6_m4_02.jpg`}
                             alt={product.pname}
                             className="w-80 h-80 object-cover rounded-lg"
                         />
                     </div>
-                )}
-
                 {/* 상품 이름 */}
                 <h2 className="text-4xl font-extrabold text-gray-800 mb-4 text-center">{product.pname}</h2>
 
