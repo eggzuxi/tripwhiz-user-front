@@ -13,11 +13,11 @@ const paymentRouter = {
     children: [
 
         {
-            path: "/payment/success",
+            path: "success",
             element: <Suspense fallback={Loading}><Success/></Suspense>  // 결제 성공 시 표시할 페이지
         },
         {
-            path: "/payment/fail",
+            path: "fail",
             element: <Suspense fallback={Loading}><Fail/></Suspense>  // 결제 실패 시 표시할 페이지
         },
 

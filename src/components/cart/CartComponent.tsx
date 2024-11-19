@@ -9,8 +9,17 @@ function CartComponent(): ReactElement {
     const clearCart = cartStore((state) => state.clearCart);
     const navigate = useNavigate();
 
+    // const handleCheckout = () => {
+    //     // 결제 페이지로 이동하면서 cartItems를 state로 전달
+    //     navigate("/maps", { state: { cartItems } });
+    // };
     const handleCheckout = () => {
-        // 결제 페이지로 이동하면서 cartItems를 state로 전달
+        if (cartItems.length === 0) {
+            console.warn("Cart is empty. Cannot proceed to checkout.");
+            return;
+        }
+        console.log("Navigating to checkout with cart items:", cartItems);
+        cartStore.setState({ cartItems });
         navigate("/maps");
     };
 
@@ -23,7 +32,7 @@ function CartComponent(): ReactElement {
                 className="flex items-center gap-4 p-4 bg-white shadow-md rounded-lg mb-4"
             >
                 {/* 제품 이미지 */}
-                {product.uploadFileNames && (
+                {product.uploadFileNames  && (
                     <img
                         className="w-16 h-16 object-cover rounded-md border border-gray-200"
                         src={"http://localhost/s_9e0ded36-caf7-423c-b6c1-48b2bbdeee6d_M5.png"}
