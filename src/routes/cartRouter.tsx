@@ -14,12 +14,12 @@ const cartRouter = {
     children: [
 
         {
-            path: "list/:bno",
+            path: "list",
             element: <Suspense fallback={Loading}><Cart/></Suspense>
         },
         {
             path: "",
-            element: <Navigate to='list/2' replace={true}></Navigate>
+            element: <Navigate to='list' replace={true}></Navigate>
         }
 
     ]
