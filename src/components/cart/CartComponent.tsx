@@ -79,8 +79,8 @@ function CartComponent(): ReactElement {
     });
 
     return (
-        <div className="p-6 bg-gray-50 min-h-screen">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Cart Component</h2>
+        <div className="p-6 bg-gray-50 min-h-screen pt-20">
+
             <h2 className="text-xl font-bold text-gray-800 mb-6">장바구니</h2>
             <ul className="space-y-4">{listLI}</ul>
 
