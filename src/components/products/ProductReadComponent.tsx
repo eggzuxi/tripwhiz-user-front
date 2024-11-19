@@ -16,6 +16,8 @@ const initialState: IProduct = {
     uploadFileNames: [] // 파일 배열 초기값
 };
 
+const imageUrl = 'http://10.10.10.169/ddb4aafb-6645-480c-b634-35e7b8046ef9_c2_m1_01.jpg';
+
 function ProductReadComponent() {
     const navigate = useNavigate();
     const { pno } = useParams();
@@ -57,7 +59,7 @@ function ProductReadComponent() {
                 {/* 이미지 */}
                     <div className="w-full flex justify-center mb-6">
                         <img
-                            src={`http://10.10.10.169/a6189c02-9628-444d-b86d-48d6753e3d17_c6_m4_02.jpg`}
+                            src={imageUrl}
                             alt={product.pname}
                             className="w-80 h-80 object-cover rounded-lg"
                         />
