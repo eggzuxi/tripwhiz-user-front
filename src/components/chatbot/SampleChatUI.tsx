@@ -67,7 +67,7 @@ const SampleChatUI: React.FC = () => {
                         style={{
                             padding: '10px 15px',
                             backgroundColor: '#FFEB8E',
-                            color: 'white',
+                            color: 'gray',
                             fontSize: '18px',
                             fontWeight: 'bold',
                             display: 'flex',

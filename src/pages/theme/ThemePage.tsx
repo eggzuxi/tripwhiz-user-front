@@ -26,9 +26,9 @@ function ThemePage(): JSX.Element {
 
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-6 px-4 pt-28">
+        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-6 px-4 pt-8">
             {/* 페이지 제목 */}
-            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
+            <h2 className="text-2xl sm:text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
                 이번 여행의 테마는 무엇인가요?
             </h2>
             <p className="text-gray-700 text-base sm:text-lg text-center mb-8">
@@ -64,7 +64,7 @@ function ThemePage(): JSX.Element {
                 onClick={handleSkipClick}
                 className="fixed bottom-4 right-4 bg-gray-400 text-white font-semibold rounded-full px-4 py-2 shadow-lg transition-colors duration-300 hover:bg-gray-500"
             >
-                Skip >
+                Skip &#62;
             </button>
         </div>
     );

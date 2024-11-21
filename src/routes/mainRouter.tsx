@@ -18,7 +18,7 @@ export const Loading = <LoadingPage/>
 const mainRouter = createBrowserRouter([
     {
         path: "/",
-        element: <Suspense fallback={Loading}><MainPage/></Suspense> ,
+        element: <Suspense fallback={Loading}><MainPage/></Suspense>
     },
     {
         path: "/pickup",

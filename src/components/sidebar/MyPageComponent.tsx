@@ -7,21 +7,21 @@ function MyPageComponent() {
 
     return (
         <div className="w-full h-full bg-white p-4"> {/* 전체 배경 흰색 */}
-            {/* 상단 헤더 */}
-            <div className="text-center py-6">
+            {/* 내 정보 섹션 (상단 헤더) */}
+            <div className="text-center py-6 bg-purple-50 rounded-lg shadow-md mb-6 pt-96"> {/* 상단 스타일 강조 */}
                 <div className="text-xl font-semibold text-gray-800 mb-2">
-                    {name ? `${name}님 환영합니다` : "환영합니다"}
+                    {name ? `${name}님 환영합니다` : "회원님 환영합니다"}
                 </div>
                 <div className="text-sm text-gray-600">{email || "example@email.com"}</div>
-                <button className="mt-4 px-4 py-2 bg-gray-200 text-sm font-medium text-gray-700 rounded-full">
-                    내 정보
+                <button className="mt-4 px-4 py-2 bg-purple-500 text-white text-sm font-medium rounded-full">
+                    내 정보 보기
                 </button>
             </div>
 
             {/* 장바구니 섹션 */}
             <div className="py-6">
                 <h2 className="text-lg font-medium text-gray-700 mb-4">장바구니</h2>
-                <ul className="grid grid-cols-3 gap-4 text-center">
+                <ul className="grid grid-cols-2 gap-4 text-center">
                     <li className="text-gray-600">예약픽업</li>
                     <li className="text-gray-600">바로배달</li>
                     <li className="text-gray-600">오늘픽업</li>
