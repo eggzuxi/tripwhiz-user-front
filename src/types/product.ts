@@ -1,6 +1,6 @@
 export interface IProductImage {
-    uploadFileNames: string; // 기존 파일명을 나타내는 문자열 타입
     ord: number; // 순서
+    uploadFileNames: string; // 기존 파일명을 나타내는 문자열 타입
 }
 
 export interface IProduct {
