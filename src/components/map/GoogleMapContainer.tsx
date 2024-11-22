@@ -19,7 +19,7 @@ const GoogleMapContainer: React.FC = () => {
         <Wrapper
             apiKey={import.meta.env.VITE_GOOGLE_MAP_KEY}  // 환경 변수에서 API 키를 가져옴
             render={render}
-            libraries={['marker']}
+            libraries={['places']}
         />
     );
 }
