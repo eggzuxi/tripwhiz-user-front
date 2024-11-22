@@ -5,15 +5,15 @@ import { getOne } from "../../api/productAPI.ts";
 import { cartStore } from "../../store/CartStore.ts";
 
 const initialState: IProduct = {
-    pno: 0, // 상품 번호 초기값
-    pname: "", // 상품 이름 초기값
-    price: 0, // 상품 가격 초기값
-    pdesc: "", // 상품 설명 초기값
-    categoryCno: 0, // 상위 카테고리 초기값
-    subCategoryScno: 0, // 하위 카테고리 초기값
-    themeTno: 0, // 테마 카테고리 초기값
-    delflag: false, // 삭제 플래그 초기값
-    uploadFileNames: [] // 파일 배열 초기값
+    pno: 0,
+    pname: "",
+    price: 0,
+    pdesc: "",
+    categoryCno: 0,
+    subCategoryScno: 0,
+    themeTno: 0,
+    delflag: false,
+    uploadFileNames: [],
 };
 
 function ProductReadComponent() {
@@ -52,53 +52,41 @@ function ProductReadComponent() {
     }, [pno]);
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <div className="bg-white rounded-lg shadow-xl w-[600px] p-8">
-                {/* 이미지 */}
-                    <div className="w-full flex justify-center mb-6">
-                        <img
-                            src={`http://10.10.10.169/a6189c02-9628-444d-b86d-48d6753e3d17_c6_m4_02.jpg`}
-                            alt={product.pname}
-                            className="w-80 h-80 object-cover rounded-lg"
-                        />
-                    </div>
-                {/* 상품 이름 */}
-                <h2 className="text-4xl font-extrabold text-gray-800 mb-4 text-center">{product.pname}</h2>
+        <div className="flex flex-col items-center min-h-screen bg-white py-12">
+            {/* 이미지 */}
+            <img
+                src={`http://10.10.10.169/a6189c02-9628-444d-b86d-48d6753e3d17_c6_m4_02.jpg`}
+                alt={product.pname}
+                className="w-60 h-60 object-cover mb-8"
+            />
 
-                {/* 상품 설명 */}
-                <p className="text-lg text-gray-600 mb-6 text-center">{product.pdesc}</p>
+            {/* 상품 이름 */}
+            <h2 className="text-3xl font-semibold text-gray-800 mb-4">{product.pname}</h2>
 
-                {/* 가격 */}
-                <div className="text-center mb-6">
-                    <span className="text-2xl font-semibold text-amber-500">
-                        {product.price.toLocaleString()} 원
-                    </span>
-                </div>
+            {/* 상품 설명 */}
+            <p className="text-lg text-gray-600 mb-4">{product.pdesc}</p>
 
-                {/* 카테고리 정보 */}
-                {product.categoryCno && (
-                    <div className="text-center mb-6">
-                        <span className="text-lg text-gray-500">Category ID: {product.categoryCno}</span>
-                    </div>
-                )}
+            {/* 가격 */}
+            <div className="text-xl font-bold text-amber-500 mb-6">
+                {product.price.toLocaleString()} 원
+            </div>
 
-                {/* 버튼 */}
-                <div className="flex justify-center gap-6">
-                    <button
-                        type="button"
-                        className="bg-amber-400 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-amber-500 focus:outline-none transition duration-300"
-                        onClick={moveToCart}
-                    >
-                        Add to Cart
-                    </button>
-                    <button
-                        type="button"
-                        className="bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-400 focus:outline-none transition duration-300"
-                        onClick={() => navigate("/product/list")}
-                    >
-                        Back
-                    </button>
-                </div>
+            {/* 버튼 */}
+            <div className="flex gap-4">
+                <button
+                    type="button"
+                    className="bg-amber-400 text-white font-bold py-2 px-6 rounded hover:bg-amber-500 transition duration-300"
+                    onClick={moveToCart}
+                >
+                    Add to Cart
+                </button>
+                <button
+                    type="button"
+                    className="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded hover:bg-gray-400 transition duration-300"
+                    onClick={() => navigate("/product/list")}
+                >
+                    Back
+                </button>
             </div>
         </div>
     );

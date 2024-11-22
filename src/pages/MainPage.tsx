@@ -4,57 +4,45 @@ import { messaging } from "../firebase/firebaseConfig.ts";
 import {
     faBagShopping,
     faCalendarCheck,
-    faCalendarDay, faClipboardCheck, faClock,
+    faCalendarDay,
+    faClipboardCheck,
+    faClock,
     faGift,
     faTruck,
-    faWineBottle
+    faWineBottle,
 } from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function MainPage() {
-
     async function requestPermission() {
-
-        //requesting permission using Notification API
         const permission = await Notification.requestPermission();
-
         if (permission === "granted") {
-
-            alert("Notification granted!")
+            alert("Notification granted!");
             const token = await getToken(messaging, {
-
-                vapidKey: 'BL6UBkkoPxHqNi2mejjnA0YUyS7vb_v8MTop2UxYOnZknlfy76wdE-GfGTBkaoAQOqWEH8woIM9OulqEeCW_ioc',
-
+                vapidKey: "BL6UBkkoPxHqNi2mejjnA0YUyS7vb_v8MTop2UxYOnZknlfy76wdE-GfGTBkaoAQOqWEH8woIM9OulqEeCW_ioc",
             });
-
-            //We can send token to server
             console.log("Token generated : ", token);
-
         } else if (permission === "denied") {
-
-            //notifications are blocked
             alert("You denied for the notification");
-
         }
     }
 
     useEffect(() => {
-
         requestPermission();
-
     }, []);
 
     onMessage(messaging, (payload) => {
         console.log(payload);
-        alert("On Message ")
+        alert("On Message");
     });
 
     return (
-        <div>
-            {/* 메인 레이아웃 */}
-            <div className="flex-1 overflow-y-auto mt-14 pt-10">
+        <div className="bg-white h-screen flex flex-col">
+
+            {/* 내부 스크롤 가능한 콘텐츠 영역 */}
+            <div className="flex-1 overflow-y-auto">
                 {/* 메인 배너 */}
-                <div className="px-4">
+                <div className="px-4 mt-4">
                     <div className="relative bg-gray-200 rounded-lg overflow-hidden">
                         <img
                             src="https://via.placeholder.com/800x150"
@@ -74,7 +62,6 @@ function MainPage() {
                         <div className="text-sm text-gray-500 cursor-pointer">전체보기 &gt;</div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 mt-4">
-                        {/* 상품 카드 */}
                         {Array.from({ length: 6 }).map((_, index) => (
                             <div
                                 key={index}
@@ -192,7 +179,6 @@ function MainPage() {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 }
