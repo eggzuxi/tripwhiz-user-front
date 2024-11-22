@@ -112,6 +112,20 @@
   color: #888;
 }
 
+
+.custom-marker {
+  background-color: #db4455;
+  border: 2px solid #881824;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 12px;
+}
+
 /*so*/
 /*.container {*/
 /*  display: flex;*/
