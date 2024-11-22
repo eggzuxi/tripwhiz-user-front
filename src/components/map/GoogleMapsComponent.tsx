@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom"; // React Router 사용
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../App.css";
 
 // 거리 계산 함수
@@ -7,7 +7,7 @@ function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
     const toRad = (value: number) => (value * Math.PI) / 180;
     const R = 6371; // 지구 반지름 (단위: km)
     const dLat = toRad(lat2 - lat1);
-    const dLng = toRad(lng2 - lng1);
+    const dLng = toRad(lng2 - lng1); // lng1이 여기서 사용됩니다.
 
     const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -17,13 +17,14 @@ function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
     return R * c; // 거리 반환 (단위: km)
 }
 
-function GoogleMap() {
-    const ref = useRef<HTMLDivElement>(null);
-    const [googleMap, setGoogleMap] = useState<google.maps.Map | null>(null);
-    const [filteredMarkers, setFilteredMarkers] = useState<typeof markerData>([]); // 필터링된 데이터 저장
-    const navigate = useNavigate(); // React Router의 navigate 사용
 
-    // 마커 데이터
+const GoogleMap: React.FC = () => {
+    const ref = useRef<HTMLDivElement>(null);
+    const searchInputRef = useRef<HTMLInputElement>(null);
+    const [googleMap, setGoogleMap] = useState<google.maps.Map | null>(null);
+    const [filteredMarkers, setFilteredMarkers] = useState<typeof markerData>([]);
+    const navigate = useNavigate();
+
     const markerData = [
         { lat: 3.1579, lng: 101.7123, title: "페트로나스 트윈타워", content: "페트로나스 트윈타워입니다." },
         { lat: 3.1569, lng: 101.7118, title: "만다린 오리엔탈 쿠알라룸푸르", content: "만다린 오리엔탈 호텔입니다." },
@@ -53,20 +54,63 @@ function GoogleMap() {
                     title: marker.title,
                 });
 
-                // 마커 클릭 이벤트
                 mapMarker.addListener("click", () => {
-                    // 반경 1km 이내의 데이터 필터링
                     const nearbyMarkers = markerData.filter((m) => {
                         const distance = calculateDistance(marker.lat, marker.lng, m.lat, m.lng);
-                        return distance <= 1; // 반경 1km
+                        return distance <= 1;
                     });
 
-                    // 필터링된 데이터를 상태에 저장
+                    setFilteredMarkers(nearbyMarkers);
+                    initialMap.panTo({ lat: marker.lat, lng: marker.lng });
+                    initialMap.setZoom(16);
+                });
+            });
+
+            // 지도 클릭 이벤트
+            initialMap.addListener("click", (event: google.maps.MapMouseEvent) => {
+                if (event.latLng) {
+                    const clickedLat = event.latLng.lat();
+                    const clickedLng = event.latLng.lng();
+
+                    // 주변 1km 범위 내 마커 필터링
+                    const nearbyMarkers = markerData.filter((marker) => {
+                        const distance = calculateDistance(clickedLat, clickedLng, marker.lat, marker.lng);
+                        return distance <= 1;
+                    });
+
                     setFilteredMarkers(nearbyMarkers);
 
                     // 지도 중심 이동
-                    initialMap.panTo({ lat: marker.lat, lng: marker.lng });
+                    initialMap.panTo({ lat: clickedLat, lng: clickedLng });
                     initialMap.setZoom(16);
+                }
+            });
+        }
+    }, [googleMap]);
+
+    useEffect(() => {
+        if (googleMap && searchInputRef.current) {
+            const autocomplete = new window.google.maps.places.Autocomplete(searchInputRef.current, {
+                fields: ["geometry", "name"],
+                types: ["geocode"],
+            });
+
+            autocomplete.bindTo("bounds", googleMap);
+
+            autocomplete.addListener("place_changed", () => {
+                const place = autocomplete.getPlace();
+                if (!place.geometry || !place.geometry.location) {
+                    console.error("검색 결과에 위치 정보가 없습니다.");
+                    return;
+                }
+
+                googleMap.panTo(place.geometry.location);
+                googleMap.setZoom(16);
+
+                new window.google.maps.Marker({
+                    position: place.geometry.location,
+                    map: googleMap,
+                    title: place.name,
                 });
             });
         }
@@ -77,15 +121,33 @@ function GoogleMap() {
             {/* 헤더 */}
             <header className="header">eMart 24</header>
 
+            {/* 검색창 */}
+            <div className="search-bar">
+                <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Google 지도 검색"
+                    style={{
+                        width: "100%",
+                        height: "40px",
+                        padding: "8px",
+                        fontSize: "16px",
+                        boxShadow: "0px 2px 4px rgba(0,0,0,0.2)",
+                        borderRadius: "5px",
+                        border: "1px solid #ccc",
+                        marginBottom: "10px",
+                    }}
+                />
+            </div>
+
             {/* 지도 */}
-            <div ref={ref} id="map" className="map-container" />
+            <div ref={ref} id="map" style={{ width: "100%", height: "500px" }} />
 
             {/* 매장 리스트 */}
             <div className="store-list">
                 {filteredMarkers.length > 0 ? (
                     filteredMarkers.map((marker, index) => (
                         <div className="store-item" key={index}>
-                            {/* 제목을 클릭하면 지도 이동 */}
                             <h4
                                 className="store-title"
                                 onClick={() => {
@@ -97,9 +159,7 @@ function GoogleMap() {
                             >
                                 {marker.title}
                             </h4>
-                            {/* 설명 */}
                             <p>{marker.content}</p>
-                            {/* 버튼을 클릭하면 "/payment"로 이동 */}
                             <button
                                 className="select-button"
                                 onClick={() => {
@@ -116,6 +176,6 @@ function GoogleMap() {
             </div>
         </div>
     );
-}
+};
 
 export default GoogleMap;

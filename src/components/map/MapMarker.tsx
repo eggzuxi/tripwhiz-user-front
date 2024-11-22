@@ -44,4 +44,3 @@ function MapMarker({ map, position, title, content }: MapMarkerProps) {
 }
 
 export default MapMarker;
-
