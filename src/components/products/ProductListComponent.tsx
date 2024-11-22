@@ -47,7 +47,7 @@ const ProductListComponent = () => {
         setTimeout(async () => {
             const data = await getList(page);
             if (Array.isArray(data)) {
-                setProducts((prevProducts) => [...prevProducts, ...data]);
+                setProducts(prevProducts => [...prevProducts, ...data]);
                 setHasMore(data.length > 0);
             } else {
                 setHasMore(false);
@@ -61,9 +61,9 @@ const ProductListComponent = () => {
 
         if (observerRef.current) observerRef.current.disconnect();
 
-        observerRef.current = new IntersectionObserver((entries) => {
+        observerRef.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && hasMore) {
-                setPage((prevPage) => prevPage + 1);
+                setPage(prevPage => prevPage + 1);
             }
         });
 
@@ -98,7 +98,7 @@ const ProductListComponent = () => {
         if (selectedProduct) {
             for (let i = 0; i < quantity; i++) {
                 // @ts-ignore
-                addToCart(selectedProduct, 1);
+                addToCart(selectedProduct, 1); // 수량만큼 반복하여 추가
             }
             closePanel();
         }
@@ -142,36 +142,21 @@ const ProductListComponent = () => {
             </div>
 
             {/* 장바구니 슬라이드 패널 */}
-            <div
-                className={`fixed bottom-0 left-0 w-full bg-white border-t shadow-lg p-4 transition-transform transform ${
-                    isPanelOpen ? "translate-y-0" : "translate-y-full"
-                }`}
-            >
+            <div className={`fixed bottom-0 left-0 w-full bg-white border-t shadow-lg p-4 transition-transform transform ${isPanelOpen ? 'translate-y-0' : 'translate-y-full'}`}>
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-semibold">{selectedProduct?.pname}</h2>
-                    <button onClick={closePanel} className="text-gray-500 text-lg font-bold">
-                        X
-                    </button>
+                    <button onClick={closePanel} className="text-gray-500 text-lg font-bold">X</button>
                 </div>
                 {selectedProduct && (
                     <>
                         <p className="text-gray-700 mb-4">가격: {selectedProduct.price}원</p>
                         <div className="flex justify-end items-center mb-4">
-                            <button onClick={decreaseQuantity} className="p-2 border rounded-l">
-                                -
-                            </button>
+                            <button onClick={decreaseQuantity} className="p-2 border rounded-l">-</button>
                             <span className="px-4 border-t border-b">{quantity}</span>
-                            <button onClick={increaseQuantity} className="p-2 border rounded-r">
-                                +
-                            </button>
+                            <button onClick={increaseQuantity} className="p-2 border rounded-r">+</button>
                         </div>
                         <div className="flex justify-end">
-                            <button
-                                onClick={handleAddToCart}
-                                className="bg-blue-500 text-white px-4 py-2 rounded"
-                            >
-                                장바구니 추가
-                            </button>
+                            <button onClick={handleAddToCart} className="bg-blue-500 text-white px-4 py-2 rounded">장바구니 추가</button>
                         </div>
                     </>
                 )}

@@ -16,6 +16,8 @@ const initialState: IProduct = {
     uploadFileNames: [],
 };
 
+const imageUrl = 'http://10.10.10.169/ddb4aafb-6645-480c-b634-35e7b8046ef9_c2_m1_01.jpg';
+
 function ProductReadComponent() {
     const navigate = useNavigate();
     const { pno } = useParams();
@@ -52,41 +54,53 @@ function ProductReadComponent() {
     }, [pno]);
 
     return (
-        <div className="flex flex-col items-center min-h-screen bg-white py-12">
-            {/* 이미지 */}
-            <img
-                src={`http://10.10.10.169/a6189c02-9628-444d-b86d-48d6753e3d17_c6_m4_02.jpg`}
-                alt={product.pname}
-                className="w-60 h-60 object-cover mb-8"
-            />
-
-            {/* 상품 이름 */}
-            <h2 className="text-3xl font-semibold text-gray-800 mb-4">{product.pname}</h2>
+        <div className="flex justify-center items-center min-h-screen bg-gray-100">
+            <div className="bg-white rounded-lg shadow-xl w-[600px] p-8">
+                {/* 이미지 */}
+                    <div className="w-full flex justify-center mb-6">
+                        <img
+                            src={imageUrl}
+                            alt={product.pname}
+                            className="w-80 h-80 object-cover rounded-lg"
+                        />
+                    </div>
+                {/* 상품 이름 */}
+                <h2 className="text-4xl font-extrabold text-gray-800 mb-4 text-center">{product.pname}</h2>
 
             {/* 상품 설명 */}
             <p className="text-lg text-gray-600 mb-4">{product.pdesc}</p>
 
-            {/* 가격 */}
-            <div className="text-xl font-bold text-amber-500 mb-6">
-                {product.price.toLocaleString()} 원
-            </div>
+                {/* 가격 */}
+                <div className="text-center mb-6">
+                    <span className="text-2xl font-semibold text-amber-500">
+                        {product.price.toLocaleString()} 원
+                    </span>
+                </div>
 
-            {/* 버튼 */}
-            <div className="flex gap-4">
-                <button
-                    type="button"
-                    className="bg-amber-400 text-white font-bold py-2 px-6 rounded hover:bg-amber-500 transition duration-300"
-                    onClick={moveToCart}
-                >
-                    Add to Cart
-                </button>
-                <button
-                    type="button"
-                    className="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded hover:bg-gray-400 transition duration-300"
-                    onClick={() => navigate("/product/list")}
-                >
-                    Back
-                </button>
+                {/* 카테고리 정보 */}
+                {product.categoryCno && (
+                    <div className="text-center mb-6">
+                        <span className="text-lg text-gray-500">Category ID: {product.categoryCno}</span>
+                    </div>
+                )}
+
+                {/* 버튼 */}
+                <div className="flex justify-center gap-6">
+                    <button
+                        type="button"
+                        className="bg-amber-400 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-amber-500 focus:outline-none transition duration-300"
+                        onClick={moveToCart}
+                    >
+                        Add to Cart
+                    </button>
+                    <button
+                        type="button"
+                        className="bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-400 focus:outline-none transition duration-300"
+                        onClick={() => navigate("/product/list")}
+                    >
+                        Back
+                    </button>
+                </div>
             </div>
         </div>
     );
