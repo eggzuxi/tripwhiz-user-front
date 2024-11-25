@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs
 import { initializeApp, FirebaseApp } from "firebase/app";
 import { getMessaging, Messaging } from "firebase/messaging";
-import { getAnalytics, Analytics } from "firebase/analytics";
 import { getDatabase, Database } from "firebase/database"; // Realtime Database 추가
 
 // Firebase configuration
@@ -31,15 +30,13 @@ const secondaryApp: FirebaseApp = initializeApp(secondfirebaseConfig, "secondary
 
 // Messaging services
 export const messaging: Messaging = getMessaging(app);
-export const secondaryMessaging: Messaging = getMessaging(secondaryApp);
-
 // Realtime Database for secondary app
 export const secondaryDatabase: Database = getDatabase(secondaryApp);
 
-// Analytics (Browser-Only Initialization)
-let analytics: Analytics | null = null;
-if (typeof window !== "undefined") {
-    analytics = getAnalytics(app); // Initialize only in browser
-}
+// // Analytics (Browser-Only Initialization)
+// let analytics: Analytics | null = null;
+// if (typeof window !== "undefined") {
+//     analytics = getAnalytics(app); // Initialize only in browser
+// }
 
-export { app, secondaryApp, analytics };
+export { app, secondaryApp};

@@ -12,7 +12,7 @@ import sidebarRouter from "./sidebarRouter.tsx";
 const MainPage = lazy(() => import("../pages/MainPage"));
 const LoadingPage = lazy(() => import("../pages/LoadingPage"));
 const PickupPage = lazy(() => import("../pages/pickup/PickupPage"));
-const MapPage = lazy(() => import("../components/luggage/maps.tsx"));
+const MapPage = lazy(() => import("../components/luggage/luggage.tsx"));
 
 const Loading = <LoadingPage />;
 
