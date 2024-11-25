@@ -4,10 +4,12 @@ import { messaging } from "../firebase/firebaseConfig.ts";
 import {
     faBagShopping,
     faCalendarCheck,
-    faCalendarDay, faClipboardCheck, faClock,
+    faCalendarDay,
+    faClipboardCheck,
+    faClock,
     faGift,
     faTruck,
-    faWineBottle
+    faWineBottle,
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import BaseLayout from "../layouts/BaseLayout.tsx";
@@ -40,14 +42,12 @@ function MainPage() {
     }
 
     useEffect(() => {
-
         requestPermission();
-
     }, []);
 
     onMessage(messaging, (payload) => {
         console.log(payload);
-        alert("On Message ")
+        alert("On Message");
     });
 
     return (

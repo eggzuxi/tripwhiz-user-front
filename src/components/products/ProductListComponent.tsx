@@ -1,50 +1,23 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef } from "react";
 import { IProduct } from "../../types/product";
 import { getList } from "../../api/productAPI";
 import { useNavigate } from "react-router-dom";
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cartStore } from "../../store/CartStore.ts";
 
 const initialState: IProduct[] = [
     {
-        pno: 0, // 상품 번호 초기값
-        pname: "", // 상품 이름 초기값
-        price: 0, // 상품 가격 초기값
-        pdesc: "", // 상품 설명 초기값
-        categoryCno: 0, // 상위 카테고리 초기값
-        subCategoryScno: 0, // 하위 카테고리 초기값
-        themeTno: 0, // 테마 카테고리 초기값
-        delflag: false, // 삭제 플래그 초기값
-        uploadFileNames: [] // 파일 배열 초기값
-    }
-];
-
-// 발표 끝나면 없앨 아이들.... JH
-const imageUrls = [
-    'http://10.10.10.169/5d104edf-aba6-4fc0-8baa-b4e80561130f_c1_m1_01.jpg',
-    'http://10.10.10.169/1f262ba0-22ef-4157-ba69-6c7d023e78bf_c1_m2_02.jpg',
-    'http://10.10.10.169/0f7e471d-4c97-4336-9f52-2d8f20a741f9_c1_m3_02.jpg',
-    'http://10.10.10.169/47401454-7bf3-4f1e-8187-53f3c2173817_c1_m3_04.jpg',
-    'http://10.10.10.169/544ac755-cd1b-4e67-b108-a6422e55dbc3_c1_m4_03.jpg',
-    'http://10.10.10.169/ddb4aafb-6645-480c-b634-35e7b8046ef9_c2_m1_01.jpg',
-    'http://10.10.10.169/2f91968a-e7d6-40b6-8eba-54de3c780a27_c2_m2_02.jpg',
-    'http://10.10.10.169/4e6b285a-ef6a-4eb9-9cac-cf82e64b3953_c2_m4_02.jpg',
-    'http://10.10.10.169/b416065f-ff42-4617-9312-f9ad9f202d47_c2_m5_03.jpg',
-    'http://10.10.10.169/24f9f2a4-1820-4c97-9586-3406b6c59c85_c3_m1_01.jpg',
-    'http://10.10.10.169/f3762a44-edbd-47bf-b92a-76fbe0e8c817_c3_m2_02.jpeg',
-    'http://10.10.10.169/d3437ae5-ef1d-439b-baa0-f2120c353e00_c4_m1_04.jpeg',
-    'http://10.10.10.169/e77b7def-b39c-4f92-8e47-2401c4e2beaa_c4_m4_04.jpg',
-    'http://10.10.10.169/56f486ee-d1d9-407f-b20b-222b4a68de3e_c5_m2_02.jpg',
-    'http://10.10.10.169/e4156e59-8c16-4073-8ec7-437c8552b26e_c5_m3_01.jpg',
-    'http://10.10.10.169/f5d59066-ccef-4d7a-9b62-4b283eb248de_c5_m4_04.jpg',
-    'http://10.10.10.169/cdeeff14-02be-4522-a7f2-5a5e1c0b0e64_c5_m7_03.jpeg',
-    'http://10.10.10.169/0a2b7470-13ee-4e24-a359-c4fd6514d8c0_c5_m8_04.jpg',
-    'http://10.10.10.169/4bfb78ea-9efe-4365-90a1-4f871a018337_c6_m2_03.jpg',
-    'http://10.10.10.169/28a9da77-ed18-43f1-b629-ad0e55427791_c6_m5_03.jpg',
-    'http://10.10.10.169/e4a42ae0-6afb-4cc5-b6c6-8b5a3bb9ebec_c6_m6_01.jpg',
-    'http://10.10.10.169/747d9263-cd6a-4b61-a6d4-4dd8652cbebe_c7_m1_03.jpg',
-
+        pno: 0,
+        pname: "",
+        price: 0,
+        pdesc: "",
+        categoryCno: 0,
+        subCategoryScno: 0,
+        themeTno: 0,
+        delflag: false,
+        uploadFileNames: [],
+    },
 ];
 
 const ProductListComponent = () => {
@@ -123,7 +96,6 @@ const ProductListComponent = () => {
     // 장바구니에 선택한 수량만큼 상품 추가
     const handleAddToCart = () => {
         if (selectedProduct) {
-            // 선택한 상품과 수량을 장바구니에 추가
             for (let i = 0; i < quantity; i++) {
                 // @ts-ignore
                 addToCart(selectedProduct, 1); // 수량만큼 반복하여 추가
@@ -134,10 +106,7 @@ const ProductListComponent = () => {
 
     return (
         <div className="h-screen overflow-hidden">
-            <div
-                className="p-4 pt-20 h-full overflow-y-auto custom-scrollbar"
-                style={{ maxHeight: 'calc(100vh - 80px)' }}
-            >
+            <div className="p-4 h-full overflow-y-auto custom-scrollbar">
                 <h2 className="text-xl font-bold mb-4">상품 목록</h2>
                 <div className="grid grid-cols-2 gap-4">
                     {products.length > 0 ? (
@@ -148,9 +117,8 @@ const ProductListComponent = () => {
                                 onClick={() => moveToDetails(product.pno)}
                                 ref={index === products.length - 1 ? lastProductRef : null}
                             >
-                                {/* 이미지 경로를 순환하여 랜덤 출력 */}
                                 <img
-                                    src={imageUrls[index % imageUrls.length]}
+                                    src={`http://10.10.10.169/859dd622-b246-47f1-aa7d-859f89c475ce_c6_m4_01.jpg`}
                                     alt={product.pname}
                                     className="w-full h-40 object-cover mb-3"
                                 />
@@ -162,7 +130,7 @@ const ProductListComponent = () => {
                                     className="text-gray-700 text-xl absolute bottom-2 right-2 cursor-pointer"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        openPanel(product); // 슬라이드 패널 열기
+                                        openPanel(product);
                                     }}
                                 />
                             </div>

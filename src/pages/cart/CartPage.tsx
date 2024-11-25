@@ -1,5 +1,5 @@
 import CartComponent from "../../components/cart/CartComponent.tsx";
-import BaseLayout from "../../layouts/BaseLayout.tsx";
+
 
 
 function CartPage() {
@@ -9,9 +9,7 @@ function CartPage() {
 
     return (
         <div>
-            <BaseLayout>
-                <CartComponent/>
-            </BaseLayout>
+            <CartComponent/>
         </div>
     );
 }

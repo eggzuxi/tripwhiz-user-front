@@ -7,7 +7,7 @@ function BaseLayout({ children }: { children: ReactNode }) {
         <div>
             <HeaderLayout/>
             <SampleChatUI/>
-            <main>{children}</main>
+            <main style={{ marginTop: "110px"}}>{children}</main>
         </div>
     );
 }
