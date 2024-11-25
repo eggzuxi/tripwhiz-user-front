@@ -53,14 +53,15 @@ function DestinationPage(): JSX.Element {
                                 alt={destination.name}
                                 className="w-full h-48 object-cover"
                             />
-                            <div
-                                className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            {/* 이미지 위에 나라 이름을 중앙에 배치 */}
+                            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-95 group-hover:opacity-100 transition-opacity duration-300">
                                 <p className="text-white text-lg font-semibold">{destination.name}</p>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
+
 
             {/* 테마 선택 건너뛰기 버튼 */}
             <button
