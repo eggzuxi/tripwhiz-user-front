@@ -10,7 +10,6 @@ import ThemePage from "../pages/theme/ThemePage";
 import sidebarRouter from "./sidebarRouter.tsx";
 import DestinationPage from "../pages/destination/DestinationPage.tsx";
 
-const MainPage = lazy(() => import("../pages/MainPage"));
 const LoadingPage = lazy(() => import("../pages/LoadingPage"));
 const PickupPage = lazy(() => import("../pages/pickup/PickupPage"));
 const MapPage = lazy(() => import("../components/luggage/luggage.tsx"));
@@ -28,7 +27,7 @@ const mainRouter = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Suspense fallback={Loading}><MainPage /></Suspense>
+                element: <Suspense fallback={Loading}><DestinationPage /></Suspense>
             },
             {
                 path: "/luggage",
