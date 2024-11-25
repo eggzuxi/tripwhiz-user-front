@@ -5,15 +5,15 @@ import { getOne } from "../../api/productAPI.ts";
 import { cartStore } from "../../store/CartStore.ts";
 
 const initialState: IProduct = {
-    pno: 0, // 상품 번호 초기값
-    pname: "", // 상품 이름 초기값
-    price: 0, // 상품 가격 초기값
-    pdesc: "", // 상품 설명 초기값
-    categoryCno: 0, // 상위 카테고리 초기값
-    subCategoryScno: 0, // 하위 카테고리 초기값
-    themeTno: 0, // 테마 카테고리 초기값
-    delflag: false, // 삭제 플래그 초기값
-    uploadFileNames: [] // 파일 배열 초기값
+    pno: 0,
+    pname: "",
+    price: 0,
+    pdesc: "",
+    categoryCno: 0,
+    subCategoryScno: 0,
+    themeTno: 0,
+    delflag: false,
+    uploadFileNames: [],
 };
 
 const imageUrl = 'http://10.10.10.169/ddb4aafb-6645-480c-b634-35e7b8046ef9_c2_m1_01.jpg';
@@ -67,8 +67,8 @@ function ProductReadComponent() {
                 {/* 상품 이름 */}
                 <h2 className="text-4xl font-extrabold text-gray-800 mb-4 text-center">{product.pname}</h2>
 
-                {/* 상품 설명 */}
-                <p className="text-lg text-gray-600 mb-6 text-center">{product.pdesc}</p>
+            {/* 상품 설명 */}
+            <p className="text-lg text-gray-600 mb-4">{product.pdesc}</p>
 
                 {/* 가격 */}
                 <div className="text-center mb-6">

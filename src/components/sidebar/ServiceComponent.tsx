@@ -1,6 +1,6 @@
 function ServiceComponent() {
     return (
-        <div className="w-full h-full bg-white p-4 pt-20"> {/* 전체 배경 흰색 */}
+        <div className="h-screen bg-white overflow-y-auto p-4">
             {/* 상단 헤더 */}
             <div className="text-center py-6">
                 <h1 className="text-xl font-semibold text-gray-800">서비스</h1>
