@@ -8,11 +8,14 @@ import paymentRouter from "./paymentRouter";
 import GoogleMapsPage from "../pages/map/GoogleMapsPage";
 import ThemePage from "../pages/theme/ThemePage";
 import sidebarRouter from "./sidebarRouter.tsx";
-import DestinationPage from "../pages/destination/DestinationPage.tsx";
+
+
 
 const LoadingPage = lazy(() => import("../pages/LoadingPage"));
 const PickupPage = lazy(() => import("../pages/pickup/PickupPage"));
 const MapPage = lazy(() => import("../components/luggage/luggage.tsx"));
+const DestinationPage = lazy(() => import("../pages/destination/DestinationPage"));
+const MainPage = lazy(() => import("../pages/MainPage"));
 
 const Loading = <LoadingPage />;
 
@@ -28,6 +31,10 @@ const mainRouter = createBrowserRouter([
             {
                 path: "/",
                 element: <Suspense fallback={Loading}><DestinationPage /></Suspense>
+            },
+            {
+                path: "/main",
+                element: <Suspense fallback={Loading}><MainPage /></Suspense>
             },
             {
                 path: "/luggage",
