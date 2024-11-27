@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { GoogleMap, Marker, Polyline, useJsApiLoader } from "@react-google-maps/api";
-import { ref, get } from "firebase/database";
+import { ref, get, set } from "firebase/database";
 import { secondaryDatabase } from "../../firebase/firebaseConfig.ts";
 
 const containerStyle = {
@@ -8,30 +8,49 @@ const containerStyle = {
     height: "500px",
 };
 
-// Firebase에서 위치 데이터를 가져오는 함수
+// Firebase에서 특정 위치 데이터를 가져오는 함수
 const fetchLocation = async (key: string): Promise<{ lat: number; lng: number } | null> => {
-    const locationRef = ref(secondaryDatabase, key);
-    const snapshot = await get(locationRef);
-    if (snapshot.exists()) {
-        return snapshot.val() as { lat: number; lng: number };
+    try {
+        const locationRef = ref(secondaryDatabase, key);
+        const snapshot = await get(locationRef);
+        if (snapshot.exists()) {
+            return snapshot.val() as { lat: number; lng: number };
+        }
+        return null;
+    } catch (error) {
+        console.error("Error fetching location from Firebase:", error);
+        return null;
     }
-    return null;
 };
 
 // Firebase에서 편의점 데이터를 가져오는 함수
 const fetchConvenienceStores = async (): Promise<
     { lat: number; lng: number; name: string }[]
 > => {
-    const storesRef = ref(secondaryDatabase, "convenienceStores");
-    const snapshot = await get(storesRef);
-    if (snapshot.exists()) {
-        const data = snapshot.val() as Record<
-            string,
-            { lat: number; lng: number; name: string }
-        >;
-        return Object.values(data);
+    try {
+        const storesRef = ref(secondaryDatabase, "convenienceStores");
+        const snapshot = await get(storesRef);
+        if (snapshot.exists()) {
+            const data = snapshot.val() as Record<
+                string,
+                { lat: number; lng: number; name: string }
+            >;
+            return Object.values(data);
+        }
+        return [];
+    } catch (error) {
+        console.error("Error fetching convenience stores from Firebase:", error);
+        return [];
     }
-    return [];
+};
+
+// Firebase에 출발지와 도착지를 저장하는 함수
+const savePointsToFirebase = async (
+    startPoint: { lat: number; lng: number } | null,
+    endPoint: { lat: number; lng: number } | null
+) => {
+    const pointsRef = ref(secondaryDatabase, "userRoutes");
+    await set(pointsRef, { startPoint, endPoint });
 };
 
 function Luggage() {
@@ -52,7 +71,7 @@ function Luggage() {
             "AIzaSyCAEphgIbIzt3ECeOlAkuKSLpoDs1DZRVY",
     });
 
-    const handleMapClick = (event: google.maps.MapMouseEvent) => {
+    const handleMapClick = async (event: google.maps.MapMouseEvent) => {
         const clickedPosition = event.latLng?.toJSON();
         if (!clickedPosition) return;
 
@@ -60,6 +79,10 @@ function Luggage() {
             setStartPoint(clickedPosition);
         } else if (!endPoint) {
             setEndPoint(clickedPosition);
+
+            // 출발지와 도착지가 설정되면 Firebase에 저장
+            await savePointsToFirebase(startPoint, clickedPosition);
+            alert("출발지와 도착지가 저장되었습니다!");
         }
     };
 
@@ -74,7 +97,9 @@ function Luggage() {
                 travelMode: google.maps.TravelMode.DRIVING,
             },
             async (result, status) => {
+                // @ts-ignore
                 if (status === "OK" && result.routes[0]) {
+                    // @ts-ignore
                     const newPath = result.routes[0].overview_path.map((point) => ({
                         lat: point.lat(),
                         lng: point.lng(),

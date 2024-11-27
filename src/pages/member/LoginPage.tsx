@@ -1,13 +1,11 @@
-import KakaoLoginComponent from "../../components/member/KakaoLoginComponent.tsx";
-import GoogleLoginComponent from "../../components/member/GoogleLoginComponent.tsx";
 import HeaderLayout from "../../layouts/HeaderLayout.tsx";
+import LoginComponent from "../../components/member/LoginComponent.tsx";
 
 function LoginPage() {
     return (
         <div>
             <HeaderLayout />
-            <KakaoLoginComponent/>
-            <GoogleLoginComponent/>
+            <LoginComponent/>
         </div>
     );
 }
