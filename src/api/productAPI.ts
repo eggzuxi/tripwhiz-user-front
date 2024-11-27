@@ -9,14 +9,32 @@ const host ='http://localhost:8081/api/product';
 //     }
 // }
 
-export const getList = async (page:number) => {
 
-    const res = await axios.get(`${host}/list?page=${page}`)
+export const getList = async (page: number, tno: number | null , cno: number | null , scno: number | null ) => {
 
-    console.log(res.data.content)
+    console.log("tno: " + tno)
+    console.log("cno: " + cno)
+    console.log("scno: " + scno)
 
-    return res.data.content
+    // URLSearchParams 객체 생성
+    const params = new URLSearchParams({
+        page: page.toString(),
+        ...(tno && { tno: tno.toString() }),
+        ...(cno && { cno: cno.toString() }),
+        ...(scno && { scno: scno.toString() })
+    });
 
+
+    try {
+        const res = await axios.get(`${host}/list?${params.toString()}`);
+
+        console.log("Filtered Products:", res.data.dtoList);
+
+        return res.data.dtoList;
+    } catch (error) {
+        console.error("Error fetching product list:", error);
+        throw error;
+    }
 };
 
 export const getOne = async (pno: number) => {
