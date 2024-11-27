@@ -1,10 +1,11 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { IProduct } from "../../types/product";
 import { getList } from "../../api/productAPI";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cartStore } from "../../store/CartStore.ts";
+import CategoryFilterComponent from "./CategoryFilterComponent.tsx";
 
 const initialState: IProduct[] = [
     {
@@ -126,11 +127,11 @@ const ProductListComponent = () => {
                                 onClick={() => moveToDetails(product.pno)}
                                 ref={index === products.length - 1 ? lastProductRef : null}
                             >
-                                <img
-                                    src={imageUrls[index % imageUrls.length]}
-                                    alt={product.pname}
-                                    className="w-full h-40 object-cover mb-3"
-                                />
+                                {/*<img*/}
+                                {/*    src={imageUrls[index % imageUrls.length]}*/}
+                                {/*    alt={product.pname}*/}
+                                {/*    className="w-full h-40 object-cover mb-3"*/}
+                                {/*/>*/}
                                 <h3 className="text-lg font-semibold">{product.pname}</h3>
                                 <p className="text-gray-700">{product.pdesc}</p>
                                 <p className="text-gray-700">가격: {product.price}원</p>
