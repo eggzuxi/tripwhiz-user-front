@@ -16,7 +16,6 @@ export const getList = async (page: number, tno: number | null , cno: number | n
     console.log("cno: " + cno)
     console.log("scno: " + scno)
 
-
     // URLSearchParams 객체 생성
     const params = new URLSearchParams({
         page: page.toString(),
