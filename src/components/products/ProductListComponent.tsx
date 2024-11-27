@@ -12,9 +12,9 @@ const initialState: IProduct[] = [
         pname: "", // 상품 이름 초기값
         price: 0, // 상품 가격 초기값
         pdesc: "", // 상품 설명 초기값
-        categoryCno: 0, // 상위 카테고리 초기값
-        subCategoryScno: 0, // 하위 카테고리 초기값
-        themeTno: 0, // 테마 카테고리 초기값
+        cno: 0, // 상위 카테고리 초기값
+        scno: 0, // 하위 카테고리 초기값
+        tno: 0, // 테마 카테고리 초기값
         delflag: false, // 삭제 플래그 초기값
         uploadFileNames: [] // 파일 배열 초기값
     }

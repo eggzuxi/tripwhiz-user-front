@@ -9,13 +9,14 @@ const host ='http://localhost:8081/api/product';
 //     }
 // }
 
-export const getList = async (page:number) => {
+export const getList = async (page:number, tno:number) => {
 
-    const res = await axios.get(`${host}/list?page=${page}`)
+    const res = await axios.get(`${host}/list?theme=${tno}&page=${page}`)
 
-    console.log(res.data.dtoList)
+    console.log(res.data.content)
 
-    return res.data.dtoList
+
+    return res.data.content
 
 };
 
