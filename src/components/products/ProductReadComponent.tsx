@@ -9,9 +9,9 @@ const initialState: IProduct = {
     pname: "",
     price: 0,
     pdesc: "",
-    categoryCno: 0,
-    subCategoryScno: 0,
-    themeTno: 0,
+    cno: 0,
+    scno: 0,
+    tno: 0,
     delflag: false,
     uploadFileNames: [],
 };
@@ -78,9 +78,9 @@ function ProductReadComponent() {
                 </div>
 
                 {/* 카테고리 정보 */}
-                {product.categoryCno && (
+                {product.cno && (
                     <div className="text-center mb-6">
-                        <span className="text-lg text-gray-500">Category ID: {product.categoryCno}</span>
+                        <span className="text-lg text-gray-500">Category ID: {product.cno}</span>
                     </div>
                 )}
 

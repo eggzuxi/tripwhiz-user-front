@@ -1,10 +1,11 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { IProduct } from "../../types/product";
 import { getList } from "../../api/productAPI";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cartStore } from "../../store/CartStore.ts";
+import CategoryFilterComponent from "./CategoryFilterComponent.tsx";
 
 const initialState: IProduct[] = [
     {
@@ -12,9 +13,9 @@ const initialState: IProduct[] = [
         pname: "",
         price: 0,
         pdesc: "",
-        categoryCno: 0,
-        subCategoryScno: 0,
-        themeTno: 0,
+        cno: 0,
+        scno: 0,
+        tno: 0,
         delflag: false,
         uploadFileNames: [],
     },
@@ -28,6 +29,14 @@ const ProductListComponent = () => {
     const [hasMore, setHasMore] = useState(true);
     const observerRef = useRef<IntersectionObserver | null>(null);
     const lastProductRef = useRef<HTMLDivElement | null>(null);
+
+    const [searchParams] = useSearchParams();
+
+    // 쿼리스트링에서 값 가져오기
+    const tno = searchParams.get("tno");
+    const cno = searchParams.get("cno");
+    const scno = searchParams.get("scno");
+
 
     // 장바구니 슬라이드 패널 상태
     const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -45,7 +54,7 @@ const ProductListComponent = () => {
 
         setLoading(true);
         setTimeout(async () => {
-            const data = await getList(page);
+            const data = await getList(page, tno, cno, scno);
             if (Array.isArray(data)) {
                 setProducts(prevProducts => [...prevProducts, ...data]);
                 setHasMore(data.length > 0);
@@ -54,7 +63,7 @@ const ProductListComponent = () => {
             }
             setLoading(false);
         }, 600);
-    }, [page, hasMore]);
+    }, [page, hasMore, tno, cno, scno]);
 
     useEffect(() => {
         if (loading || !hasMore) return;
@@ -108,6 +117,7 @@ const ProductListComponent = () => {
         <div className="h-screen overflow-hidden">
             <div className="p-4 h-full overflow-y-auto custom-scrollbar">
                 <h2 className="text-xl font-bold mb-4">상품 목록</h2>
+                <CategoryFilterComponent/>
                 <div className="grid grid-cols-2 gap-4">
                     {products.length > 0 ? (
                         products.map((product, index) => (
@@ -117,11 +127,11 @@ const ProductListComponent = () => {
                                 onClick={() => moveToDetails(product.pno)}
                                 ref={index === products.length - 1 ? lastProductRef : null}
                             >
-                                <img
-                                    src={`http://10.10.10.169/859dd622-b246-47f1-aa7d-859f89c475ce_c6_m4_01.jpg`}
-                                    alt={product.pname}
-                                    className="w-full h-40 object-cover mb-3"
-                                />
+                                {/*<img*/}
+                                {/*    src={imageUrls[index % imageUrls.length]}*/}
+                                {/*    alt={product.pname}*/}
+                                {/*    className="w-full h-40 object-cover mb-3"*/}
+                                {/*/>*/}
                                 <h3 className="text-lg font-semibold">{product.pname}</h3>
                                 <p className="text-gray-700">{product.pdesc}</p>
                                 <p className="text-gray-700">가격: {product.price}원</p>

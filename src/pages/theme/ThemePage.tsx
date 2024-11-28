@@ -16,7 +16,7 @@ function ThemePage(): JSX.Element {
 
     const handleThemeClick = (themeId: number) => {
         // 선택한 테마에 맞는 상품 리스트로 이동
-        navigate(`/product/list?theme=${themeId}`);
+        navigate(`/product/list?tno=${themeId}`);
     };
 
     const handleSkipClick = () => {
