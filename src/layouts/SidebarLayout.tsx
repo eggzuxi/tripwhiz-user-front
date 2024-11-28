@@ -61,7 +61,7 @@ function SidebarLayout({ onClose }: SidebarProps) {
                 )}
                 {/* X 버튼을 오른쪽 끝으로 이동 */}
                 <button
-                    className="absolute top-6 left-6 text-gray-500"
+                    className="absolute top-6 right-6 text-gray-500"
                     onClick={onClose}
                 >
                     X
