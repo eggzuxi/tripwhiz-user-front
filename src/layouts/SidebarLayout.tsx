@@ -43,7 +43,7 @@ function SidebarLayout({ onClose }: SidebarProps) {
     };
 
     return (
-        <div className="fixed top-0 left-0 w-[250px] h-full bg-white shadow-lg flex flex-col p-6 z-50">
+        <div className="fixed top-0 right-0 w-[250px] h-full bg-white shadow-lg flex flex-col p-6 z-50">
             <div className="text-gray-800 font-semibold mb-6 flex items-center justify-between">
                 {accessToken ? (
                     <>
@@ -61,7 +61,7 @@ function SidebarLayout({ onClose }: SidebarProps) {
                 )}
                 {/* X 버튼을 오른쪽 끝으로 이동 */}
                 <button
-                    className="absolute top-6 right-6 text-gray-500"
+                    className="absolute top-6 left-6 text-gray-500"
                     onClick={onClose}
                 >
                     X
