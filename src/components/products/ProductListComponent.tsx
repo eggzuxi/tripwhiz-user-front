@@ -128,7 +128,6 @@ const ProductListComponent = () => {
     return (
         <div className="h-screen overflow-hidden">
             <div className="p-4 h-full overflow-y-auto custom-scrollbar">
-                <h2 className="text-xl font-bold mb-4">상품 목록</h2>
                 <CategoryFilterComponent
                     onFilterChange={() => {
                         setPage(1); // 페이지 초기화

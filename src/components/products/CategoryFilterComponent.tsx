@@ -1,57 +1,88 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {getCategories, getSubCategories} from "../../api/categoryAPI.ts";
+
+
+interface Category {
+    cno: number;
+    cname: string;
+}
+
+interface SubCategory {
+    scno: number;
+    sname: string;
+    cno: number;
+}
+
 
 function CategoryFilterComponent({ onFilterChange }: { onFilterChange: (cno: number | null, scno: number | null) => void }) {
 
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
-    const categories = [
-        { cno: 1, cname: "수납/편의" },
-        { cno: 2, cname: "의류" },
-        { cno: 3, cname: "안전/위생" },
-        { cno: 4, cname: "악세사리" },
-        { cno: 5, cname: "액티비티 용품" },
-    ];
-
-    const subcategories = [
-        { scno: 1, sname: "파우치", cno: 1 },
-        { scno: 2, sname: "케이스/커버", cno: 1 },
-        { scno: 3, sname: "안대/목베개", cno: 1 },
-        { scno: 4, sname: "와이파이 유심", cno: 1 },
-        { scno: 5, sname: "아우터", cno: 2 },
-        { scno: 6, sname: "상의/하의", cno: 2 },
-        { scno: 7, sname: "잡화", cno: 2 },
-        { scno: 8, sname: "뷰티케어", cno: 3 },
-        { scno: 9, sname: "세면도구", cno: 3 },
-        { scno: 10, sname: "상비약", cno: 3 },
-        { scno: 11, sname: "전기/전자용품", cno: 4 },
-        { scno: 12, sname: "여행 아이템", cno: 4 },
-        { scno: 13, sname: "캠핑/등산", cno: 5 },
-        { scno: 14, sname: "수영", cno: 5 },
-        { scno: 15, sname: "야외/트래킹", cno: 5 },
-    ];
-
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [subcategories, setSubCategories] = useState<SubCategory[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
     const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(null);
 
+    // 상위 카테고리 가져오기
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const data = await getCategories();
+                setCategories(data);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    // 하위 카테고리 가져오기
+    useEffect(() => {
+        if (selectedCategory === null) {
+            setSubCategories([]);
+            return;
+        }
+
+        const fetchSubCategories = async () => {
+            try {
+                const data = await getSubCategories(selectedCategory);
+                setSubCategories(data);
+            } catch (error) {
+                console.error(`Error fetching subcategories for category ${selectedCategory}:`, error);
+            }
+        };
+
+        fetchSubCategories();
+    }, [selectedCategory]);
+
     // 카테고리 선택 처리
-    const handleCategoryChange = (cno: number) => {
+    const handleCategoryChange = (cno: number | null) => {
         setSelectedCategory(cno);
         setSelectedSubCategory(null); // 하위 카테고리 초기화
         onFilterChange(cno, null); // 필터 변경 전달
         const params = new URLSearchParams(searchParams.toString());
-        params.set("cno", cno.toString());
+        if (cno !== null) {
+            params.set("cno", cno.toString());
+        } else {
+            params.delete("cno"); // "전체"를 선택한 경우 필터 제거
+        }
         params.delete("scno"); // 하위 카테고리 삭제
         navigate(`/product/list?${params.toString()}`);
     };
 
     // 하위 카테고리 선택 처리
-    const handleSubCategoryChange = (scno: number) => {
+    const handleSubCategoryChange = (scno: number | null) => {
         setSelectedSubCategory(scno);
         onFilterChange(selectedCategory, scno); // 필터 변경 전달
         const params = new URLSearchParams(searchParams.toString());
-        params.set("scno", scno.toString());
+        if (scno !== null) {
+            params.set("scno", scno.toString());
+        } else {
+            params.delete("scno"); // "전체"를 선택한 경우 필터 제거
+        }
         navigate(`/product/list?${params.toString()}`);
     };
 
@@ -63,35 +94,57 @@ function CategoryFilterComponent({ onFilterChange }: { onFilterChange: (cno: num
     return (
         <div className="category-filter">
             <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">카테고리</label>
-                <select
-                    value={selectedCategory || ""}
-                    onChange={(e) => handleCategoryChange(Number(e.target.value))}
-                    className="border rounded px-4 py-2 w-full"
-                >
-                    <option value="">전체</option>
-                    {categories.map((category) => (
-                        <option key={category.cno} value={category.cno}>
-                            {category.cname}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            {filteredSubCategories.length > 0 && (
-                <div>
-                    <label className="block text-gray-700 font-bold mb-2">하위 카테고리</label>
-                    <select
-                        value={selectedSubCategory || ""}
-                        onChange={(e) => handleSubCategoryChange(Number(e.target.value))}
-                        className="border rounded px-4 py-2 w-full"
+                {/* 상위 카테고리 */}
+                <div className="flex overflow-x-auto space-x-4 py-2 scrollbar-hide w-full">
+                    <button
+                        onClick={() => handleCategoryChange(null)}
+                        className={`px-4 py-2 whitespace-nowrap rounded-lg ${
+                            selectedCategory === null ? "bg-yellow-400 text-white" : "bg-gray-200"
+                        }`}
                     >
-                        <option value="">전체</option>
+                        전체
+                    </button>
+                    {categories.map((category) => (
+                        <button
+                            key={category.cno}
+                            onClick={() => handleCategoryChange(category.cno)}
+                            className={`px-4 py-2 whitespace-nowrap rounded-lg ${
+                                selectedCategory === category.cno ? "bg-yellow-400 text-white" : "bg-gray-200"
+                            }`}
+                        >
+                            {category.cname}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* 하위 카테고리 */}
+            {filteredSubCategories.length > 0 && (
+                <div className="overflow-x-auto scrollbar-hide py-2">
+                    <div className="flex space-x-4">
+                        {/* "전체" 버튼 */}
+                        <button
+                            onClick={() => handleSubCategoryChange(null)}
+                            className={`text-lg whitespace-nowrap ${
+                                selectedSubCategory === null ? "font-bold text-black" : "text-gray-500"
+                            }`}
+                        >
+                            전체
+                        </button>
                         {filteredSubCategories.map((subcategory) => (
-                            <option key={subcategory.scno} value={subcategory.scno}>
+                            <button
+                                key={subcategory.scno}
+                                onClick={() => handleSubCategoryChange(subcategory.scno)}
+                                className={`text-lg whitespace-nowrap ${
+                                    selectedSubCategory === subcategory.scno
+                                        ? "font-bold text-black"
+                                        : "text-gray-500"
+                                }`}
+                            >
                                 {subcategory.sname}
-                            </option>
+                            </button>
                         ))}
-                    </select>
+                    </div>
                 </div>
             )}
         </div>
