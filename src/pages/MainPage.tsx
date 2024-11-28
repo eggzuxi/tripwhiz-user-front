@@ -2,12 +2,12 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"; // 돋보기 아이콘
 import useAuthStore from "../store/AuthStore.ts";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 function MainPage() {
     const { name } = useAuthStore(); // 로그인한 사용자 이름 가져오기
     const [searchQuery, setSearchQuery] = useState("");
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
@@ -54,7 +54,7 @@ function MainPage() {
                 {/* 카테고리 선택 */}
                 <div className="bg-white px-4 py-2">
                     <div className="flex flex-row space-x-4 overflow-x-auto">
-                        {["간편식사", "과자", "생활용품", "아이스크림", "음료"].map((category, index) => (
+                        {["수납/편의", "의류", "안전/위생", "악세사리", "액티비티 용품"].map((category, index) => (
                             <button
                                 key={index}
                                 className={`px-4 py-2 whitespace-nowrap ${
