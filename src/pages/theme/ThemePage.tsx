@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 
 
 const themes = [
-    { id: 1, name: '휴양', image: '/images/Healing.png' },
-    { id: 2, name: '비즈니스', image: '/images/Business.png' },
-    { id: 3, name: '미식', image: '/images/Eating.png' },
-    { id: 4, name: '쇼핑', image: '/images/Shopping.png' },
-    { id: 5, name: '액티비티', image: '/images/Activity.png' },
-    { id: 6, name: '문화', image: '/images/Culture.png' }
+    { id: 1, name: '휴양', image: '/images/theme/Healing.png' },
+    { id: 2, name: '비즈니스', image: '/images/theme/Business.png' },
+    { id: 3, name: '미식', image: '/images/theme/Eating.png' },
+    { id: 4, name: '쇼핑', image: '/images/theme/Shopping.png' },
+    { id: 5, name: '액티비티', image: '/images/theme/Activity.png' },
+    { id: 6, name: '문화', image: '/images/theme/Culture.png' }
 ];
 
 function ThemePage(): JSX.Element {

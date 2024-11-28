@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useDestination } from "../../hooks/useDestination.ts";
 
 const destinations = [
-    { id: 1, name: "캄보디아", image: "/images/Cambodia.png" },
-    { id: 2, name: "말레이시아", image: "/images/Malaysia.png" },
-    { id: 3, name: "일본", image: "/images/Japan.png" },
-    { id: 4, name: "베트남", image: "/images/Vietnam.png" },
-    { id: 5, name: "필리핀", image: "/images/Philippines.png" },
-    { id: 6, name: "태국", image: "/images/Thailand.png" },
+    { id: 1, name: "캄보디아", image: "/images/country/Cambodia.png" },
+    { id: 2, name: "말레이시아", image: "/images/country/Malaysia.png" },
+    { id: 3, name: "일본", image: "/images/country/Japan.png" },
+    { id: 4, name: "베트남", image: "/images/country/Vietnam.png" },
+    { id: 5, name: "필리핀", image: "/images/country/Philippines.png" },
+    { id: 6, name: "태국", image: "/images/country/Thailand.png" },
 ];
 
 function DestinationPage(): JSX.Element {
@@ -44,7 +44,11 @@ function DestinationPage(): JSX.Element {
         return (
             <div className="flex items-center justify-center h-screen bg-white">
                 <h1 className="text-4xl font-bold text-gray-800 animate-pulse">
-                    <span className="text-yellow-500">e</span>whiz
+                    <img
+                        src="/images/tripwhiz logo.png"
+                        alt="ewhiz"
+                        className="w-32 h-18 mr-2"
+                    />
                 </h1>
             </div>
         );
