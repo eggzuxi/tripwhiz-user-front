@@ -32,10 +32,10 @@ const ProductListComponent = () => {
 
     const [searchParams] = useSearchParams();
 
-    // 쿼리스트링에서 값 가져오기
-    const tno = searchParams.get("tno");
-    const cno = searchParams.get("cno");
-    const scno = searchParams.get("scno");
+    // 쿼리스트링에서 값 가져오기 및 숫자로 변환
+    const tno = searchParams.get("tno") ? parseInt(searchParams.get("tno") as string, 10) : null;
+    const cno = searchParams.get("cno") ? parseInt(searchParams.get("cno") as string, 10) : null;
+    const scno = searchParams.get("scno") ? parseInt(searchParams.get("scno") as string, 10) : null;
 
     // 장바구니 슬라이드 패널 상태
     const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -63,6 +63,7 @@ const ProductListComponent = () => {
             setLoading(false);
         }, 600);
     }, [page, hasMore, tno, cno, scno]);
+
 
     useEffect(() => {
         if (loading || !hasMore) return;
@@ -116,7 +117,14 @@ const ProductListComponent = () => {
         <div className="h-screen overflow-hidden">
             <div className="p-4 h-full overflow-y-auto custom-scrollbar">
                 <h2 className="text-xl font-bold mb-4">상품 목록</h2>
-                <CategoryFilterComponent />
+                <CategoryFilterComponent
+                    onFilterChange={() => {
+                        setPage(1); // 페이지 초기화
+                        setProducts([]); // 기존 상품 리스트 초기화
+                        setHasMore(true); // hasMore 상태 초기화
+                        setLoading(false); // 로딩 상태 초기화
+                    }}
+                />
                 <div className="grid grid-cols-2 gap-4">
                     {products.length > 0 ? (
                         products.map((product, index) => (
