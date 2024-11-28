@@ -33,7 +33,7 @@ function NoticeComponent() {
                     <button className="bg-yellow-400 text-white py-3 px-6 rounded-lg font-medium text-sm">
                         FAQ
                     </button>
-                    <button className="border border-yellow-400 text-yellow-400 py-3 px-6 rounded-lg font-medium text-sm">
+                    <button className="border border-yellow-400 #2452a3 py-3 px-6 rounded-lg font-medium text-sm">
                         QnA
                     </button>
                 </div>
