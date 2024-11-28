@@ -54,53 +54,52 @@ function ProductReadComponent() {
     }, [pno]);
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <div className="bg-white rounded-lg shadow-xl w-[600px] p-8">
-                {/* 이미지 */}
-                    <div className="w-full flex justify-center mb-6">
-                        <img
-                            src={imageUrl}
-                            alt={product.pname}
-                            className="w-80 h-80 object-cover rounded-lg"
-                        />
-                    </div>
-                {/* 상품 이름 */}
-                <h2 className="text-4xl font-extrabold text-gray-800 mb-4 text-center">{product.pname}</h2>
+        <div className="flex flex-col items-center min-h-screen bg-white p-6">
+            {/* 이미지 */}
+            <div className="w-full flex justify-center mb-6">
+                <img
+                    src={imageUrl}
+                    alt={product.pname}
+                    className="w-80 h-80 object-cover rounded-lg"
+                />
+            </div>
+
+            {/* 상품 이름 */}
+            <h2 className="text-4xl font-extrabold text-gray-800 mb-4">{product.pname}</h2>
 
             {/* 상품 설명 */}
             <p className="text-lg text-gray-600 mb-4">{product.pdesc}</p>
 
-                {/* 가격 */}
+            {/* 가격 */}
+            <div className="text-center mb-6">
+                <span className="text-2xl font-semibold text-amber-500">
+                    {product.price.toLocaleString()} 원
+                </span>
+            </div>
+
+            {/* 카테고리 정보 */}
+            {product.cno && (
                 <div className="text-center mb-6">
-                    <span className="text-2xl font-semibold text-amber-500">
-                        {product.price.toLocaleString()} 원
-                    </span>
+                    <span className="text-lg text-gray-500">Category ID: {product.cno}</span>
                 </div>
+            )}
 
-                {/* 카테고리 정보 */}
-                {product.cno && (
-                    <div className="text-center mb-6">
-                        <span className="text-lg text-gray-500">Category ID: {product.cno}</span>
-                    </div>
-                )}
-
-                {/* 버튼 */}
-                <div className="flex justify-center gap-6">
-                    <button
-                        type="button"
-                        className="bg-amber-400 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-amber-500 focus:outline-none transition duration-300"
-                        onClick={moveToCart}
-                    >
-                        Add to Cart
-                    </button>
-                    <button
-                        type="button"
-                        className="bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-400 focus:outline-none transition duration-300"
-                        onClick={() => navigate("/product/list")}
-                    >
-                        Back
-                    </button>
-                </div>
+            {/* 버튼 */}
+            <div className="flex justify-center gap-6">
+                <button
+                    type="button"
+                    className="bg-amber-400 text-white font-bold py-3 px-8 rounded-lg hover:bg-amber-500 focus:outline-none transition duration-300"
+                    onClick={moveToCart}
+                >
+                    Add to Cart
+                </button>
+                <button
+                    type="button"
+                    className="bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-lg hover:bg-gray-400 focus:outline-none transition duration-300"
+                    onClick={() => navigate("/product/list")}
+                >
+                    Back
+                </button>
             </div>
         </div>
     );

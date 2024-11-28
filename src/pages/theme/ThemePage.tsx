@@ -26,7 +26,7 @@ function ThemePage(): JSX.Element {
 
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-6 px-4 pt-8">
+        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-6 px-4">
             {/* 페이지 제목 */}
             <h2 className="text-2xl sm:text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
                 이번 여행의 테마는 무엇인가요?
