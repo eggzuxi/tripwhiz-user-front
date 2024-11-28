@@ -32,10 +32,10 @@ const ProductListComponent = () => {
 
     const [searchParams] = useSearchParams();
 
-    // 쿼리스트링에서 값 가져오기
-    const tno = searchParams.get("tno");
-    const cno = searchParams.get("cno");
-    const scno = searchParams.get("scno");
+    // 쿼리스트링에서 값 가져오기 및 숫자로 변환
+    const tno = searchParams.get("tno") ? parseInt(searchParams.get("tno") as string, 10) : null;
+    const cno = searchParams.get("cno") ? parseInt(searchParams.get("cno") as string, 10) : null;
+    const scno = searchParams.get("scno") ? parseInt(searchParams.get("scno") as string, 10) : null;
 
 
     // 장바구니 슬라이드 패널 상태
@@ -64,6 +64,7 @@ const ProductListComponent = () => {
             setLoading(false);
         }, 600);
     }, [page, hasMore, tno, cno, scno]);
+
 
     useEffect(() => {
         if (loading || !hasMore) return;
