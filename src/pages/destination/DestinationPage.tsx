@@ -52,7 +52,7 @@ function DestinationPage(): JSX.Element {
 
 
     return (
-        <div className="font-roboto min-h-screen bg-gray-50 flex flex-col items-center justify-center py-6 px-4 pt-8">
+        <div className="font-roboto min-h-screen bg-white flex flex-col items-center justify-center py-6 px-4 pt-8">
             <h2 className="text-2xl sm:text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center tracking-tighter">
                 이번 여행의 목적지는 어디인가요?
             </h2>

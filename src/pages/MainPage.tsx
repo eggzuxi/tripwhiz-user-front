@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"; // 돋보기 아이콘
-import useAuthStore from "../store/AuthStore.ts";
+// import useAuthStore from "../store/AuthStore.ts";
 // import { useNavigate } from "react-router-dom";
 
+
+
 function MainPage() {
-    const { name } = useAuthStore(); // 로그인한 사용자 이름 가져오기
+    // const { name } = useAuthStore(); // 로그인한 사용자 이름 가져오기
     const [searchQuery, setSearchQuery] = useState("");
     // const navigate = useNavigate();
 
@@ -18,6 +20,11 @@ function MainPage() {
         alert(`검색어: ${searchQuery}`);
         setSearchQuery(""); // 검색 후 입력창 초기화
     };
+
+
+    const youtubeVideos = [
+        "https://www.youtube.com/embed/StlJV2Yn26U"
+    ];
 
     return (
         <div className="flex flex-col bg-white h-screen"> {/* 전체 배경 흰색 */}
@@ -67,24 +74,61 @@ function MainPage() {
                     </div>
                 </div>
 
-                {/* 메인 배너 */}
-                <div className="px-4">
-                    <div className="relative bg-gray-200 rounded-lg overflow-hidden">
-                        <img
-                            src="https://via.placeholder.com/800x150"
-                            alt="광고 배너"
-                            className="w-full h-[150px] object-cover"
-                        />
-                        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-sm py-1 text-center">
-                            체크의 풍미 가득 맥주
-                        </div>
+
+                {/* 메인 배너 캐러셀 */}
+                <div className="px-4 w-full mt-4">
+                    {/* 가운데 정렬을 위해 flex를 사용한 div */}
+                    <div className="flex justify-center">
+
+                            {youtubeVideos.map((videoUrl, index) => (
+                                <div key={index} className="w-full flex justify-center">
+                                    <iframe
+                                        src={videoUrl}
+                                        title={`YouTube video ${index + 1}`}
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                        className="w-full h-[230px] sm:h-[500px] rounded-lg"
+                                    ></iframe>
+                                </div>
+                            ))}
+
+                    </div>
+                </div>
+
+
+                {/* 주요 서비스 섹션 */}
+                <div className="mt-6 px-4">
+                    <h2 className="text-xl font-extrabold text-gray-800 mb-4 flex items-start">한눈에 보기 👀</h2>
+                    <div className="grid grid-cols-4 gap-4 text-center text-lg">
+                        {[
+                            { imgSrc: "/images/luggage.png", label: "수화물 서비스" },
+                            { imgSrc: "/images/destination.png", label: "지점 확인" },
+                            { imgSrc: "/images/scan.png", label: "myQR" },
+                            { imgSrc: "/images/grocery-merchandising.png", label: "전체 상품" },
+                        ].map((service, index) => (
+                            <div key={index} className="flex flex-col items-center">
+                                {/* 이미지 */}
+                                <div
+                                    className="w-20 h-20 flex items-center justify-center rounded-full mb-2 "
+                                    style={{ backgroundColor: "#FFF2C3" }} // 원형 배경색 변경
+                                >
+                                    <img
+                                        src={service.imgSrc}
+                                        alt={service.label}
+                                        className="w-12 h-12 object-contain"
+                                    />
+                                </div>
+                                {/* 라벨 */}
+                                <span className="text-sm font-semibold text-gray-800 font-medium">{service.label}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
                 {/* 강력추천 섹션 */}
                 <div className="mt-6 px-4">
                     <div className="flex justify-between items-center">
-                        <h2 className="text-lg font-bold text-gray-800">
+                        <h2 className="text-xl font-extrabold text-gray-800 mb-4 flex items-start">
                             {name ? `${name}님 위한 강력추천 🎁` : "강력추천 🎁"}
                         </h2>
                         <div className="text-sm text-gray-500 cursor-pointer">전체보기 &gt;</div>
@@ -115,41 +159,6 @@ function MainPage() {
                     </div>
                 </div>
 
-                {/* 주요 서비스 섹션 */}
-                <div className="mt-6 px-4">
-                    <h2 className="text-lg font-bold text-gray-800 mb-4">주요 서비스 🛒</h2>
-                    <div className="grid grid-cols-4 gap-4 text-center">
-                        {[
-                            { icon: "🍷", label: "보틀오더" },
-                            { icon: "📆", label: "예약픽업" },
-                            { icon: "⏰", label: "오늘픽업" },
-                            { icon: "🚚", label: "바로배달" },
-                            { icon: "🎁", label: "이벤트" },
-                            { icon: "🛍️", label: "수화물보관" },
-                            { icon: "📋", label: "재고확인" },
-                            { icon: "📦", label: "택배예약" }
-                        ].map((service, index) => (
-                            <div key={index} className="flex flex-col items-center">
-                                <div className="bg-gray-100 w-12 h-12 flex items-center justify-center rounded-full mb-2">
-                                    <span className="text-2xl">{service.icon}</span>
-                                </div>
-                                <span className="text-sm text-gray-700">{service.label}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* 하단 배너 */}
-                <div className="relative bg-gray-200 overflow-hidden mt-6">
-                    <img
-                        src="https://via.placeholder.com/800x150"
-                        alt="프로모션 배너"
-                        className="w-full h-[150px] object-cover"
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-sm py-1 text-center">
-                        라면 유포면 오늘픽업 반값할인쿠폰 100% 증정
-                    </div>
-                </div>
             </div>
         </div>
     );

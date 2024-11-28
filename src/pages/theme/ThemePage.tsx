@@ -26,11 +26,11 @@ function ThemePage(): JSX.Element {
 
 
     return (
-        <div className="font-roboto min-h-screen bg-gray-50 flex flex-col items-center justify-center py-6 px-4 pt-8">
+        <div className="font-roboto min-h-screen bg-white flex flex-col items-center justify-center py-6 px-4 pt-4">
             <h2 className="text-2xl sm:text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center tracking-tighter">
                 이번 여행의 테마는 무엇인가요?
             </h2>
-            <p className="text-gray-700 text-base sm:text-lg text-center mb-8">
+            <p className="text-gray-700 text-base sm:text-lg text-center mb-4">
                 다양한 테마 중 하나를 선택해보세요. <br/>여행에 딱 맞는 추천 상품들을 소개해 드릴게요.
             </p>
 
