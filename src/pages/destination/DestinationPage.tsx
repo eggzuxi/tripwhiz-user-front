@@ -52,12 +52,13 @@ function DestinationPage(): JSX.Element {
 
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-6 px-4 pt-8">
-            <h2 className="text-2xl sm:text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
+        <div className="font-roboto min-h-screen bg-gray-50 flex flex-col items-center justify-center py-6 px-4 pt-8">
+            <h2 className="text-2xl sm:text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center tracking-tighter">
                 이번 여행의 목적지는 어디인가요?
             </h2>
             <p className="text-gray-700 text-base sm:text-lg text-center mb-8">
-                원하시는 여행지를 선택해보세요. 여행지에 딱 맞는 추천 상품들을 소개해 드릴게요.
+                원하시는 여행지를 선택해보세요.
+
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-4xl px-4">
@@ -68,17 +69,15 @@ function DestinationPage(): JSX.Element {
                         className="relative cursor-pointer group focus-within:outline-none"
                     >
                         <div
-                            className="overflow-hidden rounded-lg shadow-lg transform transition-transform duration-300 group-hover:scale-105"
-                        >
+                            className="overflow-hidden rounded-lg shadow-lg transform transition-transform duration-300 group-hover:scale-105">
                             <img
                                 src={destination.image}
                                 alt={destination.name}
                                 className="w-full h-48 object-cover"
                             />
-                            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-95 group-hover:opacity-100 transition-opacity duration-300">
-                                <p className="text-white text-lg font-semibold">
-                                    {destination.name}
-                                </p>
+                            <div
+                                className="absolute inset-0 bg-navy-deep bg-opacity-20 flex items-center justify-center opacity-90 group-hover:opacity-100 transition-opacity duration-300">
+                                <p className="text-white text-lg font-semibold">{destination.name}</p>
                             </div>
                         </div>
                     </div>
@@ -87,7 +86,7 @@ function DestinationPage(): JSX.Element {
 
             <button
                 onClick={handleSkipClick}
-                className="fixed bottom-4 right-4 bg-gray-400 text-white font-semibold rounded-full px-4 py-2 shadow-lg transition-colors duration-300 hover:bg-gray-500"
+                className="fixed bottom-6 right-6 bg-gray-300 text-white font-semibold rounded-full px-6 py-3 shadow-lg transition-colors duration-300 hover:bg-gray-400"
             >
                 Skip &#62;
             </button>

@@ -26,13 +26,12 @@ function ThemePage(): JSX.Element {
 
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-6 px-4">
-            {/* 페이지 제목 */}
-            <h2 className="text-2xl sm:text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
+        <div className="font-roboto min-h-screen bg-gray-50 flex flex-col items-center justify-center py-6 px-4 pt-8">
+            <h2 className="text-2xl sm:text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center tracking-tighter">
                 이번 여행의 테마는 무엇인가요?
             </h2>
             <p className="text-gray-700 text-base sm:text-lg text-center mb-8">
-                다양한 테마 중 하나를 선택해보세요. 여행에 딱 맞는 추천 상품들을 소개해 드릴게요.
+                다양한 테마 중 하나를 선택해보세요. <br/>여행에 딱 맞는 추천 상품들을 소개해 드릴게요.
             </p>
 
             {/* 테마 카드 그리드 */}
@@ -62,7 +61,7 @@ function ThemePage(): JSX.Element {
             {/* 테마 선택 건너뛰기 버튼 */}
             <button
                 onClick={handleSkipClick}
-                className="fixed bottom-4 right-4 bg-gray-400 text-white font-semibold rounded-full px-4 py-2 shadow-lg transition-colors duration-300 hover:bg-gray-500"
+                className="fixed bottom-6 right-6 bg-gray-300 text-white font-semibold rounded-full px-6 py-3 shadow-lg transition-colors duration-300 hover:bg-gray-400"
             >
                 Skip &#62;
             </button>
