@@ -3,7 +3,6 @@ import {Navigate} from "react-router-dom";
 import LoadingPage from "../pages/LoadingPage.tsx";
 
 const Loading = <LoadingPage></LoadingPage>
-const ProductIndex = lazy(() => import("../pages/products/ProductIndex"))
 const ProductList = lazy(() => import("../pages/products/ProductListPage"))
 const ProductRead = lazy(() => import("../pages/products/ProductReadPage"))
 
@@ -11,7 +10,6 @@ const ProductRead = lazy(() => import("../pages/products/ProductReadPage"))
 const productRouter = {
 
     path: '/product',
-    element: <Suspense fallback={Loading}><ProductIndex/></Suspense>,
     children: [
         {
             path: "list",

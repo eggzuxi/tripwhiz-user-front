@@ -1,21 +1,43 @@
-import {
-    faBagShopping,
-    faCalendarCheck,
-    faCalendarDay,
-    faClipboardCheck,
-    faClock,
-    faGift,
-    faTruck,
-    faWineBottle,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useAuthStore from "../store/AuthStore.ts";
+import { useState } from "react";
 
 function MainPage() {
-    return (
-        <div className="flex flex-col bg-gray-100 h-screen">
+    const { name } = useAuthStore(); // 로그인한 사용자 이름 가져오기
+    const [searchQuery, setSearchQuery] = useState("");
 
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const handleSearchSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        alert(`검색어: ${searchQuery}`);
+        setSearchQuery(""); // 검색 후 입력창 초기화
+    };
+
+    return (
+        <div className="flex flex-col bg-white h-screen"> {/* 전체 배경 흰색 */}
             {/* 스크롤 가능한 메인 콘텐츠 */}
-            <div className="flex-1 overflow-y-auto]">
+            <div className="flex-1 overflow-y-auto">
+                {/* 검색창 */}
+                <div className="p-4">
+                    <form onSubmit={handleSearchSubmit} className="flex items-center">
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            placeholder="🔍 원하는 상품을 검색하세요"
+                            className="flex-1 bg-gray-100 text-sm px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <button
+                            type="submit"
+                            className="ml-2 px-4 py-2 bg-blue-500 text-white text-sm rounded-full"
+                        >
+                            검색
+                        </button>
+                    </form>
+                </div>
+
                 {/* 카테고리 선택 */}
                 <div className="bg-white px-4 py-2">
                     <div className="flex flex-row space-x-4 overflow-x-auto">
@@ -31,6 +53,7 @@ function MainPage() {
                         ))}
                     </div>
                 </div>
+
                 {/* 메인 배너 */}
                 <div className="px-4">
                     <div className="relative bg-gray-200 rounded-lg overflow-hidden">
@@ -48,7 +71,9 @@ function MainPage() {
                 {/* 강력추천 섹션 */}
                 <div className="mt-6 px-4">
                     <div className="flex justify-between items-center">
-                        <h2 className="text-lg font-bold text-gray-800">박신영님 위한 강력추천🎁</h2>
+                        <h2 className="text-lg font-bold text-gray-800">
+                            {name ? `${name}님 위한 강력추천 🎁` : "강력추천 🎁"}
+                        </h2>
                         <div className="text-sm text-gray-500 cursor-pointer">전체보기 &gt;</div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 mt-4">
@@ -79,21 +104,21 @@ function MainPage() {
 
                 {/* 주요 서비스 섹션 */}
                 <div className="mt-6 px-4">
-                    <h2 className="text-lg font-bold text-gray-800 mb-4">주요 서비스 😎</h2>
+                    <h2 className="text-lg font-bold text-gray-800 mb-4">주요 서비스 🛒</h2>
                     <div className="grid grid-cols-4 gap-4 text-center">
                         {[
-                            { icon: faWineBottle, label: "보틀오더" },
-                            { icon: faCalendarCheck, label: "예약픽업" },
-                            { icon: faCalendarDay, label: "오늘픽업" },
-                            { icon: faTruck, label: "바로배달" },
-                            { icon: faGift, label: "이벤트" },
-                            { icon: faBagShopping, label: "수화물보관" },
-                            { icon: faClipboardCheck, label: "재고확인" },
-                            { icon: faClock, label: "택배예약" },
+                            { icon: "🍷", label: "보틀오더" },
+                            { icon: "📆", label: "예약픽업" },
+                            { icon: "⏰", label: "오늘픽업" },
+                            { icon: "🚚", label: "바로배달" },
+                            { icon: "🎁", label: "이벤트" },
+                            { icon: "🛍️", label: "수화물보관" },
+                            { icon: "📋", label: "재고확인" },
+                            { icon: "📦", label: "택배예약" },
                         ].map((service, index) => (
                             <div key={index} className="flex flex-col items-center">
-                                <div className="bg-white w-12 h-12 flex items-center justify-center rounded-full mb-2">
-                                    <FontAwesomeIcon icon={service.icon} className="text-yellow-400 text-xl" />
+                                <div className="bg-gray-100 w-12 h-12 flex items-center justify-center rounded-full mb-2">
+                                    <span className="text-2xl">{service.icon}</span>
                                 </div>
                                 <span className="text-sm text-gray-700">{service.label}</span>
                             </div>
@@ -112,8 +137,6 @@ function MainPage() {
                         라면 유포면 오늘픽업 반값할인쿠폰 100% 증정
                     </div>
                 </div>
-
-
             </div>
         </div>
     );
