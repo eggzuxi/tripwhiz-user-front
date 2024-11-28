@@ -1,9 +1,13 @@
-import useAuthStore from "../store/AuthStore.ts";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"; // 돋보기 아이콘
+import useAuthStore from "../store/AuthStore.ts";
+// import { useNavigate } from "react-router-dom";
 
 function MainPage() {
     const { name } = useAuthStore(); // 로그인한 사용자 이름 가져오기
     const [searchQuery, setSearchQuery] = useState("");
+    // const navigate = useNavigate();
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
@@ -22,26 +26,35 @@ function MainPage() {
                 {/* 검색창 */}
                 <div className="p-4">
                     <form onSubmit={handleSearchSubmit} className="flex items-center">
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={handleSearchChange}
-                            placeholder="🔍 원하는 상품을 검색하세요"
-                            className="flex-1 bg-gray-100 text-sm px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                        <button
-                            type="submit"
-                            className="ml-2 px-4 py-2 bg-blue-500 text-white text-sm rounded-full"
-                        >
-                            검색
-                        </button>
+                        <div className="relative flex-1">
+                            {/* 검색 입력창 크기 확대 */}
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                placeholder="원하는 상품을 검색하세요"
+                                className="w-full bg-gray-100 text-sm px-6 py-4 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            {/* 돋보기 아이콘 */}
+                            <FontAwesomeIcon
+                                icon={faMagnifyingGlass}
+                                style={{
+                                    color: "#1D2D5F",
+                                    fontSize: "20px",
+                                    position: "absolute",
+                                    right: "20px", // 오른쪽 끝에 배치
+                                    top: "50%",
+                                    transform: "translateY(-50%)", // 세로 중앙 맞춤
+                                }}
+                            />
+                        </div>
                     </form>
                 </div>
 
                 {/* 카테고리 선택 */}
                 <div className="bg-white px-4 py-2">
                     <div className="flex flex-row space-x-4 overflow-x-auto">
-                        {["간편식사", "과자", "생활용품", "아이스크림", "음료"].map((category, index) => (
+                        {["수납/편의", "의류", "안전/위생", "악세사리", "액티비티 용품"].map((category, index) => (
                             <button
                                 key={index}
                                 className={`px-4 py-2 whitespace-nowrap ${
@@ -114,7 +127,7 @@ function MainPage() {
                             { icon: "🎁", label: "이벤트" },
                             { icon: "🛍️", label: "수화물보관" },
                             { icon: "📋", label: "재고확인" },
-                            { icon: "📦", label: "택배예약" },
+                            { icon: "📦", label: "택배예약" }
                         ].map((service, index) => (
                             <div key={index} className="flex flex-col items-center">
                                 <div className="bg-gray-100 w-12 h-12 flex items-center justify-center rounded-full mb-2">

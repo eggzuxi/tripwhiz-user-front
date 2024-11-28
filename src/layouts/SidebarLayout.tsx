@@ -1,6 +1,4 @@
 import { useEffect, useMemo } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/AuthStore.ts";
 
@@ -24,10 +22,12 @@ function SidebarLayout({ onClose }: SidebarProps) {
 
     const menuItems: MenuItem[] = useMemo(
         () => [
-            { name: '서비스', path: '/side/service' },
-            { name: '마이페이지', path: '/side/mypage' },
-            { name: '공지사항', path: '/side/notice' },
-            { name: '고객센터', path: '/side/customerservice' },
+            { name: '마이페이지', path: '/side/customerservice' },
+            { name: '전체상품', path: '/side/service' },
+            { name: '주문내역', path: '/side/mypage' },
+            { name: 'My QR', path: '/side/notice' },
+            { name: '수화물 서비스', path: '/side/customerservice' },
+            { name: '고객센터', path: '/side/customerservice' }
         ],
         []
     );
@@ -37,16 +37,36 @@ function SidebarLayout({ onClose }: SidebarProps) {
         onClose(); // 사이드바 닫기
     };
 
-    return (
-        <div className="fixed top-0 right-0 w-[250px] h-full bg-white shadow-lg flex flex-col p-4 z-50">
-            <div className="text-gray-800 font-semibold mb-6 flex items-center justify-between">
-                {name ? `${name}님 환영합니다` : '환영합니다'}
-                <FontAwesomeIcon icon={faUser} className="text-gray-700" />
-            </div>
+    const handleLoginClick = () => {
+        navigate("/member/login"); // 로그인 페이지로 이동
+        onClose(); // 사이드바 닫기
+    };
 
-            <button className="self-end mb-6 text-gray-500" onClick={onClose}>
-                X
-            </button>
+    return (
+        <div className="fixed top-0 left-0 w-[250px] h-full bg-white shadow-lg flex flex-col p-6 z-50">
+            <div className="text-gray-800 font-semibold mb-6 flex items-center justify-between">
+                {accessToken ? (
+                    <>
+                        <span className="mr-2">
+                            {name ? `${name}님 환영합니다` : '환영합니다'}
+                        </span>
+                    </>
+                ) : (
+                    <span
+                        className="text-black cursor-pointer"
+                        onClick={handleLoginClick}
+                    >
+                        로그인
+                    </span>
+                )}
+                {/* X 버튼을 오른쪽 끝으로 이동 */}
+                <button
+                    className="absolute top-6 right-6 text-gray-500"
+                    onClick={onClose}
+                >
+                    X
+                </button>
+            </div>
 
             <ul className="space-y-6 list-none p-0 text-left">
                 {menuItems.map((menu) => (
