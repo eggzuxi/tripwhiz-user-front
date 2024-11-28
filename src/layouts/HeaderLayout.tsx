@@ -19,7 +19,7 @@ function HeaderLayout() {
         });
     };
 
-    const moveToCart = () => {
+    const moveToCart  = () => {
         navigate({
             pathname: `/cart`,
         });
