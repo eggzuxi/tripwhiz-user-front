@@ -28,7 +28,7 @@ function HeaderLayout() {
     return (
         <div>
             <header
-                className="fixed top-0 left-0 w-full h-[65px] bg-white shadow-md flex items-center justify-between px-4 z-50">
+                className="fixed top-0 left-0 w-full h-[65px] bg-white flex items-center justify-between px-4 z-50">
                 <div className="cursor-pointer" onClick={moveToHome}>
                     {/* 로고 이미지 삽입 */}
                     <img
