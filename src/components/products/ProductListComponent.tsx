@@ -117,7 +117,14 @@ const ProductListComponent = () => {
         <div className="h-screen overflow-hidden">
             <div className="p-4 h-full overflow-y-auto custom-scrollbar">
                 <h2 className="text-xl font-bold mb-4">상품 목록</h2>
-                <CategoryFilterComponent />
+                <CategoryFilterComponent
+                    onFilterChange={() => {
+                        setPage(1); // 페이지 초기화
+                        setProducts([]); // 기존 상품 리스트 초기화
+                        setHasMore(true); // hasMore 상태 초기화
+                        setLoading(false); // 로딩 상태 초기화
+                    }}
+                />
                 <div className="grid grid-cols-2 gap-4">
                     {products.length > 0 ? (
                         products.map((product, index) => (

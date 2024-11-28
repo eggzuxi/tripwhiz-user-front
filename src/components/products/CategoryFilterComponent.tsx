@@ -1,10 +1,10 @@
-import {useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {useState} from "react";
 
-function CategoryFilterComponent() {
+function CategoryFilterComponent({ onFilterChange }: { onFilterChange: (cno: number | null, scno: number | null) => void }) {
 
-    const [searchParams, setSearchParams] = useSearchParams();
-    // const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     const categories = [
         { cno: 1, cname: "수납/편의" },
@@ -39,18 +39,20 @@ function CategoryFilterComponent() {
     const handleCategoryChange = (cno: number) => {
         setSelectedCategory(cno);
         setSelectedSubCategory(null); // 하위 카테고리 초기화
+        onFilterChange(cno, null); // 필터 변경 전달
         const params = new URLSearchParams(searchParams.toString());
         params.set("cno", cno.toString());
         params.delete("scno"); // 하위 카테고리 삭제
-        setSearchParams(params);
+        navigate(`/product/list?${params.toString()}`);
     };
 
     // 하위 카테고리 선택 처리
     const handleSubCategoryChange = (scno: number) => {
         setSelectedSubCategory(scno);
+        onFilterChange(selectedCategory, scno); // 필터 변경 전달
         const params = new URLSearchParams(searchParams.toString());
         params.set("scno", scno.toString());
-        setSearchParams(params);
+        navigate(`/product/list?${params.toString()}`);
     };
 
     // 하위 카테고리 필터링
