@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+
+
 
 /* 화면을 중앙에 고정하고 배경 색상을 설정 */
 html, body {
@@ -25,3 +29,5 @@ body {
     overflow-y: scroll;
     overflow-x: hidden;
 }
+
+

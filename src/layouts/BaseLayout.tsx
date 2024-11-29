@@ -7,7 +7,7 @@ function BaseLayout({ children }: { children: ReactNode }) {
         <div className="bg-white min-h-screen"> {/* 전체 배경을 흰색으로 설정 */}
             <HeaderLayout/>
             <SampleChatUI/>
-            <main style={{ marginTop: "150px" }}>{children}</main>
+            <main style={{ marginTop: "130px" }}>{children}</main>
         </div>
     );
 }

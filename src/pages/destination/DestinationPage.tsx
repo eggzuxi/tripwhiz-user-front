@@ -28,8 +28,9 @@ function DestinationPage(): JSX.Element {
     const handleDestinationClick = async (destinationId: number) => {
         console.log("Destination ID:", destinationId);
 
-        await fetchDestination(destinationId); // API를 통해 데이터 호출 및 전역 상태 저장
-        console.log("After fetching destination:", fetchDestination);
+        fetchDestination(destinationId) // 데이터 호출
+            .then(() => console.log("After fetching destination:", fetchDestination))
+            .catch((error) => console.error("Failed to fetch destination:", error));
 
         navigate("/theme"); // 테마 선택 페이지로 이동
     };
@@ -56,7 +57,7 @@ function DestinationPage(): JSX.Element {
 
 
     return (
-        <div className="font-roboto min-h-screen bg-gray-50 flex flex-col items-center justify-center py-6 px-4 pt-8">
+        <div className="font-roboto min-h-screen bg-white flex flex-col items-center justify-center py-6 px-4 pt-8">
             <h2 className="text-2xl sm:text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center tracking-tighter">
                 이번 여행의 목적지는 어디인가요?
             </h2>
