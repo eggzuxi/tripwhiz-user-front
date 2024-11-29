@@ -8,7 +8,7 @@ const Notice = lazy(() => import("../pages/sidebar/NoticePage.tsx"))
 const LuggageService = lazy(() => import("../pages/sidebar/LuggageServicePage.tsx"))
 const MyOrder = lazy(() => import("../pages/sidebar/MyOrderPage.tsx"))
 const MyQr = lazy(() => import("../pages/sidebar/MyQrPage.tsx"))
-const TotalProduct = lazy(() => import("../pages/sidebar/TotalProductPage.tsx"))
+
 
 const sidebarRouter = {
 
@@ -27,22 +27,17 @@ const sidebarRouter = {
             element: <Suspense fallback={Loading}><Notice/></Suspense>
         },
         {
-            path: "LuggageService",
+            path: "luggageservice",
             element: <Suspense fallback={Loading}><LuggageService/></Suspense>
         },
         {
-            path: "MyOrder",
+            path: "myorder",
             element: <Suspense fallback={Loading}><MyOrder/></Suspense>
         },
         {
-            path: "MyQr",
+            path: "myqr",
             element: <Suspense fallback={Loading}><MyQr/></Suspense>
         },
-        {
-            path: "TotalProduct",
-            element: <Suspense fallback={Loading}><TotalProduct/></Suspense>
-        }
-
     ]
 
 };

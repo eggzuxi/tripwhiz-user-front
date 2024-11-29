@@ -14,45 +14,56 @@ const MyPageComponent = () => {
     };
 
     return (
-        <div className="w-full h-screen bg-gray-50 p-4 overflow-y-auto">
-            {/* 헤더 */}
+        <div className="bg-gray-100 h-screen flex flex-col items-center p-4 overflow-y-auto">
+            {/* Profile Background Section */}
+            <div
+                className="w-full h-80 bg-cover bg-center rounded-t-lg mb-6"
+                style={{ backgroundImage: "url('https://randomuser.me/api/portraits/women/5.jpg')" }} // Replace with your desired background image
+            ></div>
 
-            {/* 사용자 정보 섹션 */}
-            <div className="text-center bg-purple-100 rounded-lg shadow-md p-4 mt-4">
-                <div className="text-lg font-semibold text-gray-800">
-                    {name ? `${name}님 환영합니다` : "회원님 환영합니다"}
+            {/* Profile Header Card */}
+            <div className="w-full bg-white p-6 text-gray-900 flex flex-col items-center shadow-md rounded-lg -mt-16 mb-6">
+                <div className="w-32 h-32 mb-4">
+                    <img
+                        src="https://randomuser.me/api/portraits/women/5.jpg" // Replace with actual user image
+                        alt="Profile"
+                        className="w-full h-full object-cover rounded-md"
+                    />
                 </div>
-                <div className="text-sm text-gray-600 mt-1">{email || "example@email.com"}</div>
+                <h1 className="text-xl font-semibold text-gray-800">{name ? `${name}님 환영합니다` : "회원님 환영합니다"}</h1>
+                <p className="text-sm text-gray-600 mt-1">{email || "example@email.com"}</p>
                 <button className="mt-4 px-6 py-2 bg-purple-500 text-white text-sm font-medium rounded-full">
                     내 정보 보기
                 </button>
             </div>
 
-            {/* 주요 아이콘 섹션 */}
-            <div className="grid grid-cols-4 gap-4 text-center mt-6">
+            {/* Two Cards per Row for Menu Items */}
+            <div className="w-full bg-white grid grid-cols-2 gap-6 mt-6">
                 {[
-                    { label: "공지사항", icon: "📜" },
-                    { label: "이벤트", icon: "🎉" },
-                    { label: "결제내역", icon: "💳" },
-                    { label: "쿠폰북", icon: "🎟️" },
-                    { label: "결제카드", icon: "💳" },
-                    { label: "면허증", icon: "🚗" },
-                    { label: "FAQ", icon: "❓" },
-                    { label: "친구초대", icon: "👥" },
+                    { label: "My Address", icon: "📍" },
+                    { label: "Account", icon: "👤" },
+                    { label: "Notifications", icon: "🔔" },
+                    { label: "Devices", icon: "📱" },
+                    { label: "Passwords", icon: "🔑" },
+                    { label: "Language", icon: "🌍" }
                 ].map((item, index) => (
                     <div
                         key={index}
-                        className="flex flex-col items-center bg-white rounded-lg shadow p-4"
+                        className="flex items-center justify-between p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+                        onClick={() => navigate(`/profile/${item.label.toLowerCase().replace(' ', '-')}`)}
                     >
-                        <div className="text-3xl">{item.icon}</div>
-                        <div className="text-sm font-medium text-gray-700 mt-2">{item.label}</div>
+                        <div className="flex items-center space-x-2">
+                            <span className="text-2xl">{item.icon}</span>
+                            <span className="text-lg font-medium text-gray-700">{item.label}</span>
+                        </div>
+                        <span className="text-gray-400">›</span>
                     </div>
                 ))}
             </div>
 
-            {/* 마일리지 및 기타 버튼 섹션 */}
-            <div className="mt-8 bg-white rounded-lg shadow p-4">
-                <div className="flex justify-between items-center">
+            {/* Mileage and Logout Section */}
+            <div className="w-full mt-8 bg-white rounded-lg shadow p-6">
+                <div className="flex justify-between items-center mb-4">
                     <div className="text-lg font-semibold text-gray-800">마일리지</div>
                     <div className="text-purple-500 text-lg font-bold">1,000원</div>
                 </div>

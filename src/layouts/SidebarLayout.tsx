@@ -22,11 +22,11 @@ function SidebarLayout({ onClose }: SidebarProps) {
 
     const menuItems: MenuItem[] = useMemo(
         () => [
-            { name: '마이페이지', path: '/side/customerservice' },
-            { name: '전체상품', path: '/side/service' },
-            { name: '주문내역', path: '/side/mypage' },
-            { name: 'My QR', path: '/side/notice' },
-            { name: '수화물 서비스', path: '/side/customerservice' },
+            { name: '마이페이지', path: '/side/mypage' },
+            { name: '전체상품', path: '/product/list' },
+            { name: '주문내역', path: '/side/myorder' },
+            { name: 'My QR', path: '/side/myqr' },
+            { name: '수화물 서비스', path: '/side/luggageservice' },
             { name: '고객센터', path: '/side/customerservice' }
         ],
         []

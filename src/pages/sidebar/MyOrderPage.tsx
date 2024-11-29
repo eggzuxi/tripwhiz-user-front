@@ -1,7 +1,8 @@
+import MyOrderComponent from "../../components/sidebar/MyOrderComponent.tsx";
 
 function MyOrderPage() {
     return (
-        <div></div>
+        <MyOrderComponent/>
     );
 }
 
