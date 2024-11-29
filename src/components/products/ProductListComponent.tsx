@@ -36,7 +36,7 @@ const ProductListComponent = () => {
 
     const email = useAuthStore((state) => state.email);
 
-    // 쿼리스트링에서 값 가져오기 및 숫자로 변환
+    // 쿼리스트링에서 값 가져오기 및 숫자로 변환_SY
     const tno = searchParams.get("tno") ? parseInt(searchParams.get("tno") as string, 10) : null;
     const cno = searchParams.get("cno") ? parseInt(searchParams.get("cno") as string, 10) : null;
     const scno = searchParams.get("scno") ? parseInt(searchParams.get("scno") as string, 10) : null;
@@ -115,7 +115,7 @@ const ProductListComponent = () => {
                     return;
                 }
 
-                // API 호출: 선택된 상품, 수량 및 이메일 전달
+                // API 호출: 선택된 상품, 수량 및 이메일 전달(이거 버려주세여)
                 await addCart(selectedProduct.pno, qty, email);
                 closePanel();
                 console.log("장바구니에 상품이 추가되었습니다!");
