@@ -155,7 +155,7 @@ const SampleChatUI: React.FC = () => {
                                 cursor: "pointer",
                             }}
                         >
-                            ✖
+                            X
                         </button>
                     </div>
                     <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>

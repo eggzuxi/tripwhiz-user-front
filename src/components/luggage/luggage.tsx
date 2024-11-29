@@ -1,7 +1,10 @@
-import { useState } from "react";
-import { GoogleMap, Marker, Polyline, useJsApiLoader } from "@react-google-maps/api";
-import { ref, get, set } from "firebase/database";
-import { secondaryDatabase } from "../../firebase/firebaseConfig.ts";
+import { useState} from "react";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import axios from "axios";
+
+// Firebase 설정 (Firebase Realtime Database 연결)
+import { ref, get } from "firebase/database";
+import { secondaryDatabase } from "../../firebase/firebaseConfig.ts";  // Firebase 설정
 
 const containerStyle = {
     width: "100%",
@@ -23,52 +26,27 @@ const fetchLocation = async (key: string): Promise<{ lat: number; lng: number } 
     }
 };
 
-// Firebase에서 편의점 데이터를 가져오는 함수
-const fetchConvenienceStores = async (): Promise<
-    { lat: number; lng: number; name: string }[]
-> => {
+// 백엔드에 출발지와 도착지 저장
+const saveSpotToServer = async (startPoint: { lat: number; lng: number }, endPoint: { lat: number; lng: number }) => {
     try {
-        const storesRef = ref(secondaryDatabase, "convenienceStores");
-        const snapshot = await get(storesRef);
-        if (snapshot.exists()) {
-            const data = snapshot.val() as Record<
-                string,
-                { lat: number; lng: number; name: string }
-            >;
-            return Object.values(data);
-        }
-        return [];
+        await axios.post("http://localhost:8081/api/saveSpot", {
+            startPoint,
+            endPoint,
+        });
+        alert("스팟이 저장되었습니다!");
     } catch (error) {
-        console.error("Error fetching convenience stores from Firebase:", error);
-        return [];
+        console.error("Error sending spot to server:", error);
     }
 };
 
-// Firebase에 출발지와 도착지를 저장하는 함수
-const savePointsToFirebase = async (
-    startPoint: { lat: number; lng: number } | null,
-    endPoint: { lat: number; lng: number } | null
-) => {
-    const pointsRef = ref(secondaryDatabase, "userRoutes");
-    await set(pointsRef, { startPoint, endPoint });
-};
-
 function Luggage() {
-    const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(
-        null
-    );
     const [startPoint, setStartPoint] = useState<{ lat: number; lng: number } | null>(null);
     const [endPoint, setEndPoint] = useState<{ lat: number; lng: number } | null>(null);
-    const [convenienceStores, setConvenienceStores] = useState<
-        { lat: number; lng: number; name: string }[]
-    >([]);
-    const [path, setPath] = useState<{ lat: number; lng: number }[]>([]);
-    const [zoomLevel, setZoomLevel] = useState<number>(12);
+    const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
+    const [zoomLevel, setZoomLevel] = useState(12);
 
     const { isLoaded, loadError } = useJsApiLoader({
-        googleMapsApiKey:
-            import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY ||
-            "AIzaSyCAEphgIbIzt3ECeOlAkuKSLpoDs1DZRVY",
+        googleMapsApiKey: "YOUR_GOOGLE_MAPS_API_KEY", // 구글맵 API 키
     });
 
     const handleMapClick = async (event: google.maps.MapMouseEvent) => {
@@ -80,61 +58,24 @@ function Luggage() {
         } else if (!endPoint) {
             setEndPoint(clickedPosition);
 
-            // 출발지와 도착지가 설정되면 Firebase에 저장
-            await savePointsToFirebase(startPoint, clickedPosition);
-            alert("출발지와 도착지가 저장되었습니다!");
+            // 출발지와 도착지가 설정되면 서버에 저장
+            if (startPoint && clickedPosition) {
+                await saveSpotToServer(startPoint, clickedPosition);
+            }
         }
     };
 
-    const loadRouteAndStores = async () => {
-        if (!startPoint || !endPoint) return;
-
-        const directionsService = new google.maps.DirectionsService();
-        directionsService.route(
-            {
-                origin: startPoint,
-                destination: endPoint,
-                travelMode: google.maps.TravelMode.DRIVING,
-            },
-            async (result, status) => {
-                // @ts-ignore
-                if (status === "OK" && result.routes[0]) {
-                    // @ts-ignore
-                    const newPath = result.routes[0].overview_path.map((point) => ({
-                        lat: point.lat(),
-                        lng: point.lng(),
-                    }));
-                    setPath(newPath);
-
-                    const stores = await fetchConvenienceStores();
-                    const nearbyStores = stores.filter((store) => {
-                        const distance = google.maps.geometry.spherical.computeDistanceBetween(
-                            new google.maps.LatLng(store.lat, store.lng),
-                            new google.maps.LatLng(startPoint.lat, startPoint.lng)
-                        );
-                        return distance <= 5000; // 5km 내 편의점 필터링
-                    });
-                    setConvenienceStores(nearbyStores);
-                } else {
-                    console.error("경로 요청 실패:", status);
-                }
-            }
-        );
-    };
-
     const loadCurrentLocation = async () => {
-        const location = await fetchLocation("userLocation");
+        const location = await fetchLocation("userLocation"); // Firebase에서 위치 데이터 가져오기
         if (location) {
             setCurrentLocation(location);
             setZoomLevel(15); // 내 위치를 표시할 때 확대
         }
     };
 
-    if (loadError) return <p>Error loading map: {loadError.message}</p>;
-
     return (
         <div>
-            <h1 className="text-lg font-bold mb-4">말레이시아 지도 - 내 위치, 출발지/도착지 설정</h1>
+            <h1>말레이시아 지도 - 출발지 및 도착지 설정</h1>
             <div className="mb-4 flex gap-2">
                 <button
                     onClick={loadCurrentLocation}
@@ -156,7 +97,11 @@ function Luggage() {
                 </button>
                 {startPoint && endPoint && (
                     <button
-                        onClick={loadRouteAndStores}
+                        onClick={async () => {
+                            if (startPoint && endPoint) {
+                                await saveSpotToServer(startPoint, endPoint);
+                            }
+                        }}
                         className="p-2 bg-purple-500 text-white rounded"
                     >
                         경로 및 편의점 표시
@@ -186,7 +131,7 @@ function Luggage() {
                         <Marker
                             position={startPoint}
                             label={{
-                                text: "출발",
+                                text: "출발지",
                                 color: "white",
                                 fontSize: "14px",
                                 fontWeight: "bold",
@@ -197,35 +142,13 @@ function Luggage() {
                         <Marker
                             position={endPoint}
                             label={{
-                                text: "도착",
+                                text: "도착지",
                                 color: "white",
                                 fontSize: "14px",
                                 fontWeight: "bold",
                             }}
                         />
                     )}
-                    {path.length > 0 && (
-                        <Polyline
-                            path={path}
-                            options={{
-                                strokeColor: "#FF0000",
-                                strokeOpacity: 0.8,
-                                strokeWeight: 4,
-                            }}
-                        />
-                    )}
-                    {convenienceStores.map((store, index) => (
-                        <Marker
-                            key={index}
-                            position={{ lat: store.lat, lng: store.lng }}
-                            label={{
-                                text: store.name,
-                                color: "blue",
-                                fontSize: "12px",
-                                fontWeight: "bold",
-                            }}
-                        />
-                    ))}
                 </GoogleMap>
             ) : (
                 <p>Loading map...</p>

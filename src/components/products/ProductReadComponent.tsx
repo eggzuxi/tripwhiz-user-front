@@ -2,9 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IProduct } from "../../types/product.ts";
 import { getOne } from "../../api/productAPI.ts";
-// import { cartStore } from "../../store/CartStore.ts";
 import useAuthStore from "../../store/AuthStore.ts";
-import {addCart} from "../../api/cartAPI.ts";
+import { addCart } from "../../api/cartAPI.ts";
 
 const initialState: IProduct = {
     pno: 0,
@@ -23,21 +22,18 @@ const imageUrl = 'http://10.10.10.92/ddb4aafb-6645-480c-b634-35e7b8046ef9_c2_m1_
 function ProductReadComponent() {
     const navigate = useNavigate();
     const { pno } = useParams();
-
     const email = useAuthStore((state) => state.email);
-
-    // const addToCart = cartStore((state) => state.addToCart);
 
     const [product, setProduct] = useState<IProduct>(initialState);
 
     const moveToCart = async () => {
         if (!email) {
-            alert("로그인이 필요합니다."); // 이메일이 없으면 경고 메시지
+            alert("로그인이 필요합니다.");
             return;
         }
 
         try {
-            await addCart(product.pno, 1, email); // API 호출로 장바구니에 추가(이거 버려주세여)
+            await addCart(product.pno, 1, email);
             console.log("Added to cart:", product);
             navigate("/cart");
         } catch (error) {
@@ -57,6 +53,7 @@ function ProductReadComponent() {
             return;
         }
 
+        // 상품 정보를 가져오는 API 호출
         getOne(pnoNum)
             .then((result) => {
                 setProduct(result);
@@ -68,40 +65,38 @@ function ProductReadComponent() {
 
     return (
         <div className="flex flex-col items-center min-h-screen bg-white p-6">
-            {/* 이미지 */}
-            <div className="w-full flex justify-center mb-6">
+            {/* 이미지 - 화면에 꽉 차게 설정 */}
+            <div className="w-full h-80 mb-6">
                 <img
-                    src={imageUrl}
+                    src="/public/images/read/인형.png" // 상품 이미지 URL을 이미지 표시
                     alt={product.pname}
-                    className="w-80 h-80 object-cover rounded-lg"
+                    className="w-full h-full object-cover rounded-lg"
                 />
             </div>
 
-            {/* 상품 이름 */}
-            <h2 className="text-4xl font-extrabold text-gray-800 mb-4">{product.pname}</h2>
+            {/* 용량 선택 */}
+            <div className="flex gap-4 mb-6">
+                <button className="bg-white border-2 border-yellow-400 text-yellow-600 py-2 px-4 rounded-full">150 ml</button>
+                <button className="bg-white border-2 border-yellow-400 text-yellow-600 py-2 px-4 rounded-full">250 ml</button>
+                <button className="bg-white border-2 border-yellow-400 text-yellow-600 py-2 px-4 rounded-full">350 ml</button>
+            </div>
 
-            {/* 상품 설명 */}
-            <p className="text-lg text-gray-600 mb-4">{product.pdesc}</p>
-
-            {/* 가격 */}
-            <div className="text-center mb-6">
+            {/* 상품 제목과 가격 - 좌우로 배치 */}
+            <div className="w-full flex justify-between items-center mb-8">
+                <h2 className="text-4xl font-extrabold text-gray-800">{product.pname}</h2>
                 <span className="text-2xl font-semibold text-amber-500">
                     {product.price.toLocaleString()} 원
                 </span>
             </div>
 
-            {/* 카테고리 정보 */}
-            {product.cno && (
-                <div className="text-center mb-6">
-                    <span className="text-lg text-gray-500">Category ID: {product.cno}</span>
-                </div>
-            )}
+            {/* 상품 설명 */}
+            <p className="text-lg text-gray-600 mb-4">{product.pdesc}</p>
 
-            {/* 버튼 */}
-            <div className="flex justify-center gap-6">
+            {/* 버튼들 */}
+            <div className="flex justify-center gap-6 mb-6">
                 <button
                     type="button"
-                    className="bg-amber-400 text-white font-bold py-3 px-8 rounded-lg hover:bg-amber-500 focus:outline-none transition duration-300"
+                    className="bg-yellow-500 text-white font-bold py-3 px-8 rounded-lg hover:bg-yellow-600 focus:outline-none transition duration-300"
                     onClick={moveToCart}
                 >
                     Add to Cart
