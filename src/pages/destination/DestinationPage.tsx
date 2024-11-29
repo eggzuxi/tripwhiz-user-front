@@ -28,8 +28,9 @@ function DestinationPage(): JSX.Element {
     const handleDestinationClick = async (destinationId: number) => {
         console.log("Destination ID:", destinationId);
 
-        await fetchDestination(destinationId); // API를 통해 데이터 호출 및 전역 상태 저장
-        console.log("After fetching destination:", fetchDestination);
+        fetchDestination(destinationId) // 데이터 호출
+            .then(() => console.log("After fetching destination:", fetchDestination))
+            .catch((error) => console.error("Failed to fetch destination:", error));
 
         navigate("/theme"); // 테마 선택 페이지로 이동
     };
