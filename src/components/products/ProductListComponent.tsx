@@ -115,7 +115,7 @@ const ProductListComponent = () => {
                     return;
                 }
 
-                // API 호출: 선택된 상품, 수량 및 이메일 전달
+                // API 호출: 선택된 상품, 수량 및 이메일 전달(이거 버려주세여)
                 await addCart(selectedProduct.pno, qty, email);
                 closePanel();
                 console.log("장바구니에 상품이 추가되었습니다!");
