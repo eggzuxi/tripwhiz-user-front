@@ -22,11 +22,11 @@ function SidebarLayout({ onClose }: SidebarProps) {
 
     const menuItems: MenuItem[] = useMemo(
         () => [
-            { name: '마이페이지', path: '/side/customerservice' },
-            { name: '전체상품', path: '/side/service' },
-            { name: '주문내역', path: '/side/mypage' },
-            { name: 'My QR', path: '/side/notice' },
-            { name: '수화물 서비스', path: '/side/customerservice' },
+            { name: '마이페이지', path: '/side/mypage' },
+            { name: '전체상품', path: '/product/list' },
+            { name: '주문내역', path: '/side/myorder' },
+            { name: 'My QR', path: '/side/myqr' },
+            { name: '수화물 서비스', path: '/side/luggageservice' },
             { name: '고객센터', path: '/side/customerservice' }
         ],
         []
@@ -43,7 +43,7 @@ function SidebarLayout({ onClose }: SidebarProps) {
     };
 
     return (
-        <div className="fixed top-0 left-0 w-[250px] h-full bg-white shadow-lg flex flex-col p-6 z-50">
+        <div className="fixed top-0 right-0 w-[250px] h-full bg-white shadow-lg flex flex-col p-6 z-50">
             <div className="text-gray-800 font-semibold mb-6 flex items-center justify-between">
                 {accessToken ? (
                     <>
