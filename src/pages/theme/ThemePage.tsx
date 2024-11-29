@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 
-
+//SY 작품
 const themes = [
     { id: 1, name: '휴양', image: '/images/theme/Healing.png' },
     { id: 2, name: '비즈니스', image: '/images/theme/Business.png' },

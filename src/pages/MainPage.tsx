@@ -1,13 +1,24 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"; // 돋보기 아이콘
 import useAuthStore from "../store/AuthStore.ts";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {getCategories} from "../api/categoryAPI.ts";
+
+
+interface Category {
+    cno: number;
+    cname: string;
+}
+
 
 function MainPage() {
     const { name } = useAuthStore(); // 로그인한 사용자 이름 가져오기
     const [searchQuery, setSearchQuery] = useState("");
-    // const navigate = useNavigate();
+
+    //SY
+    const [categories, setCategories] = useState<Category[]>([]); // 동적 데이터 상태
+    const navigate = useNavigate();
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
@@ -18,6 +29,27 @@ function MainPage() {
         alert(`검색어: ${searchQuery}`);
         setSearchQuery(""); // 검색 후 입력창 초기화
     };
+
+    // 카테고리 클릭 시 해당 경로로 이동_SY
+    const handleCategoryClick = (cno: number) => {
+        navigate(`/product/list?cno=${cno}`);
+    };
+
+    // 백엔드에서 카테고리 데이터를 가져오는 함수_SY
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const data = await getCategories(); // API 호출
+                setCategories(data); // 카테고리 상태 업데이트
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+
 
     return (
         <div className="flex flex-col bg-white h-screen"> {/* 전체 배경 흰색 */}
@@ -53,15 +85,14 @@ function MainPage() {
 
                 {/* 카테고리 선택 */}
                 <div className="bg-white px-4 py-2">
-                    <div className="flex flex-row space-x-4 overflow-x-auto">
-                        {["수납/편의", "의류", "안전/위생", "악세사리", "액티비티 용품"].map((category, index) => (
+                    <div className="flex flex-row space-x-4 overflow-x-auto scrollbar-hide">
+                        {categories.map((category) => (
                             <button
-                                key={index}
-                                className={`px-4 py-2 whitespace-nowrap ${
-                                    index === 0 ? "border-b-2 border-black font-bold" : "text-gray-500"
-                                }`}
+                                key={category.cno}
+                                onClick={() => handleCategoryClick(category.cno)} // 클릭 시 navigate
+                                className="px-4 py-2 whitespace-nowrap border-b-2 border-transparent hover:border-black hover:text-black text-gray-500"
                             >
-                                {category}
+                                {category.cname} {/* 동적 카테고리 이름 */}
                             </button>
                         ))}
                     </div>

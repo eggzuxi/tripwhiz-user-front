@@ -10,6 +10,7 @@ const host ='http://localhost:8081/api/product';
 // }
 
 
+//상품 목록 조회 API_SY
 export const getList = async (page: number, tno: number | null , cno: number | null , scno: number | null ) => {
 
     console.log("tno: " + tno)
@@ -36,6 +37,8 @@ export const getList = async (page: number, tno: number | null , cno: number | n
         throw error;
     }
 };
+
+
 
 export const getOne = async (pno: number) => {
 
