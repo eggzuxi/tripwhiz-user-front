@@ -37,7 +37,7 @@ function ProductReadComponent() {
         }
 
         try {
-            await addCart(product.pno, 1, email); // API 호출로 장바구니에 추가
+            await addCart(product.pno, 1, email); // API 호출로 장바구니에 추가(이거 버려주세여)
             console.log("Added to cart:", product);
             navigate("/cart");
         } catch (error) {
