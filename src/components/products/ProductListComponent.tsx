@@ -36,7 +36,7 @@ const ProductListComponent = () => {
 
     const email = useAuthStore((state) => state.email);
 
-    // 쿼리스트링에서 값 가져오기 및 숫자로 변환
+    // 쿼리스트링에서 값 가져오기 및 숫자로 변환_SY
     const tno = searchParams.get("tno") ? parseInt(searchParams.get("tno") as string, 10) : null;
     const cno = searchParams.get("cno") ? parseInt(searchParams.get("cno") as string, 10) : null;
     const scno = searchParams.get("scno") ? parseInt(searchParams.get("scno") as string, 10) : null;

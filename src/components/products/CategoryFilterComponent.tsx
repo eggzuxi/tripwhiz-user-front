@@ -2,7 +2,7 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {getCategories, getSubCategories} from "../../api/categoryAPI.ts";
 
-
+//SY 작품
 interface Category {
     cno: number;
     cname: string;
@@ -22,13 +22,20 @@ function CategoryFilterComponent({ onFilterChange }: { onFilterChange: (cno: num
 
     const [categories, setCategories] = useState<Category[]>([]);
     const [subcategories, setSubCategories] = useState<SubCategory[]>([]);
-    const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-    const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(null);
+
+    // 쿼리스트링에서 'cno' 값을 읽어서 숫자로 변환하거나 값이 없으면 null
+    const initialCno = searchParams.get("cno") ? parseInt(searchParams.get("cno")!, 10) : null;
+    // 쿼리스트링에서 'scno' 값을 읽어서 숫자로 변환하거나 값이 없으면 null
+    const initialScno = searchParams.get("scno") ? parseInt(searchParams.get("scno")!, 10) : null;
+
+    const [selectedCategory, setSelectedCategory] = useState<number | null>(initialCno);
+    const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(initialScno);
 
     // 상위 카테고리 가져오기
     useEffect(() => {
         const fetchCategories = async () => {
             try {
+                // API 호출을 통해 상위 카테고리를 가져온 뒤 상태에 저장
                 const data = await getCategories();
                 setCategories(data);
             } catch (error) {
@@ -41,6 +48,7 @@ function CategoryFilterComponent({ onFilterChange }: { onFilterChange: (cno: num
 
     // 하위 카테고리 가져오기
     useEffect(() => {
+        // 상위 카테고리가 선택되지 않은 경우 하위 카테고리 상태를 초기화
         if (selectedCategory === null) {
             setSubCategories([]);
             return;
@@ -48,6 +56,7 @@ function CategoryFilterComponent({ onFilterChange }: { onFilterChange: (cno: num
 
         const fetchSubCategories = async () => {
             try {
+                // API 호출을 통해 선택된 상위 카테고리에 속하는 하위 카테고리를 가져옴
                 const data = await getSubCategories(selectedCategory);
                 setSubCategories(data);
             } catch (error) {
@@ -57,6 +66,16 @@ function CategoryFilterComponent({ onFilterChange }: { onFilterChange: (cno: num
 
         fetchSubCategories();
     }, [selectedCategory]);
+
+    // URL에서 값 동기화
+    useEffect(() => {
+        if (initialCno) {
+            setSelectedCategory(initialCno); // URL의 'cno' 값을 상태에 반영
+            if (initialScno) {
+                setSelectedSubCategory(initialScno); // URL의 'scno' 값을 상태에 반영
+            }
+        }
+    }, [initialCno, initialScno]); // initialCno 또는 initialScno가 변경될 때 실행
 
     // 카테고리 선택 처리
     const handleCategoryChange = (cno: number | null) => {
@@ -104,6 +123,7 @@ function CategoryFilterComponent({ onFilterChange }: { onFilterChange: (cno: num
                     >
                         전체
                     </button>
+
                     {categories.map((category) => (
                         <button
                             key={category.cno}
@@ -122,7 +142,6 @@ function CategoryFilterComponent({ onFilterChange }: { onFilterChange: (cno: num
             {filteredSubCategories.length > 0 && (
                 <div className="overflow-x-auto scrollbar-hide py-2">
                     <div className="flex space-x-4">
-                        {/* "전체" 버튼 */}
                         <button
                             onClick={() => handleSubCategoryChange(null)}
                             className={`text-lg whitespace-nowrap ${
@@ -131,6 +150,7 @@ function CategoryFilterComponent({ onFilterChange }: { onFilterChange: (cno: num
                         >
                             전체
                         </button>
+
                         {filteredSubCategories.map((subcategory) => (
                             <button
                                 key={subcategory.scno}
