@@ -1,14 +1,17 @@
+import axios from "axios";
 import { ref, get, set } from "firebase/database";
-import {secondaryDatabase} from "../firebase/firebaseConfig.ts";
+import { secondaryDatabase } from "../firebase/firebaseConfig";
+import {LuggageDTO, Point} from "../types/spot.ts";
 
+const API_BASE_URL = "http://localhost:8081/luggage";
 
 // Firebase에서 특정 위치 데이터를 가져오는 함수
-export const fetchLocation = async (key: string): Promise<{ lat: number; lng: number } | null> => {
+export const fetchLocation = async (key: string): Promise<Point | null> => {
     try {
         const locationRef = ref(secondaryDatabase, key);
         const snapshot = await get(locationRef);
         if (snapshot.exists()) {
-            return snapshot.val() as { lat: number; lng: number };
+            return snapshot.val() as Point;
         }
         return null;
     } catch (error) {
@@ -25,10 +28,7 @@ export const fetchConvenienceStores = async (): Promise<
         const storesRef = ref(secondaryDatabase, "convenienceStores");
         const snapshot = await get(storesRef);
         if (snapshot.exists()) {
-            const data = snapshot.val() as Record<
-                string,
-                { lat: number; lng: number; name: string }
-            >;
+            const data = snapshot.val() as Record<string, { lat: number; lng: number; name: string }>;
             return Object.values(data);
         }
         return [];
@@ -40,9 +40,19 @@ export const fetchConvenienceStores = async (): Promise<
 
 // Firebase에 출발지와 도착지를 저장하는 함수
 export const savePointsToFirebase = async (
-    startPoint: { lat: number; lng: number } | null,
-    endPoint: { lat: number; lng: number } | null
-) => {
+    startPoint: Point | null,
+    endPoint: Point | null
+): Promise<void> => {
     const pointsRef = ref(secondaryDatabase, "userRoutes");
     await set(pointsRef, { startPoint, endPoint });
+};
+
+// 백엔드로 Luggage 데이터를 저장하는 함수
+export const saveLuggage = async (luggageData: LuggageDTO): Promise<string> => {
+    const response = await axios.post<string>(`${API_BASE_URL}/saveLuggage`, luggageData, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    return response.data;
 };

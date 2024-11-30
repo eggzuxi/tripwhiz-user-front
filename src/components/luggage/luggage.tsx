@@ -1,52 +1,23 @@
-import { useState} from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import axios from "axios";
-
-// Firebase 설정 (Firebase Realtime Database 연결)
-import { ref, get } from "firebase/database";
-import { secondaryDatabase } from "../../firebase/firebaseConfig.ts";  // Firebase 설정
+import React, { useState } from "react";
+import { GoogleMap, Marker, Polyline, useJsApiLoader } from "@react-google-maps/api";
+import { fetchLocation, saveLuggage } from "../../api/luggageAPI";
 
 const containerStyle = {
     width: "100%",
     height: "500px",
 };
 
-// Firebase에서 특정 위치 데이터를 가져오는 함수
-const fetchLocation = async (key: string): Promise<{ lat: number; lng: number } | null> => {
-    try {
-        const locationRef = ref(secondaryDatabase, key);
-        const snapshot = await get(locationRef);
-        if (snapshot.exists()) {
-            return snapshot.val() as { lat: number; lng: number };
-        }
-        return null;
-    } catch (error) {
-        console.error("Error fetching location from Firebase:", error);
-        return null;
-    }
-};
-
-// 백엔드에 출발지와 도착지 저장
-const saveSpotToServer = async (startPoint: { lat: number; lng: number }, endPoint: { lat: number; lng: number }) => {
-    try {
-        await axios.post("http://localhost:8081/api/saveSpot", {
-            startPoint,
-            endPoint,
-        });
-        alert("스팟이 저장되었습니다!");
-    } catch (error) {
-        console.error("Error sending spot to server:", error);
-    }
-};
-
 function Luggage() {
+    const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(
+        null
+    );
     const [startPoint, setStartPoint] = useState<{ lat: number; lng: number } | null>(null);
     const [endPoint, setEndPoint] = useState<{ lat: number; lng: number } | null>(null);
-    const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
-    const [zoomLevel, setZoomLevel] = useState(12);
+    const [path, setPath] = useState<{ lat: number; lng: number }[]>([]);
+    const [zoomLevel, setZoomLevel] = useState<number>(12);
 
     const { isLoaded, loadError } = useJsApiLoader({
-        googleMapsApiKey: "YOUR_GOOGLE_MAPS_API_KEY", // 구글맵 API 키
+        googleMapsApiKey: import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY || "AIzaSyCAEphgIbIzt3ECeOlAkuKSLpoDs1DZRVY",
     });
 
     const handleMapClick = async (event: google.maps.MapMouseEvent) => {
@@ -58,24 +29,81 @@ function Luggage() {
         } else if (!endPoint) {
             setEndPoint(clickedPosition);
 
-            // 출발지와 도착지가 설정되면 서버에 저장
-            if (startPoint && clickedPosition) {
-                await saveSpotToServer(startPoint, clickedPosition);
+            // 출발지와 도착지가 모두 설정되면 백엔드에 저장
+            const formattedStartPoint = {
+                lat: parseFloat(startPoint.lat.toFixed(6)),
+                lng: parseFloat(startPoint.lng.toFixed(6)),
+            };
+
+            const formattedEndPoint = {
+                lat: parseFloat(clickedPosition.lat.toFixed(6)),
+                lng: parseFloat(clickedPosition.lng.toFixed(6)),
+            };
+
+            try {
+                const response = await saveLuggage({
+                    startPoint: formattedStartPoint,
+                    endPoint: formattedEndPoint,
+                });
+                console.log("서버 응답:", response);
+                alert("출발지와 도착지가 저장되었습니다!");
+            } catch (error) {
+                console.error("백엔드 저장 중 오류:", error);
+                alert("백엔드 저장에 실패했습니다. 서버 상태를 확인해주세요.");
             }
         }
     };
 
+    const loadRouteAndStores = async () => {
+        if (!startPoint || !endPoint) {
+            alert("출발지와 도착지를 모두 설정해주세요.");
+            return;
+        }
+
+        const directionsService = new google.maps.DirectionsService();
+
+        directionsService.route(
+            {
+                origin: startPoint,
+                destination: endPoint,
+                travelMode: google.maps.TravelMode.DRIVING,
+            },
+            (result, status) => {
+                if (status === "OK" && result.routes[0]) {
+                    const newPath = result.routes[0].overview_path.map((point) => ({
+                        lat: point.lat(),
+                        lng: point.lng(),
+                    }));
+                    setPath(newPath); // 경로 설정
+                } else {
+                    console.error("경로 요청 실패:", status);
+                    alert("경로를 불러오지 못했습니다. 다시 시도해주세요.");
+                }
+            }
+        );
+    };
+
     const loadCurrentLocation = async () => {
-        const location = await fetchLocation("userLocation"); // Firebase에서 위치 데이터 가져오기
-        if (location) {
-            setCurrentLocation(location);
-            setZoomLevel(15); // 내 위치를 표시할 때 확대
+        try {
+            const location = await fetchLocation("userLocation"); // Firebase에서 위치 가져오기
+            if (location) {
+                setCurrentLocation(location);
+                setZoomLevel(15); // 내 위치로 확대
+                console.log("Firebase에서 가져온 위치:", location);
+            } else {
+                alert("Firebase에서 위치를 가져올 수 없습니다.");
+            }
+        } catch (error) {
+            console.error("Firebase 위치 가져오기 실패:", error);
+            alert("현재 위치를 가져오는 데 실패했습니다.");
         }
     };
 
+    if (loadError) return <p>Error loading map: {loadError.message}</p>;
+
     return (
         <div>
-            <h1>말레이시아 지도 - 출발지 및 도착지 설정</h1>
+            <h1 className="text-lg font-bold mb-4">말레이시아 지도 - 내 위치, 출발지/도착지 설정</h1>
             <div className="mb-4 flex gap-2">
                 <button
                     onClick={loadCurrentLocation}
@@ -84,27 +112,21 @@ function Luggage() {
                     내 위치 표시
                 </button>
                 <button
-                    onClick={() => setStartPoint(null)}
+                    onClick={() => {
+                        setStartPoint(null);
+                        setEndPoint(null);
+                        setPath([]);
+                    }}
                     className="p-2 bg-blue-500 text-white rounded"
                 >
-                    출발지 초기화
-                </button>
-                <button
-                    onClick={() => setEndPoint(null)}
-                    className="p-2 bg-red-500 text-white rounded"
-                >
-                    도착지 초기화
+                    초기화
                 </button>
                 {startPoint && endPoint && (
                     <button
-                        onClick={async () => {
-                            if (startPoint && endPoint) {
-                                await saveSpotToServer(startPoint, endPoint);
-                            }
-                        }}
+                        onClick={loadRouteAndStores}
                         className="p-2 bg-purple-500 text-white rounded"
                     >
-                        경로 및 편의점 표시
+                        경로 표시
                     </button>
                 )}
             </div>
@@ -131,7 +153,7 @@ function Luggage() {
                         <Marker
                             position={startPoint}
                             label={{
-                                text: "출발지",
+                                text: "출발",
                                 color: "white",
                                 fontSize: "14px",
                                 fontWeight: "bold",
@@ -142,10 +164,20 @@ function Luggage() {
                         <Marker
                             position={endPoint}
                             label={{
-                                text: "도착지",
+                                text: "도착",
                                 color: "white",
                                 fontSize: "14px",
                                 fontWeight: "bold",
+                            }}
+                        />
+                    )}
+                    {path.length > 0 && (
+                        <Polyline
+                            path={path}
+                            options={{
+                                strokeColor: "#FF0000",
+                                strokeOpacity: 0.8,
+                                strokeWeight: 4,
                             }}
                         />
                     )}
