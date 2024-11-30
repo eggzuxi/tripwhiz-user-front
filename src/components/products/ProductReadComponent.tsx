@@ -2,8 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IProduct } from "../../types/product.ts";
 import { getOne } from "../../api/productAPI.ts";
-import useAuthStore from "../../store/AuthStore.ts";
-import { addCart } from "../../api/cartAPI.ts";
+import {cartStore} from "../../store/CartStore.ts";
 
 const initialState: IProduct = {
     pno: 0,
@@ -17,28 +16,20 @@ const initialState: IProduct = {
     uploadFileNames: [],
 };
 
-const imageUrl = 'http://10.10.10.92/ddb4aafb-6645-480c-b634-35e7b8046ef9_c2_m1_01.jpg';
+// const imageUrl = 'http://10.10.10.92/ddb4aafb-6645-480c-b634-35e7b8046ef9_c2_m1_01.jpg';
 
 function ProductReadComponent() {
     const navigate = useNavigate();
     const { pno } = useParams();
-    const email = useAuthStore((state) => state.email);
+    const addToCart = cartStore((state) => state.addToCart);
+    // const email = useAuthStore((state) => state.email);
 
     const [product, setProduct] = useState<IProduct>(initialState);
 
-    const moveToCart = async () => {
-        if (!email) {
-            alert("로그인이 필요합니다.");
-            return;
-        }
-
-        try {
-            await addCart(product.pno, 1, email);
-            console.log("Added to cart:", product);
-            navigate("/cart");
-        } catch (error) {
-            console.error("장바구니 추가 중 오류 발생:", error);
-        }
+    const moveToCart = () => {
+        addToCart(product);
+        console.log("Added to cart:", product);
+        navigate("/cart");
     };
 
     useEffect(() => {
