@@ -1,68 +1,48 @@
-import React from "react";
-import { saveLuggage } from "../../api/luggageAPI"; // API 호출 함수
+import React, { useState } from "react";
+import { saveLuggage } from "../../api/luggageAPI";
+import useAuthStore from "../../store/AuthStore"; // 이메일을 가져오기 위한 useAuthStore import
+import { LuggageDTO } from "../../types/luggage.ts"; // 이메일을 가져오기 위해 useAuthStore를 임포트
 
+const LuggageForm: React.FC = () => {
+    const [startPoint, setStartPoint] = useState<{ lat: string; lng: string }>({ lat: "", lng: "" });
+    const [endPoint, setEndPoint] = useState<{ lat: string; lng: string }>({ lat: "", lng: "" });
+    const [message, setMessage] = useState<string>("");
 
-function LuggageForm({
-                         startPoint,
-                         endPoint,
-                         setStartPoint,
-                         setEndPoint,
-                     }: {
-    startPoint: { lat: number; lng: number } | null;
-    endPoint: { lat: number; lng: number } | null;
-    setStartPoint: React.Dispatch<React.SetStateAction<{ lat: number; lng: number } | null>>;
-    setEndPoint: React.Dispatch<React.SetStateAction<{ lat: number; lng: number } | null>>;
-}) {
-    const handleSave = async () => {
-        if (!startPoint || !endPoint) {
-            alert("출발지와 도착지를 모두 선택해주세요.");
-            return;
-        }
+    // useAuthStore에서 이메일 가져오기
+    const email = useAuthStore(state => state.email); // 이메일을 직접 가져옴
 
-        // 소수점 제한: 6자리로 포맷
-        const formattedStartPoint = {
-            lat: parseFloat(startPoint.lat.toFixed(6)),
-            lng: parseFloat(startPoint.lng.toFixed(6)),
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // LuggageDTO에 이메일과 출발지/도착지 정보를 포함
+        const luggageData: LuggageDTO = {
+            startPoint: { lat: parseFloat(startPoint.lat), lng: parseFloat(startPoint.lng) },
+            endPoint: { lat: parseFloat(endPoint.lat), lng: parseFloat(endPoint.lng) },
+            email: email || "", // 이메일을 DTO에 포함
         };
 
-        const formattedEndPoint = {
-            lat: parseFloat(endPoint.lat.toFixed(6)),
-            lng: parseFloat(endPoint.lng.toFixed(6)),
-        };
-
+        // 데이터 저장 함수 호출
         try {
-            console.log("전송 데이터:", { startPoint: formattedStartPoint, endPoint: formattedEndPoint });
-
-            // 백엔드 API 호출
-            const response = await saveLuggage({
-                startPoint: formattedStartPoint,
-                endPoint: formattedEndPoint,
-            });
-
-            console.log("서버 응답:", response);
-            alert("데이터가 성공적으로 저장되었습니다!");
+            const response = await saveLuggage(luggageData);
+            console.log("Response from API:", response); // 응답 확인
+            setMessage("출발지와 도착지가 저장되었습니다!"); // 성공 메시지
         } catch (error) {
-            console.error("저장 중 오류 발생:", error);
-            alert("데이터 저장에 실패했습니다. 서버 상태를 확인하세요.");
+            // 오류 처리 및 로그 출력
+            console.error("Error saving luggage data:", error);
+            setMessage("Failed to save luggage data. Please try again.");
         }
     };
 
     return (
         <div>
             <h2 className="text-lg font-bold mb-4">Save Luggage Points</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <label>Start Point Latitude:</label>
                     <input
                         type="number"
-                        value={startPoint?.lat || ""}
-                        onChange={(e) =>
-                            setStartPoint({
-                                ...(startPoint || { lat: 0, lng: 0 }),
-                                lat: parseFloat(e.target.value),
-                            })
-                        }
-                        className="border p-2 rounded w-full"
+                        value={startPoint.lat}
+                        onChange={(e) => setStartPoint({ ...startPoint, lat: e.target.value })}
                         required
                     />
                 </div>
@@ -70,14 +50,8 @@ function LuggageForm({
                     <label>Start Point Longitude:</label>
                     <input
                         type="number"
-                        value={startPoint?.lng || ""}
-                        onChange={(e) =>
-                            setStartPoint({
-                                ...(startPoint || { lat: 0, lng: 0 }),
-                                lng: parseFloat(e.target.value),
-                            })
-                        }
-                        className="border p-2 rounded w-full"
+                        value={startPoint.lng}
+                        onChange={(e) => setStartPoint({ ...startPoint, lng: e.target.value })}
                         required
                     />
                 </div>
@@ -85,14 +59,8 @@ function LuggageForm({
                     <label>End Point Latitude:</label>
                     <input
                         type="number"
-                        value={endPoint?.lat || ""}
-                        onChange={(e) =>
-                            setEndPoint({
-                                ...(endPoint || { lat: 0, lng: 0 }),
-                                lat: parseFloat(e.target.value),
-                            })
-                        }
-                        className="border p-2 rounded w-full"
+                        value={endPoint.lat}
+                        onChange={(e) => setEndPoint({ ...endPoint, lat: e.target.value })}
                         required
                     />
                 </div>
@@ -100,27 +68,18 @@ function LuggageForm({
                     <label>End Point Longitude:</label>
                     <input
                         type="number"
-                        value={endPoint?.lng || ""}
-                        onChange={(e) =>
-                            setEndPoint({
-                                ...(endPoint || { lat: 0, lng: 0 }),
-                                lng: parseFloat(e.target.value),
-                            })
-                        }
-                        className="border p-2 rounded w-full"
+                        value={endPoint.lng}
+                        onChange={(e) => setEndPoint({ ...endPoint, lng: e.target.value })}
                         required
                     />
                 </div>
-                <button
-                    type="button"
-                    onClick={handleSave}
-                    className="p-2 bg-blue-500 text-white rounded mt-4"
-                >
+                <button type="submit" className="p-2 bg-blue-500 text-white rounded mt-4">
                     Save Luggage
                 </button>
             </form>
+            {message && <p className="mt-4">{message}</p>}
         </div>
     );
-}
+};
 
 export default LuggageForm;
