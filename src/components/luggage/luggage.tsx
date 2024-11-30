@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, Marker, Polyline, useJsApiLoader } from '@react-google-maps/api';
-import { fetchConvenienceStores, fetchLocation, savePointsToFirebase } from '../../api/luggageAPI';
+import {fetchConvenienceStores, fetchLocation, saveLuggage, savePointsToFirebase} from '../../api/luggageAPI';
 import LuggageForm from './LuggageForm';
 import useAuthStore from '../../store/AuthStore'; // 이메일을 가져오기 위한 useAuthStore import
 
@@ -17,7 +17,7 @@ const Luggage: React.FC = () => {
     const [path, setPath] = useState<{ lat: number; lng: number }[]>([]);
     const [zoomLevel, setZoomLevel] = useState<number>(12);
 
-    // useAuthStore에서 이메일 가져오기 (수정된 부분)
+    // useAuthStore에서 이메일 가져오기
     const email = useAuthStore(state => state.email); // 이메일을 직접 가져옴
 
     const { isLoaded, loadError } = useJsApiLoader({
@@ -29,11 +29,33 @@ const Luggage: React.FC = () => {
         if (!clickedPosition) return;
 
         if (!startPoint) {
-            setStartPoint(clickedPosition);
+            setStartPoint(clickedPosition);  // 출발지 설정
         } else if (!endPoint) {
-            setEndPoint(clickedPosition);
-            await savePointsToFirebase(startPoint, clickedPosition);
-            alert('출발지와 도착지가 저장되었습니다!');
+            setEndPoint(clickedPosition);  // 도착지 설정
+        }
+    };
+
+    const handleSave = async () => {
+        if (!startPoint || !endPoint || !email) {
+            alert("출발지, 도착지, 이메일을 모두 확인해주세요.");
+            return;
+        }
+
+        // 출발지, 도착지 정보로 LuggageDTO 생성
+        const luggageData = {
+            startPoint: { lat: startPoint.lat, lng: startPoint.lng },
+            endPoint: { lat: endPoint.lat, lng: endPoint.lng },
+            email: email,  // 로그인한 이메일 추가
+        };
+
+        // 데이터베이스로 전송
+        try {
+            const response = await saveLuggage(luggageData);
+            alert("출발지와 도착지가 저장되었습니다!");
+            console.log("Response from API:", response);  // 응답 로그 확인
+        } catch (error) {
+            console.error("Error saving luggage data:", error);
+            alert("Failed to save luggage data. Please try again.");
         }
     };
 
@@ -98,15 +120,21 @@ const Luggage: React.FC = () => {
                     초기화
                 </button>
                 {startPoint && endPoint && (
-                    <button onClick={loadRouteAndStores} className="p-2 bg-purple-500 text-white rounded">
-                        경로 및 편의점 표시
+                    <button onClick={handleSave} className="p-2 bg-purple-500 text-white rounded">
+                        Save Luggage
                     </button>
                 )}
             </div>
 
             <div>
-                {/* 이메일 출력 */}
-                {email && <p>로그인한 이메일: {email}</p>}
+                {startPoint && endPoint && (
+                    <div>
+                        <p>출발지 좌표:</p>
+                        <p>위도: {startPoint.lat}, 경도: {startPoint.lng}</p>
+                        <p>도착지 좌표:</p>
+                        <p>위도: {endPoint.lat}, 경도: {endPoint.lng}</p>
+                    </div>
+                )}
             </div>
 
             {isLoaded ? (
@@ -134,19 +162,6 @@ const Luggage: React.FC = () => {
                             label={{ text: '도착', color: 'white', fontSize: '14px', fontWeight: 'bold' }}
                         />
                     )}
-                    {path.length > 0 && (
-                        <Polyline
-                            path={path}
-                            options={{ strokeColor: '#FF0000', strokeOpacity: 0.8, strokeWeight: 4 }}
-                        />
-                    )}
-                    {convenienceStores.map((store, index) => (
-                        <Marker
-                            key={index}
-                            position={{ lat: store.lat, lng: store.lng }}
-                            label={{ text: store.name, color: 'blue', fontSize: '12px', fontWeight: 'bold' }}
-                        />
-                    ))}
                 </GoogleMap>
             ) : (
                 <p>Loading map...</p>

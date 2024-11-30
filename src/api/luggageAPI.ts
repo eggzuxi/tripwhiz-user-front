@@ -42,16 +42,14 @@ export const saveLuggage = async (luggageData: LuggageDTO) => {
             },
         });
 
-        // 응답을 로그로 출력
-        console.log("Response Data:", response.data);
-
-        return response.data.message; // 응답 메시지 반환
-    } catch (error) {
-        // 오류 처리 및 로그 출력
-        console.error("Error during API call:", error);
-        if (error.response) {
-            console.error("Response error:", error.response.data); // 서버에서의 응답 내용
+        if (response.status === 200) {
+            return response.data.message;
+        } else {
+            throw new Error("Failed to save luggage data");
         }
+    } catch (error) {
+        console.error("Error during API call:", error);
         throw new Error("Failed to save luggage data. Please try again.");
     }
 };
+
