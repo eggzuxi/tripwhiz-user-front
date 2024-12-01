@@ -13,16 +13,15 @@ const initialState: IProduct = {
     scno: 0,
     tno: 0,
     delflag: false,
-    uploadFileNames: [],
+    attachFiles: [],
 };
-
-// const imageUrl = 'http://10.10.10.92/ddb4aafb-6645-480c-b634-35e7b8046ef9_c2_m1_01.jpg';
 
 function ProductReadComponent() {
     const navigate = useNavigate();
     const { pno } = useParams();
     const addToCart = cartStore((state) => state.addToCart);
     // const email = useAuthStore((state) => state.email);
+    const IMAGE_BASE_URL = "http://localhost:8082/api/product/image"; // 이미지 파일의 기본 경로 설정
 
     const [product, setProduct] = useState<IProduct>(initialState);
 
@@ -59,7 +58,7 @@ function ProductReadComponent() {
             {/* 이미지 - 화면에 꽉 차게 설정 */}
             <div className="w-full h-80 mb-6">
                 <img
-                    src="/public/images/read/인형.png" // 상품 이미지 URL을 이미지 표시
+                    src={`${IMAGE_BASE_URL}/${product.attachFiles}`} // 상품 이미지 URL을 이미지 표시
                     alt={product.pname}
                     className="w-full h-full object-cover rounded-lg"
                 />

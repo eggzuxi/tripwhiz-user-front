@@ -17,7 +17,7 @@ const initialState: IProduct[] = [
         scno: 0,
         tno: 0,
         delflag: false,
-        uploadFileNames: [],
+        attachFiles: [],
     },
 ];
 
@@ -33,6 +33,7 @@ const ProductListComponent = () => {
     const [searchParams] = useSearchParams();
 
     // const email = useAuthStore((state) => state.email);
+    const IMAGE_BASE_URL = "http://localhost:8082/api/product/image"; // 이미지 파일의 기본 경로 설정
 
     // 쿼리스트링에서 값 가져오기 및 숫자로 변환_SY
     const tno = searchParams.get("tno") ? parseInt(searchParams.get("tno") as string, 10) : null;
@@ -135,6 +136,14 @@ const ProductListComponent = () => {
                                 onClick={() => moveToDetails(product.pno)}
                                 ref={index === products.length - 1 ? lastProductRef : null}
                             >
+                                {/* 이미지 표시 */}
+                                {product.attachFiles.length > 0 && (
+                                    <img
+                                        src={`${IMAGE_BASE_URL}/${product.attachFiles[0].fileName}`}
+                                        alt={product.pname}
+                                        className="mb-2 w-full h-40 object-cover rounded"
+                                    />
+                                )}
                                 <h3 className="text-lg font-semibold">{product.pname}</h3>
                                 <p className="text-gray-700">{product.pdesc}</p>
                                 <p className="text-gray-700">가격: {product.price}원</p>
