@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@rollup/plugin-commonjs": "^28.0.1",
     "@types/google.maps": "^3.58.1",
     "@types/node": "^22.9.0",
     "@types/react": "^18.3.12",
