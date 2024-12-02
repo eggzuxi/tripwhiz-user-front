@@ -17,8 +17,6 @@ const initialState: IProduct = {
     uploadFileNames: [],
 };
 
-const imageUrl = 'http://10.10.10.92/ddb4aafb-6645-480c-b634-35e7b8046ef9_c2_m1_01.jpg';
-
 function ProductReadComponent() {
     const navigate = useNavigate();
     const { pno } = useParams();
