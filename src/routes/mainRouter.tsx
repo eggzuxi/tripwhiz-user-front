@@ -8,6 +8,7 @@ import paymentRouter from "./paymentRouter";
 import GoogleMapsPage from "../pages/map/GoogleMapsPage";
 import ThemePage from "../pages/theme/ThemePage";
 import sidebarRouter from "./sidebarRouter.tsx";
+import OrderRouter from "./orderRouter.tsx";
 
 
 const LoadingPage = lazy(() => import("../pages/LoadingPage"));
@@ -53,7 +54,8 @@ const mainRouter = createBrowserRouter([
             memberRouter,
             cartRouter,
             paymentRouter,
-            sidebarRouter
+            sidebarRouter,
+            OrderRouter
         ],
     },
 
