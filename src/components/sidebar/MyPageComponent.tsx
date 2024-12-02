@@ -17,19 +17,11 @@ const MyPageComponent = () => {
         <div className="bg-gray-100 h-screen flex flex-col items-center p-4 overflow-y-auto">
             {/* Profile Background Section */}
             <div
-                className="w-full h-80 bg-cover bg-center rounded-t-lg mb-6"
-                style={{ backgroundImage: "url('https://randomuser.me/api/portraits/women/5.jpg')" }} // Replace with your desired background image
+                className="w-full h-80 bg-gray-300 rounded-t-lg mb-6"
             ></div>
 
             {/* Profile Header Card */}
             <div className="w-full bg-white p-6 text-gray-900 flex flex-col items-center shadow-md rounded-lg -mt-16 mb-6">
-                <div className="w-32 h-32 mb-4">
-                    <img
-                        src="https://randomuser.me/api/portraits/women/5.jpg" // Replace with actual user image
-                        alt="Profile"
-                        className="w-full h-full object-cover rounded-md"
-                    />
-                </div>
                 <h1 className="text-xl font-semibold text-gray-800">{name ? `${name}님 환영합니다` : "회원님 환영합니다"}</h1>
                 <p className="text-sm text-gray-600 mt-1">{email || "example@email.com"}</p>
                 <button className="mt-4 px-6 py-2 bg-purple-500 text-white text-sm font-medium rounded-full">
