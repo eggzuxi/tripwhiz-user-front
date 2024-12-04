@@ -1,6 +1,9 @@
-import {IProduct} from "./product.ts";
+
 
 export interface ICartItems {
-    product: IProduct
+    email: string
+    bno: number
+    pno: number
     qty: number
+    delFlag: boolean
 }
