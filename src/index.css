@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Faculty+Glyphic:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "slick-carousel/slick/slick.css";
-@import "slick-carousel/slick/slick-theme.css";
+
+
 
 
 

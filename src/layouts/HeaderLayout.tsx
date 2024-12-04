@@ -15,7 +15,7 @@ function HeaderLayout() {
 
     const moveToHome = () => {
         navigate({
-            pathname: `/`
+            pathname: `/main`
         });
     };
 
