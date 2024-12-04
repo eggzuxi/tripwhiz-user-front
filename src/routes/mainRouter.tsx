@@ -11,6 +11,7 @@ import sidebarRouter from "./sidebarRouter.tsx";
 import OrderRouter from "./orderRouter.tsx";
 
 
+
 const LoadingPage = lazy(() => import("../pages/LoadingPage"));
 const PickupPage = lazy(() => import("../pages/pickup/PickupPage"));
 const MapPage = lazy(() => import("../components/luggage/luggage.tsx"));
@@ -45,11 +46,6 @@ const mainRouter = createBrowserRouter([
                 path: "/maps",
                 element: <Suspense fallback={Loading}><GoogleMapsPage/></Suspense>
             },
-
-            {
-                path: "/destination",
-                element: <Suspense fallback={Loading}><DestinationPage/></Suspense>
-            },
             productRouter,
             memberRouter,
             cartRouter,
@@ -59,14 +55,17 @@ const mainRouter = createBrowserRouter([
         ],
     },
 
-    {
-        path: "/",
-        element: <Suspense fallback={Loading}><DestinationPage/></Suspense>
-    },
-    {
-        path: "/theme",
-        element: <Suspense fallback={Loading}><ThemePage/></Suspense>
-    },
+            {
+                path: "/",
+                element: <Suspense fallback={Loading}><DestinationPage/></Suspense>
+            },
+            {
+                path: "/theme",
+                element: <Suspense fallback={Loading}><ThemePage/></Suspense>
+            },
+
+
+
 ]);
 
 export default mainRouter;

@@ -26,35 +26,46 @@ function ThemePage(): JSX.Element {
 
 
     return (
-        <div className="font-roboto min-h-screen bg-white flex flex-col items-center justify-center py-6 px-4 pt-4">
-            <h2 className="text-2xl sm:text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center tracking-tighter">
-                이번 여행의 테마는 무엇인가요?
-            </h2>
-            <p className="text-gray-700 text-base sm:text-lg text-center mb-4">
-                다양한 테마 중 하나를 선택해보세요. <br/>여행에 딱 맞는 추천 상품들을 소개해 드릴게요.
-            </p>
+        <div
+            className="font-roboto min-h-screen bg-gray-50 flex flex-col items-start px-6 space-y-6"
+            style={{marginTop: "550px"}} // HeaderLayout의 높이만큼 여백 추가
+        >
+            {/* Home 아이콘 */}
+            <div
+                className="w-full flex justify-end pt-6 pr-2"
+                onClick={() => navigate("/main")}
+            >
+                <img
+                    src="/images/home.png"
+                    alt="Home Icon"
+                    className="w-6 h-6 cursor-pointer"
+                />
+            </div>
+
+            <div className="w-full text-center">
+                <h1 className="text-3xl font-nanum-gothic font-bold text-gray-800 mb-4">
+                    어떤 여행을 원하시나요?
+                </h1>
+                <p className="text-lg font-nanum-gothic text-gray-500 mt-2 break-words">
+                    다양한 여행 테마 중 하나를<br/>선택하시면 맞춤 상품을 추천드릴게요.
+                </p>
+            </div>
+
 
             {/* 테마 카드 그리드 */}
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-4xl px-4">
+            <div className="w-full space-y-2 pb-8">
                 {themes.map((theme) => (
-                    <div
+                    <button
                         key={theme.id}
                         onClick={() => handleThemeClick(theme.id)}
-                        className="relative cursor-pointer group focus-within:outline-none"
+                        className="relative overflow-hidden rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-300 w-full text-left"
                     >
-                        <div
-                            className="overflow-hidden rounded-lg shadow-lg transform transition-transform duration-300 group-hover:scale-105">
-                            <img
-                                src={theme.image}
-                                alt={theme.name}
-                                className="w-full h-48 object-cover"
-                            />
-                            <div
-                                className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <p className="text-white text-lg font-semibold">{theme.name}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <img
+                        src={theme.image}
+                        alt={theme.name}
+                        className="w-full h-48 object-cover"
+                    />
+                    </button>
                 ))}
             </div>
 
