@@ -17,6 +17,10 @@ export default {
           secondary: '#627d98', // 중간 밝기의 글씨 색
         },
       },
+      fontFamily: {
+        'faculty-glyphic': ['"Faculty Glyphic"', 'sans-serif'],
+        'nanum-gothic': ['"Nanum Gothic"', 'sans-serif'],
+      },
     },
   },
   plugins: [

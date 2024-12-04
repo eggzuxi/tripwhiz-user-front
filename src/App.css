@@ -15,12 +15,13 @@
   flex-direction: column;
   height: 100vh;
   font-family: Arial, sans-serif;
+
 }
 
 /* 헤더 스타일 */
 .header {
   background-color: #f8f8f8;
-  padding: 16px;
+  padding: 0;
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
@@ -125,6 +126,12 @@
   color: white;
   font-size: 12px;
 }
+
+.swiper-container {
+  width: 100%; /* 부모 요소의 너비를 넘지 않도록 설정 */
+  overflow: hidden; /* 슬라이드가 부모 요소를 넘지 않도록 설정 */
+}
+
 
 /*so*/
 /*.container {*/
