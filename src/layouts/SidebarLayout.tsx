@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import {startTransition, useEffect, useMemo} from 'react';
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/AuthStore.ts";
 
@@ -38,7 +38,9 @@ function SidebarLayout({ onClose }: SidebarProps) {
     };
 
     const handleLoginClick = () => {
-        navigate("/member/login"); // 로그인 페이지로 이동
+        startTransition(() => {
+            navigate("/member/login"); // 로그인 페이지로 이동
+        });
         onClose(); // 사이드바 닫기
     };
 
