@@ -13,10 +13,7 @@ function PaymentCheckout() {
 
     const amount = {
         currency: "KRW",
-        value: cartItems.reduce((acc: number, item: {
-            product: { price: number };
-            qty: number
-        }) => acc + item.product.price * item.qty, 0),
+        value: cartItems.reduce((acc, item) => acc + item.price * item.qty, 0),
     };
 
     // const orderName = cartItems.map((item: { product: { pname: string }; qty: number }) => `${item.product.pname} (${item.qty}개)`).join(", ");
@@ -24,8 +21,7 @@ function PaymentCheckout() {
         cartItems.length > 0
             ? cartItems
                 .map(
-                    (item: { product: { pname: string }; qty: number }) =>
-                        `${item.product.pname} (${item.qty}개)`
+                    (item) => `${item.pname} (${item.qty}개)`
                 )
                 .join(", ")
             : "기본 상품명"; // 비어 있을 경우 기본 상품명을 설정
