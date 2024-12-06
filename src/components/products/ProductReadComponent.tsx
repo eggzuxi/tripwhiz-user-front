@@ -1,7 +1,6 @@
 import { FaHeart, FaRegHeart, FaArrowLeft } from "react-icons/fa"; // 하트와 뒤로가기 아이콘 추가
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { IProduct } from "../../types/product.ts";
 import { getOne } from "../../api/productAPI.ts";
 import { getCategories, getSubCategories } from "../../api/categoryAPI.ts";
@@ -11,8 +10,6 @@ import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-// import {cartStore} from "../../store/CartStore.ts";
-import {addCart} from "../../api/cartAPI.ts";
 
 const initialState: IProduct = {
     pno: 0,
@@ -23,24 +20,14 @@ const initialState: IProduct = {
     scno: 0,
     tno: 0,
     delflag: false,
-    attachFiles: [
-        {
-            ord: 0,
-            fileName: ''
-        }
-    ],
+    attachFiles: [],
 };
 
 function ProductReadComponent() {
     const navigate = useNavigate();
-    const { pno } = useParams();
-    // const addToCart = cartStore((state) => state.addToCart);
-    const IMAGE_BASE_URL = "http://localhost:8082/api/product/image"; // 이미지 파일의 기본 경로 설정
     const {pno} = useParams();
     const addToCart = cartStore((state) => state.addToCart);
     const [activeTab, setActiveTab] = useState("detail");
-
-    const IMAGE_BASE_URL = "http://localhost:8081/api/product/image";
 
     const [product, setProduct] = useState<IProduct>(initialState);
     const [categoryNames, setCategoryNames] = useState({
@@ -54,22 +41,9 @@ function ProductReadComponent() {
         setIsLiked((prev) => !prev);
     };
 
-    const moveToCart = async () => {
-        try {
-            // API 호출: 상품을 장바구니에 추가
-            await addCart(product.pno, 1);
-            console.log("Added to cart:", product);
-
-            // 장바구니 페이지로 이동
-            navigate("/cart");
-        } catch (error) {
-            console.error("장바구니 추가 중 오류 발생:", error);
-            alert("장바구니에 상품 추가를 실패했습니다. 다시 시도해주세요.");
-        }
-    };
-
-    const handleSlideChange = (swiper: any) => {
-        setSlideIndex(swiper.realIndex);
+    const moveToCart = () => {
+        addToCart(product);
+        navigate("/cart");
     };
 
     useEffect(() => {
@@ -78,7 +52,6 @@ function ProductReadComponent() {
         const pnoNum = Number(pno);
         if (isNaN(pnoNum)) return;
 
-        // 상품 정보를 가져오는 API 호출
         getOne(pnoNum)
             .then((result) => {
                 setProduct(result);
@@ -162,21 +135,6 @@ function ProductReadComponent() {
                         </SwiperSlide>
                     ))}
                 </Swiper>
-        <div className="flex flex-col items-center min-h-screen bg-white p-6">
-            {/* 이미지 - 화면에 꽉 차게 설정 */}
-            {/*<div className="w-full h-80 mb-6">*/}
-            {/*    <img*/}
-            {/*        src={`${IMAGE_BASE_URL}/${product.attachFiles[0].fileName}`} // 상품 이미지 URL을 이미지 표시*/}
-            {/*        alt={product.pname}*/}
-            {/*        className="w-full h-full object-cover rounded-lg"*/}
-            {/*    />*/}
-            {/*</div>*/}
-
-            {/* 용량 선택 */}
-            <div className="flex gap-4 mb-6">
-                <button className="bg-white border-2 border-yellow-400 text-yellow-600 py-2 px-4 rounded-full">150 ml</button>
-                <button className="bg-white border-2 border-yellow-400 text-yellow-600 py-2 px-4 rounded-full">250 ml</button>
-                <button className="bg-white border-2 border-yellow-400 text-yellow-600 py-2 px-4 rounded-full">350 ml</button>
             </div>
 
             {/* 컨텐츠 영역 */}
@@ -280,7 +238,7 @@ function ProductReadComponent() {
 
 
 
-            );
+    );
 
 }
 
