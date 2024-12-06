@@ -6,6 +6,7 @@ import MainProductListComponent from "../components/main/MainProductListComponen
 import {getCategories} from "../api/categoryAPI.ts";
 import MainCarouselComponent from "../components/main/MainCarouselComponent.tsx";
 import MainServiceComponent from "../components/main/MainServiceComponent.tsx";
+import SampleChatUI from "../components/chatbot/SampleChatUI.tsx";
 
 
 interface Category {
@@ -64,6 +65,9 @@ const MainPage = () => {
 
                 {/* 상품 리스트 컴포넌트 */}
                 <MainProductListComponent categories={categories} />
+
+                {/*챗봇*/}
+                <SampleChatUI/>
 
             </div>
 

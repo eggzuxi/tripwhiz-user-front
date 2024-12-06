@@ -26,14 +26,14 @@ function ProductReadComponent() {
     const navigate = useNavigate();
     const { pno } = useParams();
     // const addToCart = cartStore((state) => state.addToCart);
-    const IMAGE_BASE_URL = "http://localhost:8082/api/product/image"; // 이미지 파일의 기본 경로 설정
+    // const IMAGE_BASE_URL = "http://localhost:8082/api/product/image"; // 이미지 파일의 기본 경로 설정
 
     const [product, setProduct] = useState<IProduct>(initialState);
 
     const moveToCart = async () => {
         try {
             // API 호출: 상품을 장바구니에 추가
-            await addCart(product.pno, 1);
+            await addCart(product.pno, product.pname, product.price, 1);
             console.log("Added to cart:", product);
 
             // 장바구니 페이지로 이동

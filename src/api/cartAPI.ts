@@ -15,6 +15,7 @@ const getEmailFromAuthStore = () => {
     return email;
 };
 
+//장바구니 목록 가져오기
 export const getList = async () => {
 
     const email = getEmailFromAuthStore();
@@ -39,18 +40,22 @@ export const getList = async () => {
 // };
 
 // JH
-export const addCart = async (pno: number, qty: number) => {
+export const addCart = async (pno: number, pname: string, price: number, qty: number) => {
 
     const email = getEmailFromAuthStore();
 
     // 요청 바디에 필요한 데이터 생성
-    const cartListDTO = {
+    const cartItems = {
         pno, // 상품 번호
+        pname,
+        price,
         qty, // 수량
         email
     };
 
-    const res = await axios.post(`${host}/add`, cartListDTO);
+    console.log("장바구니 추가 요청 데이터:", cartItems);
+
+    const res = await axios.post(`${host}/add`, cartItems);
 
     console.log("장바구니 추가 성공:", res.data);
 

@@ -114,7 +114,7 @@ const ProductListComponent = () => {
 
         try {
             // 선택된 상품의 번호와 수량으로 API 호출
-            await addCart(selectedProduct.pno, qty);
+            await addCart(selectedProduct.pno, selectedProduct.pname,selectedProduct.price, qty);
             console.log("장바구니에 상품이 추가되었습니다!");
             closePanel(); // 선택 패널 닫기 (선택 사항)
         } catch (error) {
