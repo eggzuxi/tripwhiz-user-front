@@ -6,7 +6,7 @@ const LoginPage = lazy(() => import("../pages/member/LoginPage"))
 const KakaoRedirect = lazy(() => import("../pages/member/KakaoRedirectPage"))
 const GoogleRedirect = lazy(() => import("../pages/member/GoogleRedirectPage"))
 
-export const Loading = <LoadingPage/>
+const Loading = <LoadingPage></LoadingPage>
 
 const memberRouter = {
     path: "/member",
