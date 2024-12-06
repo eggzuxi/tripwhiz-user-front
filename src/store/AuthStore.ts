@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 interface AuthState {
     name: string | null;
-    email: string | null;
+    email: string;
     accessToken: string | null;
     setUser: (name: string, email: string, accessToken: string) => void;
     logout: () => void; // 로그아웃 함수

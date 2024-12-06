@@ -1,113 +1,165 @@
-import { ReactElement } from "react";
-import { cartStore } from "../../store/CartStore.ts";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getList, addCart, deleteCartItem, clearCart } from "../../api/cartAPI";
+import { ICartItems } from "../../types/cart.ts";
+import {useNavigate} from "react-router-dom";
+// import {cartStore} from "../../store/CartStore.ts";
 
-function CartComponent(): ReactElement {
-    const cartItems = cartStore((state) => state.cartItems);
-    const changeQty = cartStore((state) => state.changeQty);
-    const removeFromCart = cartStore((state) => state.removeFromCart);
-    const clearCart = cartStore((state) => state.clearCart);
+const initialState: ICartItems[] = [
+    {
+        email: "",
+        bno: 0,
+        pno: 0,
+        qty: 0,
+        delFlag: false,
+    },
+];
+
+const CartComponent = () => {
+    const [cartItems, setCartItems] = useState<ICartItems[]>(initialState);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    // const handleCheckout = () => {
-    //     // 결제 페이지로 이동하면서 cartItems를 state로 전달
-    //     navigate("/maps", { state: { cartItems } });
-    // };
-    const handleCheckout = () => {
-        if (cartItems.length === 0) {
-            console.warn("Cart is empty. Cannot proceed to checkout.");
-            return;
+    const fetchCartItems = async () => {
+        setLoading(true);
+        try {
+            const items = await getList();
+            setCartItems(items);
+        } catch (error) {
+            console.error("Failed to fetch cart items:", error);
+        } finally {
+            setLoading(false);
         }
-        console.log("Navigating to checkout with cart items:", cartItems);
-        cartStore.setState({ cartItems });
-        navigate("/maps");
     };
 
-    const listLI = cartItems.map((item) => {
-        const { product, qty } = item;
+    const handleDelete = async (pno: number) => {
+        try {
+            await deleteCartItem(pno);
+            setCartItems((prevItems) => prevItems.filter((item) => item.pno !== pno));
+        } catch (error) {
+            console.error("Failed to delete item:", error);
+        }
+    };
 
-        return (
-            <li
-                key={product.pno}
-                className="flex items-center gap-4 p-4 bg-white shadow-md rounded-lg mb-4"
-            >
-                {/* 제품 이미지 */}
-                {product.uploadFileNames  && (
-                    <img
-                        className="w-16 h-16 object-cover rounded-md border border-gray-200"
-                        src={"http://localhost/s_9e0ded36-caf7-423c-b6c1-48b2bbdeee6d_M5.png"}
-                        alt={product.pname}
-                    />
-                )}
+    const handleClearCart = async () => {
+        try {
+            await clearCart();
+            setCartItems([]);
+        } catch (error) {
+            console.error("Failed to clear cart:", error);
+        }
+    };
 
-                {/* 제품 정보 */}
-                <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-700">
-                        {product.pname}
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                        가격: {(product.price * qty).toLocaleString()}원
-                    </p>
-                </div>
+    const handleIncreaseQty = async (pno: number) => {
+        const item = cartItems.find((item) => item.pno === pno);
+        if (item) {
+            const newQty = item.qty + 1;
+            try {
+                await addCart(pno, newQty);
+                setCartItems((prevItems) =>
+                    prevItems.map((item) =>
+                        item.pno === pno ? { ...item, qty: newQty } : item
+                    )
+                );
+            } catch (error) {
+                console.error("Failed to increase quantity:", error);
+            }
+        }
+    };
 
-                {/* 수량 변경 버튼 */}
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={() => changeQty(product.pno, -1)}
-                        className="px-2 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md"
-                    >
-                        -
-                    </button>
-                    <span className="text-gray-700 font-medium">{qty}</span>
-                    <button
-                        onClick={() => changeQty(product.pno, 1)}
-                        className="px-2 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md"
-                    >
-                        +
-                    </button>
-                </div>
+    const handleDecreaseQty = async (pno: number) => {
+        const item = cartItems.find((item) => item.pno === pno);
+        if (item && item.qty > 1) {
+            const newQty = item.qty - 1;
+            try {
+                await addCart(pno, newQty);
+                setCartItems((prevItems) =>
+                    prevItems.map((item) =>
+                        item.pno === pno ? { ...item, qty: newQty } : item
+                    )
+                );
+            } catch (error) {
+                console.error("Failed to decrease quantity:", error);
+            }
+        }
+    };
 
-                {/* 제거 버튼 */}
-                <button
-                    onClick={() => removeFromCart(product.pno)}
-                    className="px-3 py-1 text-red-500 hover:text-red-700"
-                >
-                    Remove
-                </button>
-            </li>
-        );
-    });
+    useEffect(() => {
+        fetchCartItems();
+    }, []);
+
+    if (loading) {
+        return <div className="text-center mt-10">Loading...</div>;
+    }
 
     return (
-        <div className="p-6 bg-gray-50 min-h-screen">
+        <div className="container mx-auto mt-10 px-4 sm:px-6 lg:px-8">
+            <h1 className="text-2xl font-bold text-center mb-6">장바구니</h1>
+            {cartItems.length === 0 ? (
+                <p className="text-center text-gray-500">장바구니가 비어 있습니다.</p>
+            ) : (
+                <div className="space-y-4">
+                    {cartItems.map((item) => (
+                        <div
+                            key={item.pno}
+                            className="flex justify-between items-center border p-4 rounded-md shadow-md bg-white"
+                        >
+                            {/* 상품 정보 */}
+                            <div>
+                                <h2 className="text-lg font-bold">상품 {item.pno}</h2>
+                                <p className="text-gray-500">가격: {(item.qty * 10000).toLocaleString()}원</p>
+                            </div>
 
-            <h2 className="text-xl font-bold text-gray-800 mb-6">장바구니</h2>
-            <ul className="space-y-4">{listLI}</ul>
+                            {/* 수량 조절 버튼 */}
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={() => handleDecreaseQty(item.pno)}
+                                    className="px-2 py-1 bg-gray-200 text-gray-700 rounded-md"
+                                >
+                                    -
+                                </button>
+                                <span className="text-gray-700 font-medium">{item.qty}</span>
+                                <button
+                                    onClick={() => handleIncreaseQty(item.pno)}
+                                    className="px-2 py-1 bg-gray-200 text-gray-700 rounded-md"
+                                >
+                                    +
+                                </button>
+                            </div>
 
-            {cartItems.length > 0 && (
-                <div className="mt-6 flex justify-center gap-4">
-                    <button
-                        onClick={() => navigate("/product/list")}
-                        className="px-6 py-2 bg-yellow-500 text-white rounded-md shadow hover:bg-yellow-600"
-                    >
-                        목록
-                    </button>
-                    <button
-                        onClick={handleCheckout}
-                        className="px-6 py-2 bg-green-600 text-white rounded-md shadow hover:bg-green-700"
-                    >
-                        결제
-                    </button>
-                    <button
-                        onClick={clearCart}
-                        className="px-6 py-2 bg-gray-600 text-white rounded-md shadow hover:bg-gray-700"
-                    >
-                        비우기
-                    </button>
+                            {/* 삭제 버튼 */}
+                            <button
+                                onClick={() => handleDelete(item.pno)}
+                                className="px-3 py-1 text-red-500 hover:text-red-700"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    ))}
+
+                    {/* 하단 버튼들 */}
+                    <div className="flex justify-between mt-6 gap-2">
+                        <button
+                            onClick={() => navigate("/product/list")}
+                            className="px-6 py-2 bg-yellow-500 text-white rounded-md shadow hover:bg-yellow-600"
+                        >
+                            목록
+                        </button>
+                        <button
+                            className="px-6 py-2 bg-green-600 text-white rounded-md shadow hover:bg-green-700"
+                        >
+                            결제
+                        </button>
+                        <button
+                            onClick={handleClearCart}
+                            className="px-6 py-2 bg-gray-600 text-white rounded-md shadow hover:bg-gray-700"
+                        >
+                            비우기
+                        </button>
+                    </div>
                 </div>
             )}
         </div>
     );
-}
+};
 
 export default CartComponent;
