@@ -2,7 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IProduct } from "../../types/product.ts";
 import { getOne } from "../../api/productAPI.ts";
-import {cartStore} from "../../store/CartStore.ts";
+// import {cartStore} from "../../store/CartStore.ts";
+import {addCart} from "../../api/cartAPI.ts";
 
 const initialState: IProduct = {
     pno: 0,
@@ -13,22 +14,34 @@ const initialState: IProduct = {
     scno: 0,
     tno: 0,
     delflag: false,
-    attachFiles: [],
+    attachFiles: [
+        {
+            ord: 0,
+            fileName: ''
+        }
+    ],
 };
 
 function ProductReadComponent() {
     const navigate = useNavigate();
     const { pno } = useParams();
-    const addToCart = cartStore((state) => state.addToCart);
-    // const email = useAuthStore((state) => state.email);
+    // const addToCart = cartStore((state) => state.addToCart);
     const IMAGE_BASE_URL = "http://localhost:8082/api/product/image"; // 이미지 파일의 기본 경로 설정
 
     const [product, setProduct] = useState<IProduct>(initialState);
 
-    const moveToCart = () => {
-        addToCart(product);
-        console.log("Added to cart:", product);
-        navigate("/cart");
+    const moveToCart = async () => {
+        try {
+            // API 호출: 상품을 장바구니에 추가
+            await addCart(product.pno, 1);
+            console.log("Added to cart:", product);
+
+            // 장바구니 페이지로 이동
+            navigate("/cart");
+        } catch (error) {
+            console.error("장바구니 추가 중 오류 발생:", error);
+            alert("장바구니에 상품 추가를 실패했습니다. 다시 시도해주세요.");
+        }
     };
 
     useEffect(() => {
@@ -56,13 +69,13 @@ function ProductReadComponent() {
     return (
         <div className="flex flex-col items-center min-h-screen bg-white p-6">
             {/* 이미지 - 화면에 꽉 차게 설정 */}
-            <div className="w-full h-80 mb-6">
-                <img
-                    src={`${IMAGE_BASE_URL}/${product.attachFiles}`} // 상품 이미지 URL을 이미지 표시
-                    alt={product.pname}
-                    className="w-full h-full object-cover rounded-lg"
-                />
-            </div>
+            {/*<div className="w-full h-80 mb-6">*/}
+            {/*    <img*/}
+            {/*        src={`${IMAGE_BASE_URL}/${product.attachFiles[0].fileName}`} // 상품 이미지 URL을 이미지 표시*/}
+            {/*        alt={product.pname}*/}
+            {/*        className="w-full h-full object-cover rounded-lg"*/}
+            {/*    />*/}
+            {/*</div>*/}
 
             {/* 용량 선택 */}
             <div className="flex gap-4 mb-6">

@@ -4,8 +4,9 @@ import { getList } from "../../api/productAPI";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cartStore } from "../../store/CartStore.ts";
+// import { cartStore } from "../../store/CartStore.ts";
 import CategoryFilterComponent from "./CategoryFilterComponent.tsx";
+import {addCart} from "../../api/cartAPI.ts";
 
 const initialState: IProduct[] = [
     {
@@ -32,7 +33,6 @@ const ProductListComponent = () => {
 
     const [searchParams] = useSearchParams();
 
-    // const email = useAuthStore((state) => state.email);
     const IMAGE_BASE_URL = "http://localhost:8082/api/product/image"; // 이미지 파일의 기본 경로 설정
 
     // 쿼리스트링에서 값 가져오기 및 숫자로 변환_SY
@@ -43,9 +43,9 @@ const ProductListComponent = () => {
     // 장바구니 슬라이드 패널 상태
     const [isPanelOpen, setIsPanelOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
-    const [quantity, setQuantity] = useState(1);
+    const [qty, setQty] = useState(1);
 
-    const addToCart = cartStore((state) => state.addToCart);
+    // const addToCart = cartStore((state) => state.addToCart);
 
     const moveToDetails = (pno: number) => {
         navigate(`/product/read/${pno}`);
@@ -91,7 +91,7 @@ const ProductListComponent = () => {
     // 슬라이드 패널 열기 함수
     const openPanel = (product: IProduct) => {
         setSelectedProduct(product);
-        setQuantity(1);
+        setQty(1);
         setIsPanelOpen(true);
     };
 
@@ -102,17 +102,25 @@ const ProductListComponent = () => {
     };
 
     // 수량 조절 함수
-    const increaseQuantity = () => setQuantity((prev) => prev + 1);
-    const decreaseQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
+    const increaseQty = () => setQty((prev) => prev + 1);
+    const decreaseQty = () => setQty((prev) => Math.max(1, prev - 1));
 
     // 장바구니에 선택한 수량만큼 상품 추가
-    const handleAddToCart = () => {
-        if (selectedProduct) {
-            for (let i = 0; i < quantity; i++) {
-                // @ts-ignore
-                addToCart(selectedProduct, 1);
-            }
-            closePanel();
+    const handleAddToCart = async () => {
+        if (!selectedProduct) {
+            console.warn("선택된 상품이 없습니다.");
+            return;
+        }
+
+        try {
+            // 선택된 상품의 번호와 수량으로 API 호출
+            await addCart(selectedProduct.pno, qty);
+            console.log("장바구니에 상품이 추가되었습니다!");
+            closePanel(); // 선택 패널 닫기 (선택 사항)
+        } catch (error) {
+            console.error("장바구니에 상품 추가 실패:", error);
+            // 사용자에게 알림 또는 에러 처리
+            alert("장바구니에 상품 추가에 실패했습니다. 다시 시도해주세요.");
         }
     };
 
@@ -178,14 +186,14 @@ const ProductListComponent = () => {
                 {selectedProduct && (
                     <>
                         <p className="text-gray-700 mb-4">
-                            총 가격: <span className="font-bold">{selectedProduct.price * quantity}원</span>
+                            총 가격: <span className="font-bold">{selectedProduct.price * qty}원</span>
                         </p>
                         <div className="flex justify-end items-center mb-4">
-                            <button onClick={decreaseQuantity} className="p-2 border rounded-l">
+                            <button onClick={decreaseQty} className="p-2 border rounded-l">
                                 -
                             </button>
-                            <span className="px-4 border-t border-b">{quantity}</span>
-                            <button onClick={increaseQuantity} className="p-2 border rounded-r">
+                            <span className="px-4 border-t border-b">{qty}</span>
+                            <button onClick={increaseQty} className="p-2 border rounded-r">
                                 +
                             </button>
                         </div>
