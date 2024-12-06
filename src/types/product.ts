@@ -15,7 +15,7 @@ export interface IProduct {
     attachFiles: IProductImage[]; // 기존 IProductImage 객체 배열
 }
 
-export interface ICartItem {
-    product: IProduct
-    qty: number
-}
+// export interface ICartItem {
+//     product: IProduct
+//     qty: number
+// }

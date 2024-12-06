@@ -57,7 +57,7 @@ function ProductReadComponent() {
     const moveToCart = async () => {
         try {
             // API 호출: 상품을 장바구니에 추가
-            await addCart(product.pno, 1);
+            await addCart(product.pno, product.pname, product.price, 1);
             console.log("Added to cart:", product);
 
             // 장바구니 페이지로 이동

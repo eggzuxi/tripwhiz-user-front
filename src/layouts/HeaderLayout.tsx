@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {startTransition, useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from '../layouts/SidebarLayout';
@@ -14,8 +14,8 @@ function HeaderLayout() {
     };
 
     const moveToHome = () => {
-        navigate({
-            pathname: `/main`
+        startTransition(() => {
+            navigate("/main"); // 메인 페이지로 이동
         });
     };
 
