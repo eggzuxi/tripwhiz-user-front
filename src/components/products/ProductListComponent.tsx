@@ -220,4 +220,4 @@ const fetchProducts = async () => {
 };
 
 export default ProductListComponent;
-fetchProducts();
+
