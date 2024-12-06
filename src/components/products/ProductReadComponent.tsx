@@ -1,7 +1,6 @@
 import { FaHeart, FaRegHeart, FaArrowLeft } from "react-icons/fa"; // 하트와 뒤로가기 아이콘 추가
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { IProduct } from "../../types/product.ts";
 import { getOne } from "../../api/productAPI.ts";
 import { getCategories, getSubCategories } from "../../api/categoryAPI.ts";
@@ -23,24 +22,14 @@ const initialState: IProduct = {
     scno: 0,
     tno: 0,
     delflag: false,
-    attachFiles: [
-        {
-            ord: 0,
-            fileName: ''
-        }
-    ],
+    attachFiles: [],
 };
 
 function ProductReadComponent() {
     const navigate = useNavigate();
-    const { pno } = useParams();
-    // const addToCart = cartStore((state) => state.addToCart);
-    const IMAGE_BASE_URL = "http://localhost:8082/api/product/image"; // 이미지 파일의 기본 경로 설정
     const {pno} = useParams();
     const addToCart = cartStore((state) => state.addToCart);
     const [activeTab, setActiveTab] = useState("detail");
-
-    const IMAGE_BASE_URL = "http://localhost:8081/api/product/image";
 
     const [product, setProduct] = useState<IProduct>(initialState);
     const [categoryNames, setCategoryNames] = useState({
@@ -280,7 +269,7 @@ function ProductReadComponent() {
 
 
 
-            );
+    );
 
 }
 

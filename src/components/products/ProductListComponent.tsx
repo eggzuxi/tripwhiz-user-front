@@ -100,21 +100,11 @@ const ProductListComponent = () => {
         setIsPanelOpen(false);
         setSelectedProduct(null);
     };
-import {getList} from "../../api/cartAPI.ts";
 
     // 수량 조절 함수
     const increaseQty = () => setQty((prev) => prev + 1);
     const decreaseQty = () => setQty((prev) => Math.max(1, prev - 1));
 
-const fetchProducts = async () => {
-    try {
-        const filter = { page: 1, cno: 2 };
-        const products = await getList(filter);
-        console.log("Product list:", products);
-    } catch (error) {
-        console.error("Error fetching product list:", error);
-    }
-};
     // 장바구니에 선택한 수량만큼 상품 추가
     const handleAddToCart = async () => {
         if (!selectedProduct) {
@@ -220,4 +210,3 @@ const fetchProducts = async () => {
 };
 
 export default ProductListComponent;
-
