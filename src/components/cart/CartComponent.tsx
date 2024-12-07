@@ -128,21 +128,6 @@ const CartComponent = () => {
         }
     };
 
-    const handleCheckout = () => {
-        // 결제 페이지로 이동하면서 cartItems를 state로 전달
-        navigate("/maps", { state: { cartItems } });
-    };
-
-    // const handleCheckout = () => {
-    //     if (cartItems.length === 0) {
-    //         console.warn("Cart is empty. Cannot proceed to checkout.");
-    //         return;
-    //     }
-    //     console.log("Navigating to checkout with cart items:", cartItems);
-    //     cartStore.setState({ cartItems });
-    //     navigate("/maps");
-    // };
-
     useEffect(() => {
         fetchCartItems();
     }, []);
