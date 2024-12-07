@@ -81,38 +81,39 @@ const SampleChatUI: React.FC = () => {
 
     return (
         <div>
-            {/* 흰색 배경과 검은 그림자를 추가한 동그라미 버튼 */}
-            <div
-                onMouseDown={handleMouseDown}
-                onTouchStart={handleMouseDown}
-                onClick={() => {
-                    if (!isDragging) toggleChat();
-                }}
-                style={{
-                    position: "fixed",
-                    left: `${position.x}px`,
-                    top: `${position.y}px`,
-                    width: "60px",
-                    height: "60px",
-                    borderRadius: "50%", // 동그라미 모양
-                    backgroundColor: "white", // 흰색 배경
-                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)", // 약간의 검은 그림자
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    zIndex: 1000,
-                }}
-            >
-                <FontAwesomeIcon
-                    icon={faPlane}
-                    style={{
-                        fontSize: "24px", // 아이콘 크기
-                        color: "#1D2D5F", // 아이콘 색상
-                        transform: "rotate(-45deg)", // 45도 회전
+            {!isChatOpen && ( // 아이콘은 챗봇 창이 닫혀 있을 때만 렌더링
+                <div
+                    onMouseDown={handleMouseDown}
+                    onTouchStart={handleMouseDown}
+                    onClick={() => {
+                        if (!isDragging) toggleChat();
                     }}
-                />
-            </div>
+                    style={{
+                        position: "fixed",
+                        left: `${position.x}px`,
+                        top: `${position.y}px`,
+                        width: "60px",
+                        height: "60px",
+                        borderRadius: "50%", // 동그라미 모양
+                        backgroundColor: "white", // 흰색 배경
+                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)", // 약간의 검은 그림자
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        cursor: "pointer",
+                        zIndex: 1000,
+                    }}
+                >
+                    <FontAwesomeIcon
+                        icon={faPlane}
+                        style={{
+                            fontSize: "24px", // 아이콘 크기
+                            color: "#1D2D5F", // 아이콘 색상
+                            transform: "rotate(-45deg)", // 45도 회전
+                        }}
+                    />
+                </div>
+            )}
 
             {isChatOpen && (
                 <div

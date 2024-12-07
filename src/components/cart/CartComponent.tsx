@@ -9,6 +9,8 @@ const initialState: ICartItems[] = [
         email: "",
         bno: 0,
         pno: 0,
+        pname: "",
+        price: 0,
         qty: 0,
         delFlag: false,
     },
@@ -49,36 +51,79 @@ const CartComponent = () => {
         }
     };
 
-    const handleIncreaseQty = async (pno: number) => {
-        const item = cartItems.find((item) => item.pno === pno);
-        if (item) {
-            const newQty = item.qty + 1;
-            try {
-                await addCart(pno, newQty);
-                setCartItems((prevItems) =>
-                    prevItems.map((item) =>
-                        item.pno === pno ? { ...item, qty: newQty } : item
-                    )
-                );
-            } catch (error) {
-                console.error("Failed to increase quantity:", error);
-            }
+    // const handleCheckout = () => {
+    //     // 결제 페이지로 이동하면서 cartItems를 state로 전달
+    //     navigate("/maps", { state: { cartItems } });
+    // };
+
+    const handleCheckout = () => {
+        if (cartItems.length === 0) {
+            console.warn("Cart is empty. Cannot proceed to checkout.");
+            return;
         }
+        console.log("Navigating to checkout with cart items:", cartItems);
+        // cartStore.setState({ cartItems });
+        navigate("/maps");
     };
 
-    const handleDecreaseQty = async (pno: number) => {
+    // const handleIncreaseQty = async (pno: number) => {
+    //     const item = cartItems.find((item) => item.pno === pno);
+    //     if (item) {
+    //         const newQty = item.qty + 1;
+    //         try {
+    //             await addCart(pno, newQty);
+    //             setCartItems((prevItems) =>
+    //                 prevItems.map((item) =>
+    //                     item.pno === pno ? { ...item, qty: newQty } : item
+    //                 )
+    //             );
+    //         } catch (error) {
+    //             console.error("Failed to increase quantity:", error);
+    //         }
+    //     }
+    // };
+    //
+    // const handleDecreaseQty = async (pno: number) => {
+    //     const item = cartItems.find((item) => item.pno === pno);
+    //     if (item && item.qty > 1) {
+    //         const newQty = item.qty - 1;
+    //         try {
+    //             await addCart(pno, newQty);
+    //             setCartItems((prevItems) =>
+    //                 prevItems.map((item) =>
+    //                     item.pno === pno ? { ...item, qty: newQty } : item
+    //                 )
+    //             );
+    //         } catch (error) {
+    //             console.error("Failed to decrease quantity:", error);
+    //         }
+    //     }
+    // };
+
+    const handleUpdateQty = async (pno: number, isIncrease: boolean) => {
         const item = cartItems.find((item) => item.pno === pno);
-        if (item && item.qty > 1) {
-            const newQty = item.qty - 1;
+
+        if (item) {
+            const newQty = isIncrease ? item.qty + 1 : item.qty - 1;
+
+            // 수량이 1 미만이 되지 않도록 제한
+            if (newQty < 1) {
+                console.warn("Quantity cannot be less than 1.");
+                return;
+            }
+
             try {
-                await addCart(pno, newQty);
+                // addCart 호출 시 필요한 pname과 price를 함께 전달
+                await addCart(pno, item.pname, item.price, newQty);
+
+                // 상태 업데이트
                 setCartItems((prevItems) =>
                     prevItems.map((item) =>
                         item.pno === pno ? { ...item, qty: newQty } : item
                     )
                 );
             } catch (error) {
-                console.error("Failed to decrease quantity:", error);
+                console.error("Failed to update quantity:", error);
             }
         }
     };
@@ -120,21 +165,21 @@ const CartComponent = () => {
                         >
                             {/* 상품 정보 */}
                             <div>
-                                <h2 className="text-lg font-bold">상품 {item.pno}</h2>
-                                <p className="text-gray-500">가격: {(item.qty * 10000).toLocaleString()}원</p>
+                                <h2 className="text-lg font-bold">상품명: {item.pname}</h2>
+                                <p className="text-gray-500">가격: {(item.price * item.qty).toLocaleString()}원</p>
                             </div>
 
                             {/* 수량 조절 버튼 */}
                             <div className="flex items-center gap-2">
                                 <button
-                                    onClick={() => handleDecreaseQty(item.pno)}
+                                    onClick={() => handleUpdateQty(item.pno, false)} //수량 감소
                                     className="px-2 py-1 bg-gray-200 text-gray-700 rounded-md"
                                 >
                                     -
                                 </button>
                                 <span className="text-gray-700 font-medium">{item.qty}</span>
                                 <button
-                                    onClick={() => handleIncreaseQty(item.pno)}
+                                    onClick={() => handleUpdateQty(item.pno, true)} //수량 증가
                                     className="px-2 py-1 bg-gray-200 text-gray-700 rounded-md"
                                 >
                                     +
