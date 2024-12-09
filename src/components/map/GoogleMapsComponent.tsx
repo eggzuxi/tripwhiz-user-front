@@ -119,7 +119,7 @@ const GoogleMap: React.FC = () => {
     return (
         <div className="container">
             {/* 헤더 */}
-            <header className="header">eMart 24</header>
+            <header className="header">지점 선택</header>
 
             {/* 검색창 */}
             <div className="search-bar">
@@ -163,7 +163,7 @@ const GoogleMap: React.FC = () => {
                             <button
                                 className="select-button"
                                 onClick={() => {
-                                    navigate("/payment");
+                                    navigate("/order/pickup");
                                 }}
                             >
                                 선택하기

@@ -32,7 +32,7 @@ function DestinationPage(): JSX.Element {
             <div className="flex items-center justify-center h-screen bg-white">
                 <h1 className="text-4xl font-bold text-gray-800 animate-pulse">
                     <img
-                        src="/images/tripwhiz logo.png"
+                        src="/images/tripwhiz_logo.png"
                         alt="ewhiz"
                         className="w-32 h-18 mr-2"
                     />
