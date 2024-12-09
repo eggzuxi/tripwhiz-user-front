@@ -1,11 +1,22 @@
 // 주문 관련 API 호출 함수 정의
 import axios from "axios";
 import { OrderListDTO, OrderReadDTO, CompleteOrderRequest } from "../types/ordertype";
+import useAuthStore from "../store/AuthStore.ts";
+
+const getEmailFromAuthStore = () => {
+    const email = useAuthStore.getState().email; // zustand의 email 값 가져오기
+    if (!email) {
+        throw new Error("Email not found in authStore");
+    }
+
+    console.log(email)
+
+    return email;
+};
 
 // API 기본 URL 설정
 const USER_BASE_URL = "http://localhost:8081/api/user/order"; // 유저 백엔드 URL
 const STORE_BASE_URL = "http://localhost:8082/api/storeowner/order"; // 점주 백엔드 URL
-
 
 
 // 주문 생성 함수
@@ -24,12 +35,21 @@ export const createOrder = async (
 };
 
 // 유저의 주문 목록 가져오기
-export const fetchOrderList = async (email: string, page: number, size: number) => {
-    const response = await axios.get<{ content: OrderListDTO[]; totalElements: number }>(
+export const fetchOrderList = async (page: number, size: number) => {
+
+    const email = getEmailFromAuthStore();
+
+    const response = await axios.get<{ dtoList: OrderListDTO[]; totalElements: number }>(
         `${USER_BASE_URL}/list`,
-        { params: { email, page, size } }
+        { params: { page, size }, headers: { email } }
     );
+
+    console.log("Request Headers:", { email });
+
+    console.log(response.data)
+
     return response.data;
+
 };
 
 // 특정 주문의 상세 정보 가져오기
