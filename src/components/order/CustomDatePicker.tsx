@@ -19,7 +19,7 @@ const CustomDatePicker = () => {
         if (!startDate) {
             setErrorMessage("날짜를 선택해 주세요."); // 날짜 선택 안 됐을 때 경고 메시지
         } else {
-            navigate("/maps");
+            navigate("/payment");
         }
     };
 
