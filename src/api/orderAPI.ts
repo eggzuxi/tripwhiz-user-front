@@ -6,6 +6,23 @@ import { OrderListDTO, OrderReadDTO, CompleteOrderRequest } from "../types/order
 const USER_BASE_URL = "http://localhost:8081/api/user/order"; // 유저 백엔드 URL
 const STORE_BASE_URL = "http://localhost:8082/api/storeowner/order"; // 점주 백엔드 URL
 
+
+
+// 주문 생성 함수
+export const createOrder = async (
+    email: string,
+    spno: number,
+    pickUpDate: string
+) => {
+    const response = await axios.post(`${USER_BASE_URL}/create`, null, {
+        params: { spno, pickUpDate },
+        headers: { email }
+    });
+
+    console.log(email)
+    return response.data;
+};
+
 // 유저의 주문 목록 가져오기
 export const fetchOrderList = async (email: string, page: number, size: number) => {
     const response = await axios.get<{ content: OrderListDTO[]; totalElements: number }>(

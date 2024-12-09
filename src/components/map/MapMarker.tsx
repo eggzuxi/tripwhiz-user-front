@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import {useNavigate} from "react-router-dom";
+import {cartStore} from "../../store/CartStore.ts";
 
 interface MapMarkerProps {
     map: google.maps.Map;
@@ -7,11 +8,13 @@ interface MapMarkerProps {
     title: string;
     content: string;
     address: string;
+    spno: number; // 지점 번호
 }
 
-const MapMarker: React.FC<MapMarkerProps> = ({ map, position, title, content, address }) => {
+const MapMarker: React.FC<MapMarkerProps> = ({ map, position, title, content, address, spno }) => {
 
     const navigate = useNavigate()
+    const setSpno = cartStore((state) => state.setSpno); // Zustand의 setSpno 함수 가져오기
 
     useEffect(() => {
         const marker = new google.maps.Marker({
@@ -39,6 +42,7 @@ const MapMarker: React.FC<MapMarkerProps> = ({ map, position, title, content, ad
             <div>{address}</div>
             <button
                 onClick={() => {
+                    setSpno(spno); // 클릭 시 지점번호 저장
                     navigate("/order/pickup"); // 절대 경로 사용
                 }}
             >

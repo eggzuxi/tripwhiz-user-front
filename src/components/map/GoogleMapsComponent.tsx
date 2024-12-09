@@ -152,6 +152,7 @@ const GoogleMap: React.FC = () => {
                                 position={{ lat: spot.latitude, lng: spot.longitude }}
                                 title={spot.spotname}
                                 address={spot.address}
+                                spno={spot.spno}
                                 content={`<h4>${spot.spotname}</h4><a href="${spot.url}" target="_blank">길찾기</a>`}
                             />
                         </div>
