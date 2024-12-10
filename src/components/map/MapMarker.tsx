@@ -1,46 +1,56 @@
-import { useEffect, useRef } from 'react';
-import MapPin from './MapPin';
+import React, { useEffect } from "react";
+import {useNavigate} from "react-router-dom";
+import {cartStore} from "../../store/CartStore.ts";
 
 interface MapMarkerProps {
     map: google.maps.Map;
     position: google.maps.LatLngLiteral;
     title: string;
     content: string;
+    address: string;
+    spno: number; // 지점 번호
 }
 
-function MapMarker({ map, position, title, content }: MapMarkerProps) {
-    const ref = useRef<HTMLDivElement>(null);
+const MapMarker: React.FC<MapMarkerProps> = ({ map, position, title, content, address, spno }) => {
+
+    const navigate = useNavigate()
+    const setSpno = cartStore((state) => state.setSpno); // Zustand의 setSpno 함수 가져오기
 
     useEffect(() => {
-        if (ref.current) {
-            // google.maps.Marker를 사용하여 마커 생성
-            const marker = new google.maps.Marker({
-                position,  // lat, lng 포함된 position
-                map,
-                title,
-            });
+        const marker = new google.maps.Marker({
+            position,
+            map,
+            title,
+        });
 
-            // Marker의 콘텐츠를 Custom으로 설정하기 위해 InfoWindow 사용
-            const infoWindow = new google.maps.InfoWindow({
-                content: ref.current,  // MapPin을 InfoWindow로 설정
-            });
+        const infoWindow = new google.maps.InfoWindow({
+            content, // content를 InfoWindow에 전달
+        });
 
-            marker.addListener('click', () => {
-                infoWindow.open(map, marker);
-            });
+        marker.addListener("click", () => {
+            infoWindow.open(map, marker);
+        });
 
-            // Cleanup: 컴포넌트 unmount 시 마커 제거
-            return () => {
-                marker.setMap(null); // 마커 제거
-            };
-        }
-    }, [map, position, title, content]);  // 의존성 배열에 필요한 props 추가
+        return () => {
+            marker.setMap(null);
+        };
+    }, [map, position, title]);
 
     return (
-        <div ref={ref} style={{ backgroundColor: '#db4455', borderColor: '#881824' }}>
-            <MapPin>{content}</MapPin>
+        <div>
+            <div>{title}</div>
+            <div>{address}</div>
+            <button
+                onClick={() => {
+                    setSpno(spno); // 클릭 시 지점번호 저장
+                    navigate("/order/pickup"); // 절대 경로 사용
+                }}
+            >
+                선택하기
+            </button>
         </div>
+
     );
-}
+};
 
 export default MapMarker;

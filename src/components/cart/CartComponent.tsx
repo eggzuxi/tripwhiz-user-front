@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getList, addCart, deleteCartItem, clearCart } from "../../api/cartAPI";
 import { ICartItems } from "../../types/cart.ts";
 import {useNavigate} from "react-router-dom";
-// import {cartStore} from "../../store/CartStore.ts";
+import {cartStore} from "../../store/CartStore.ts";
 
 const initialState: ICartItems[] = [
     {
@@ -62,8 +62,8 @@ const CartComponent = () => {
             return;
         }
         console.log("Navigating to checkout with cart items:", cartItems);
-        // cartStore.setState({ cartItems });
-        navigate("/maps");
+        cartStore.setState({ cartItems });
+        navigate("/order/spot");
     };
 
     // const handleIncreaseQty = async (pno: number) => {

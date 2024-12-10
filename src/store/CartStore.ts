@@ -6,10 +6,14 @@ import {ICartItems} from "../types/cart.ts";
 
 interface CartStore {
     cartItems: ICartItems[];
+    spno: number | null; // 선택된 지점 번호
+    pickUpDate: string; // 선택된 픽업 날짜
     addToCart: (item: ICartItems) => void;
     removeFromCart: (pno: number) => void;
     changeQty: (pno: number, qty: number) => void;
     clearCart: () => void;
+    setSpno: (spno: number) => void; // 지점 번호 설정
+    setPickUpDate: (date: string) => void; // 픽업 날짜 설정
 }
 
 type CartStorePersist = (
@@ -37,6 +41,8 @@ export const cartStore = create<CartStore>(
     (persist as CartStorePersist)(
         (set) => ({
             cartItems: [],
+            spno: null, // 초기 선택된 지점 번호
+            pickUpDate: "", // 초기 선택된 픽업 날짜
 
             // 장바구니에 상품 추가 함수
             addToCart: (item) => set((state) => {
@@ -65,7 +71,17 @@ export const cartStore = create<CartStore>(
             }),
 
             // 장바구니 전체 비우기 함수
-            clearCart: () => set({ cartItems: [] })
+            clearCart: () => set({ cartItems: [] }),
+
+            // 지점 번호 설정 함수
+            setSpno: (spno) => {
+                console.log(`Setting spno: ${spno}`); // 로그 추가
+                set({ spno });
+            },
+
+            // 픽업 날짜 설정 함수
+            setPickUpDate: (date) => set({ pickUpDate: date }),
+
         }),
         {
             name: 'cart-storage', // 세션 스토리지에 저장될 키 이름
