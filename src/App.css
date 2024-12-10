@@ -133,6 +133,109 @@
 }
 
 
+/*about BookingDate*/
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.calendar {
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* CustomDatePicker.css */
+/* 달력 전체 스타일 */
+.custom-calendar {
+  width: 100%; /* 달력이 컨테이너에 꽉 차도록 설정 */
+  font-size: 1.2rem; /* 달력 글자 크기 조정 */
+  border: none; /* 테두리 제거 */
+}
+
+.custom-datepicker-container {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%; /* 컨테이너 너비 설정 */
+  max-width: 600px; /* 선택 사항: 최대 너비 제한 */
+  margin: 0 auto; /* 가로 방향 중앙 정렬 */
+  padding: 20px;
+  box-sizing: border-box; /* 패딩 포함 계산 */
+}
+
+.react-datepicker {
+  width: 100%; /* DatePicker 컴포넌트의 전체 너비 */
+  max-width: 700px; /* 최대 너비 */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.react-datepicker__header {
+  background-color: #1d3557; /* 네이비 색상 */
+  color: white;
+  font-size: 1.2rem;
+  padding: 10px 0;
+}
+
+.react-datepicker__month-container {
+  width: 100%; /* 내부 컨테이너 너비 */
+}
+
+.react-datepicker__day {
+  font-size: 1rem; /* 글자 크기 */
+  color: #1d3557; /* 텍스트 색상 */
+  border-radius: 50%; /* 원형 버튼 */
+  width: 50px; /* 날짜 버튼 너비 */
+  height: 50px; /* 날짜 버튼 높이 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px; /* 날짜 간격 */
+}
+
+.react-datepicker__day:hover {
+  background-color: #f1faee; /* 마우스 오버시 밝은 색 */
+  cursor: pointer;
+}
+
+.react-datepicker__day--today {
+  background-color: #1d3557; /* 오늘 날짜 네이비 */
+  color: white;
+}
+
+.react-datepicker__day--selected {
+  background-color: #457b9d; /* 선택된 날짜 네이비 */
+  color: white;
+}
+
+.react-datepicker__day--disabled {
+  color: #ccc; /* 비활성화된 날짜 */
+}
+
+.react-datepicker__triangle {
+  display: none;
+}
+
+
+
+
+
 /*so*/
 /*.container {*/
 /*  display: flex;*/
