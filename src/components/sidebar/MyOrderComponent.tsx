@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchOrderList } from "../../api/orderAPI"; // API 함수 임포트
 import { OrderListDTO } from "../../types/ordertype";
+import {useNavigate} from "react-router-dom";
 
 function MyOrderComponent() {
     const [orders, setOrders] = useState<OrderListDTO[]>([]);
@@ -8,6 +9,7 @@ function MyOrderComponent() {
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(10); // 한 페이지에 보여줄 아이템 수
     const [totalElements, setTotalElements] = useState(0);
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -61,6 +63,12 @@ function MyOrderComponent() {
                             <p className="text-sm text-gray-600">
                                 Ordered At: {new Date(order.createTime).toLocaleString()}
                             </p>
+                            <button
+                                className="mt-4 w-full bg-yellow-500 hover:bg-red-600 text-white text-sm py-2 rounded-lg"
+                                onClick={() => navigate("/details")}
+                            >
+                                Order Details
+                            </button>
                             <button
                                 className="mt-4 w-full bg-red-500 hover:bg-red-600 text-white text-sm py-2 rounded-lg"
                                 onClick={() => handleCancelOrder(order.ono)}

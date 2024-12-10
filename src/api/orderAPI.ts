@@ -53,9 +53,12 @@ export const fetchOrderList = async (page: number, size: number) => {
 };
 
 // 특정 주문의 상세 정보 가져오기
-export const fetchOrderDetails = async (ono: number, email: string) => {
+export const fetchOrderDetails = async (ono: number) => {
+
+    const email = getEmailFromAuthStore();
+
     const response = await axios.get<OrderReadDTO>(`${USER_BASE_URL}/details/${ono}`, {
-        params: { email },
+        headers: { email },
     });
     return response.data;
 };
