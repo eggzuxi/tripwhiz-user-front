@@ -9,6 +9,7 @@ import GoogleMapsPage from "../pages/map/GoogleMapsPage";
 import ThemePage from "../pages/theme/ThemePage";
 import sidebarRouter from "./sidebarRouter.tsx";
 import OrderRouter from "./orderRouter.tsx";
+import bookingDateRouter from "./bookingDateRouter.tsx";
 
 
 
@@ -51,7 +52,8 @@ const mainRouter = createBrowserRouter([
             cartRouter,
             paymentRouter,
             sidebarRouter,
-            OrderRouter
+            OrderRouter,
+            bookingDateRouter,
         ],
     },
 

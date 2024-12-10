@@ -116,17 +116,22 @@ const CartComponent = () => {
                 // addCart 호출 시 필요한 pname과 price를 함께 전달
                 await addCart(pno, item.pname, item.price, newQty);
 
-                // 상태 업데이트
-                setCartItems((prevItems) =>
-                    prevItems.map((item) =>
-                        item.pno === pno ? { ...item, qty: newQty } : item
-                    )
-                );
+                // // 상태 업데이트
+                // setCartItems((prevItems) =>
+                //     prevItems.map((item) =>
+                //         item.pno === pno ? { ...item, qty: newQty } : item
+                //     )
+                // );
+                // 서버에서 최신 장바구니 데이터를 다시 가져옴
+                await fetchCartItems();
             } catch (error) {
                 console.error("Failed to update quantity:", error);
             }
         }
     };
+
+
+
 
     useEffect(() => {
         fetchCartItems();
