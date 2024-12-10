@@ -49,4 +49,3 @@ export const getOne = async (pno: number) => {
     return res.data
 
 }
-
