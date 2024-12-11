@@ -32,7 +32,7 @@ function HeaderLayout() {
                 <div className="cursor-pointer" onClick={moveToHome}>
                     {/* 로고 이미지 삽입 */}
                     <img
-                        src="/public/images/tripwhiz logo.png" // 로고 이미지 경로 설정
+                        src="/images/tripwhiz_logo.png" // 로고 이미지 경로 설정
                         alt="emart24 logo"
                         className="h-8" // Tailwind로 이미지 높이 설정
                     />

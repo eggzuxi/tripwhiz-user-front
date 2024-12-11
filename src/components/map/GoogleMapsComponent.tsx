@@ -1,92 +1,96 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../../App.css";
+import storeAPI from "../../api/storeAPI.ts";
+import MapMarker from "./MapMarker.tsx";
+
+interface Spot {
+    spno: number;
+    spotname: string;
+    address:string;
+    url: string;
+    latitude: number;
+    longitude: number;
+}
 
 // 거리 계산 함수
-function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
-    const toRad = (value: number) => (value * Math.PI) / 180;
-    const R = 6371; // 지구 반지름 (단위: km)
-    const dLat = toRad(lat2 - lat1);
-    const dLng = toRad(lng2 - lng1); // lng1이 여기서 사용됩니다.
-
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // 거리 반환 (단위: km)
-}
+// function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+//     const toRad = (value: number) => (value * Math.PI) / 180;
+//     const R = 6371; // 지구 반지름 (단위: km)
+//     const dLat = toRad(lat2 - lat1);
+//     const dLng = toRad(lng2 - lng1); // lng1이 여기서 사용됩니다.
+//
+//     const a =
+//         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+//         Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+//
+//     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//     return R * c; // 거리 반환 (단위: km)
+// }
 
 
 const GoogleMap: React.FC = () => {
     const ref = useRef<HTMLDivElement>(null);
     const searchInputRef = useRef<HTMLInputElement>(null);
     const [googleMap, setGoogleMap] = useState<google.maps.Map | null>(null);
-    const [filteredMarkers, setFilteredMarkers] = useState<typeof markerData>([]);
-    const navigate = useNavigate();
-
-    const markerData = [
-        { lat: 3.1579, lng: 101.7123, title: "페트로나스 트윈타워", content: "페트로나스 트윈타워입니다." },
-        { lat: 3.1569, lng: 101.7118, title: "만다린 오리엔탈 쿠알라룸푸르", content: "만다린 오리엔탈 호텔입니다." },
-        { lat: 3.1543, lng: 101.7113, title: "그랜드 하얏트 쿠알라룸푸르", content: "그랜드 하얏트 호텔입니다." },
-        { lat: 3.1549, lng: 101.7125, title: "트레이더스 호텔 쿠알라룸푸르", content: "트레이더스 호텔입니다." },
-        { lat: 3.1540, lng: 101.7118, title: "임피아나 KLCC 호텔", content: "임피아나 KLCC 호텔입니다." },
-        { lat: 3.1520, lng: 101.7054, title: "샹그릴라 호텔 쿠알라룸푸르", content: "샹그릴라 호텔입니다." },
-        { lat: 3.2379, lng: 101.6831, title: "바투 동굴", content: "힌두교 사원이 위치한 석회암 동굴입니다." },
-    ];
+    const [spotData, setSpotData] = useState<Spot[]>([]);
+    // const [filteredSpots, setFilteredSpots] = useState<Spot[]>([]); // 필터링된 지점 데이터
 
     useEffect(() => {
+        const fetchSpotData = async () => {
+            try {
+                const spotList = await storeAPI.list(); // storeAPI.list 사용
+                setSpotData(spotList);
+            } catch (error) {
+                console.error("Spot 데이터를 가져오는 중 오류 발생:", error);
+            }
+        };
+
+        fetchSpotData();
+    }, []);
+
+    useEffect(() => {
+
         if (ref.current && !googleMap) {
             const initialMap = new window.google.maps.Map(ref.current, {
-                center: { lat: 3.1579, lng: 101.7123 },
-                zoom: 15,
+                center: { lat: 3.157288444149725, lng: 101.70809824531135 },
+                zoom: 12,
                 disableDefaultUI: true,
                 gestureHandling: "greedy",
             });
 
             setGoogleMap(initialMap);
 
-            // 마커 추가
-            markerData.forEach((marker) => {
-                const mapMarker = new window.google.maps.Marker({
-                    position: { lat: marker.lat, lng: marker.lng },
-                    map: initialMap,
-                    title: marker.title,
-                });
-
-                mapMarker.addListener("click", () => {
-                    const nearbyMarkers = markerData.filter((m) => {
-                        const distance = calculateDistance(marker.lat, marker.lng, m.lat, m.lng);
-                        return distance <= 1;
-                    });
-
-                    setFilteredMarkers(nearbyMarkers);
-                    initialMap.panTo({ lat: marker.lat, lng: marker.lng });
-                    initialMap.setZoom(16);
-                });
-            });
-
-            // 지도 클릭 이벤트
-            initialMap.addListener("click", (event: google.maps.MapMouseEvent) => {
-                if (event.latLng) {
-                    const clickedLat = event.latLng.lat();
-                    const clickedLng = event.latLng.lng();
-
-                    // 주변 1km 범위 내 마커 필터링
-                    const nearbyMarkers = markerData.filter((marker) => {
-                        const distance = calculateDistance(clickedLat, clickedLng, marker.lat, marker.lng);
-                        return distance <= 1;
-                    });
-
-                    setFilteredMarkers(nearbyMarkers);
-
-                    // 지도 중심 이동
-                    initialMap.panTo({ lat: clickedLat, lng: clickedLng });
-                    initialMap.setZoom(16);
-                }
-            });
         }
     }, [googleMap]);
+
+    // useEffect(() => {
+    //     if (googleMap) {
+    //         const handleCenterChanged = () => {
+    //             const center = googleMap?.getCenter();
+    //             if (center) {
+    //                 const centerLat = center.lat();
+    //                 const centerLng = center.lng();
+    //
+    //                 // 지도 중심에서 반경 1km 이내의 지점만 필터링
+    //                 const nearbySpots = spotData.filter((spot: Spot) => {
+    //                     const distance = calculateDistance(centerLat, centerLng, spot.latitude, spot.longitude);
+    //                     return distance <= 1;
+    //                 });
+    //
+    //                 setFilteredSpots(nearbySpots); // 필터링된 지점만 업데이트
+    //             }
+    //         };
+    //
+    //         const listener = googleMap.addListener("center_changed", handleCenterChanged);
+    //
+    //         // Cleanup: 컴포넌트가 unmount될 때 리스너 제거
+    //         return () => {
+    //             if (listener) {
+    //                 google.maps.event.removeListener(listener);
+    //             }
+    //         };
+    //     }
+    // }, [googleMap, spotData]);
 
     useEffect(() => {
         if (googleMap && searchInputRef.current) {
@@ -106,12 +110,6 @@ const GoogleMap: React.FC = () => {
 
                 googleMap.panTo(place.geometry.location);
                 googleMap.setZoom(16);
-
-                new window.google.maps.Marker({
-                    position: place.geometry.location,
-                    map: googleMap,
-                    title: place.name,
-                });
             });
         }
     }, [googleMap]);
@@ -119,7 +117,7 @@ const GoogleMap: React.FC = () => {
     return (
         <div className="container">
             {/* 헤더 */}
-            <header className="header">eMart 24</header>
+            <header className="header">지점선택</header>
 
             {/* 검색창 */}
             <div className="search-bar">
@@ -145,34 +143,20 @@ const GoogleMap: React.FC = () => {
 
             {/* 매장 리스트 */}
             <div className="store-list">
-                {filteredMarkers.length > 0 ? (
-                    filteredMarkers.map((marker, index) => (
-                        <div className="store-item" key={index}>
-                            <h4
-                                className="store-title"
-                                onClick={() => {
-                                    if (googleMap) {
-                                        googleMap.panTo({ lat: marker.lat, lng: marker.lng });
-                                        googleMap.setZoom(17);
-                                    }
-                                }}
-                            >
-                                {marker.title}
-                            </h4>
-                            <p>{marker.content}</p>
-                            <button
-                                className="select-button"
-                                onClick={() => {
-                                    navigate("/payment");
-                                }}
-                            >
-                                선택하기
-                            </button>
+                {googleMap &&
+                    spotData.map((spot) => (
+                        <div className="store-item" key={spot.spno}>
+                            <MapMarker
+                                key={spot.spno}
+                                map={googleMap}
+                                position={{ lat: spot.latitude, lng: spot.longitude }}
+                                title={spot.spotname}
+                                address={spot.address}
+                                spno={spot.spno}
+                                content={`<h4>${spot.spotname}</h4><a href="${spot.url}" target="_blank">길찾기</a>`}
+                            />
                         </div>
-                    ))
-                ) : (
-                    <p>반경 1km 이내 매장이 없습니다.</p>
-                )}
+                    ))}
             </div>
         </div>
     );

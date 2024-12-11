@@ -96,7 +96,7 @@ const MainProductListComponent: React.FC<MainProductListProps> = ({ categories }
                     >
                         <div className="relative">
                             <img
-                                src={"/public/images/product/m2.jpg"}
+                                src={"/images/product/m2.jpg"}
                                 alt={product.pname}
                                 className="w-full h-[100px] object-cover"
                             />
