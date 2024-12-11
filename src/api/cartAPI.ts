@@ -31,13 +31,17 @@ export const getList = async () => {
 }
 
 // 수량 변경
-// const changeQty = async (pno: number, qty: number) => {
-//     try {
-//         await axios.patch("/api/cart/changeQty", { pno, qty });
-//     } catch (error) {
-//         console.error("Failed to change quantity:", error);
-//     }
-// };
+export const changeQty = async (pno: number, qty: number) => {
+
+    const res = await axios.patch(`${host}/changeQty`, { pno, qty },{
+
+    });
+
+    console.log(res.data)
+
+    return res.data;
+};
+
 
 // JH
 export const addCart = async (pno: number, pname: string, price: number, qty: number) => {

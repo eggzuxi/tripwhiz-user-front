@@ -53,7 +53,7 @@ function DestinationPage(): JSX.Element {
 
     const handleSkipClick = () => {
         // 목적지 선택 건너뛰기 버튼 클릭 시 전체 상품 리스트로 이동
-        navigate("/product/list");
+        navigate("/theme");
     };
 
     return (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getList, addCart, deleteCartItem, clearCart } from "../../api/cartAPI";
+import {getList, deleteCartItem, clearCart, changeQty} from "../../api/cartAPI";
 import { ICartItems } from "../../types/cart.ts";
 import {useNavigate} from "react-router-dom";
 import {cartStore} from "../../store/CartStore.ts";
@@ -113,19 +113,20 @@ const CartComponent = () => {
             }
 
             try {
-                // addCart 호출 시 필요한 pname과 price를 함께 전달
-                await addCart(pno, item.pname, item.price, newQty);
+                // 서버에 수량 변경 요청
+                await changeQty(pno, newQty);
 
-                // // 상태 업데이트
-                // setCartItems((prevItems) =>
-                //     prevItems.map((item) =>
-                //         item.pno === pno ? { ...item, qty: newQty } : item
-                //     )
-                // );
-                // 서버에서 최신 장바구니 데이터를 다시 가져옴
-                await fetchCartItems();
+                // 상태 업데이트 (클라이언트에서도 즉시 반영)
+                setCartItems((prevItems) =>
+                    prevItems.map((item) =>
+                        item.pno === pno ? { ...item, qty: newQty } : item
+                    )
+                );
+                // 서버에서 최신 장바구니 데이터를 다시 가져오지 않아도 클라이언트 상태로 충분
+                console.log(`Quantity updated for product ${pno}: ${newQty}`);
             } catch (error) {
                 console.error("Failed to update quantity:", error);
+                alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
             }
         }
     };
