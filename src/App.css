@@ -146,16 +146,6 @@
   margin-bottom: 20px;
 }
 
-.button-container {
-  display: flex;
-  gap: 10px;
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
 
 /* CustomDatePicker.css */
 /* 달력 전체 스타일 */

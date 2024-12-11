@@ -36,7 +36,7 @@ function DestinationPage(): JSX.Element {
         return (
             <div className="flex items-center justify-center h-screen bg-white">
                 <img
-                    src="/images/tripwhiz logo.png"
+                    src="/images/tripwhiz_logo.png"
                     alt="ewhiz"
                     className="animate-pulse w-40 h-40"
                 />
@@ -53,7 +53,7 @@ function DestinationPage(): JSX.Element {
 
     const handleSkipClick = () => {
         // 목적지 선택 건너뛰기 버튼 클릭 시 전체 상품 리스트로 이동
-        navigate("/product/list");
+        navigate("/theme");
     };
 
     const sliderSettings = {

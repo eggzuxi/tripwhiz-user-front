@@ -56,18 +56,14 @@ const mainRouter = createBrowserRouter([
             bookingDateRouter,
         ],
     },
-
-            {
-                path: "/",
-                element: <Suspense fallback={Loading}><DestinationPage/></Suspense>
-            },
-            {
-                path: "/theme",
-                element: <Suspense fallback={Loading}><ThemePage/></Suspense>
-            },
-
-
-
+    {
+        path: "/",
+        element: <Suspense fallback={Loading}><DestinationPage/></Suspense>
+    },
+    {
+        path: "/theme",
+        element: <Suspense fallback={Loading}><ThemePage/></Suspense>
+    },
 ]);
 
 export default mainRouter;
