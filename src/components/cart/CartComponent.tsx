@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getList, addCart, deleteCartItem, clearCart } from "../../api/cartAPI";
 import { ICartItems } from "../../types/cart.ts";
 import {useNavigate} from "react-router-dom";
-// import {cartStore} from "../../store/CartStore.ts";
+import {cartStore} from "../../store/CartStore.ts";
 
 const initialState: ICartItems[] = [
     {
@@ -62,8 +62,8 @@ const CartComponent = () => {
             return;
         }
         console.log("Navigating to checkout with cart items:", cartItems);
-        // cartStore.setState({ cartItems });
-        navigate("/maps");
+        cartStore.setState({ cartItems });
+        navigate("/order/spot");
     };
 
     // const handleIncreaseQty = async (pno: number) => {
@@ -116,17 +116,22 @@ const CartComponent = () => {
                 // addCart 호출 시 필요한 pname과 price를 함께 전달
                 await addCart(pno, item.pname, item.price, newQty);
 
-                // 상태 업데이트
-                setCartItems((prevItems) =>
-                    prevItems.map((item) =>
-                        item.pno === pno ? { ...item, qty: newQty } : item
-                    )
-                );
+                // // 상태 업데이트
+                // setCartItems((prevItems) =>
+                //     prevItems.map((item) =>
+                //         item.pno === pno ? { ...item, qty: newQty } : item
+                //     )
+                // );
+                // 서버에서 최신 장바구니 데이터를 다시 가져옴
+                await fetchCartItems();
             } catch (error) {
                 console.error("Failed to update quantity:", error);
             }
         }
     };
+
+
+
 
     useEffect(() => {
         fetchCartItems();

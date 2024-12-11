@@ -23,6 +23,7 @@ function DestinationPage(): JSX.Element {
     const [cardPosition, setCardPosition] = useState(0);
 
     useEffect(() => {
+        // 2초 후 로딩 상태 종료
         const timer = setTimeout(() => {
             setIsLoading(false);
         }, 2000);
@@ -30,6 +31,7 @@ function DestinationPage(): JSX.Element {
         return () => clearTimeout(timer);
     }, []);
 
+    // 로딩 화면
     if (isLoading) {
         return (
             <div className="flex items-center justify-center h-screen bg-white">
@@ -50,6 +52,7 @@ function DestinationPage(): JSX.Element {
     };
 
     const handleSkipClick = () => {
+        // 목적지 선택 건너뛰기 버튼 클릭 시 전체 상품 리스트로 이동
         navigate("/product/list");
     };
 

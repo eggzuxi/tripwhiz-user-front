@@ -31,7 +31,7 @@ const MainCarouselComponent: React.FC = () => {
             >
                 <SwiperSlide>
                     <img
-                        src="/public/images/main/m4.jpg"
+                        src="/images/main/m4.jpg"
                         alt="배너 이미지 1"
                         className="w-full h-full object-cover"
                     />
@@ -50,7 +50,7 @@ const MainCarouselComponent: React.FC = () => {
 
                 <SwiperSlide>
                     <img
-                        src="/public/images/main/m5.jpg"
+                        src="/images/main/m5.jpg"
                         alt="배너 이미지 2"
                         className="w-full h-full object-cover"
                     />
@@ -69,7 +69,7 @@ const MainCarouselComponent: React.FC = () => {
 
                 <SwiperSlide>
                     <img
-                        src="/public/images/main/m6.jpg"
+                        src="/images/main/m6.jpg"
                         alt="배너 이미지 3"
                         className="w-full h-full object-cover"
                     />
@@ -88,7 +88,7 @@ const MainCarouselComponent: React.FC = () => {
 
                 <SwiperSlide>
                     <img
-                        src="/public/images/main/m7.jpg"
+                        src="/images/main/m7.jpg"
                         alt="배너 이미지 4"
                         className="w-full h-full object-cover"
                     />
@@ -107,7 +107,7 @@ const MainCarouselComponent: React.FC = () => {
 
                 <SwiperSlide>
                     <img
-                        src="/public/images/main/m8.jpg"
+                        src="/images/main/m8.jpg"
                         alt="배너 이미지 5"
                         className="w-full h-full object-cover"
                     />

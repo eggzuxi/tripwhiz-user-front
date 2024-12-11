@@ -6,7 +6,7 @@ const MainServiceComponent: React.FC = () => {
             <div className="flex items-center ml-6 mt-8 text-lg font-bold text-gray-700 mb-2">
                 <span>서비스 한눈에 보기</span>
                 <img
-                    src="/public/images/main/free-icon-eyes-7835667.png"
+                    src="/images/main/free-icon-eyes-7835667.png"
                     alt="Eye Icon"
                     className="w-5 h-5 ml-2"
                 />
@@ -21,7 +21,7 @@ const MainServiceComponent: React.FC = () => {
                     <div className="w-20 h-20 flex items-center justify-center rounded-lg shadow-lg">
                         {/* 이미지 */}
                         <img
-                            src="/public/images/main/free-icon-luggage-5793226.png"
+                            src="/images/main/free-icon-luggage-5793226.png"
                             alt="수화물 서비스"
                             className="w-14 h-14 object-cover rounded-lg"
                         />
@@ -34,7 +34,7 @@ const MainServiceComponent: React.FC = () => {
                     <div className="w-20 h-20 flex items-center justify-center rounded-lg shadow-lg">
                         {/* 이미지 */}
                         <img
-                            src="/public/images/main/free-icon-search-1916736.png"
+                            src="/images/main/free-icon-search-1916736.png"
                             alt="지점 조회"
                             className="w-10 h-10 object-cover rounded-lg"
                         />
@@ -46,7 +46,7 @@ const MainServiceComponent: React.FC = () => {
                     <div className="w-20 h-20 flex items-center justify-center rounded-lg shadow-lg">
                         {/* 이미지 */}
                         <img
-                            src="/public/images/main/free-icon-mountain-12136492.png"
+                            src="/images/main/free-icon-mountain-12136492.png"
                             alt="테마별 추천"
                             className="w-14 h-14 object-cover rounded-lg"
                         />
@@ -58,7 +58,7 @@ const MainServiceComponent: React.FC = () => {
                     <div className="w-20 h-20 flex items-center justify-center rounded-lg shadow-lg">
                         {/* 이미지 */}
                         <img
-                            src="/public/images/main/free-icon-online-shopping-3081648.png"
+                            src="/images/main/free-icon-online-shopping-3081648.png"
                             alt="전체 상품"
                             className="w-12 h-12 object-cover rounded-lg"
                         />
