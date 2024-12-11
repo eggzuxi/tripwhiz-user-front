@@ -2,7 +2,7 @@ import axios from "axios";
 import useAuthStore from "../store/AuthStore.ts";
 
 const host = 'http://localhost:8081/api/cart'
-// const host = 'http://10.10.10.73:8080/api/cart'
+// const host = '/api/cart'
 
 const getEmailFromAuthStore = () => {
     const email = useAuthStore.getState().email; // zustand의 email 값 가져오기

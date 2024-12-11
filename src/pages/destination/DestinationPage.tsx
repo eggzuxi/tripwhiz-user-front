@@ -36,7 +36,7 @@ function DestinationPage(): JSX.Element {
         return (
             <div className="flex items-center justify-center h-screen bg-white">
                 <img
-                    src="/images/tripwhiz logo.png"
+                    src="/images/tripwhiz_logo.png"
                     alt="ewhiz"
                     className="animate-pulse w-40 h-40"
                 />
