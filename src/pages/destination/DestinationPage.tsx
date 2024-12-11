@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useDestination } from "../../hooks/useDestination.ts";
 import { useEffect, useState } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const destinations = [
     { id: 1, name: "Cambodia", image: "/images/country/Cambodia.jpg" },
@@ -15,7 +18,9 @@ function DestinationPage(): JSX.Element {
     const navigate = useNavigate();
     const fetchDestination = useDestination((state) => state.fetchDestination);
 
-    const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentBackground, setCurrentBackground] = useState(destinations[0].image);
+    const [cardPosition, setCardPosition] = useState(0);
 
     useEffect(() => {
         // 2초 후 로딩 상태 종료
@@ -23,32 +28,27 @@ function DestinationPage(): JSX.Element {
             setIsLoading(false);
         }, 2000);
 
-        return () => clearTimeout(timer); // 타이머 정리
+        return () => clearTimeout(timer);
     }, []);
 
     // 로딩 화면
     if (isLoading) {
         return (
             <div className="flex items-center justify-center h-screen bg-white">
-                <h1 className="text-4xl font-bold text-gray-800 animate-pulse">
-                    <img
-                        src="/images/tripwhiz_logo.png"
-                        alt="ewhiz"
-                        className="w-32 h-18 mr-2"
-                    />
-                </h1>
+                <img
+                    src="/images/tripwhiz logo.png"
+                    alt="ewhiz"
+                    className="animate-pulse w-40 h-40"
+                />
             </div>
         );
     }
 
     const handleDestinationClick = async (destinationId: number) => {
-        console.log("Destination ID:", destinationId);
-
-        fetchDestination(destinationId) // 데이터 호출
-            .then(() => console.log("After fetching destination:", fetchDestination))
-            .catch((error) => console.error("Failed to fetch destination:", error));
-
-        navigate("/theme"); // 테마 선택 페이지로 이동
+        fetchDestination(destinationId)
+            .then(() => console.log("Destination fetched:", fetchDestination))
+            .catch((error) => console.error("Error fetching destination:", error));
+        navigate("/theme");
     };
 
     const handleSkipClick = () => {
@@ -56,61 +56,69 @@ function DestinationPage(): JSX.Element {
         navigate("/product/list");
     };
 
+    const sliderSettings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true,
+        centerMode: true,
+        centerPadding: '40px',
+        beforeChange: (current: number, next: number) => {
+            setCurrentBackground(destinations[next].image); // 배경 이미지 동기화
+            setCardPosition(next); // 카드 위치 추적
+        },
+    };
+
     return (
         <div
-            className="font-roboto min-h-screen bg-gray-50 flex flex-col items-start px-6 space-y-6"
-            style={{marginTop: "500px"}} // HeaderLayout의 높이만큼 여백 추가
+            className="h-screen w-screen bg-cover bg-center flex flex-col"
+            style={{ backgroundImage: `url(${currentBackground})` }}
         >
-            {/* Home 아이콘 */}
+            <div className="text-center pt-6 pb-4">
+                <h1 className="text-3xl font-bold text-white">어디로 떠나시나요?</h1>
+                <p className="text-lg text-white">다양한 여행지 중에 하나를 선택하세요.</p>
+            </div>
+
+            {/* 캐러셀 */}
             <div
-                className="w-full flex justify-end pt-6 pr-2"
-                onClick={() => navigate("/main")}
+                className="flex flex-col justify-center items-center flex-1 pb-4"
+                style={{ minHeight: 'calc(100vh + 150px)' }} // 부모 컨테이너 높이 충분히 확보
             >
-                <img
-                    src="/images/home.png"
-                    alt="Home Icon"
-                    className="w-6 h-6 cursor-pointer"
-                />
-            </div>
-
-            <div className="w-full text-center">
-                <h1 className="text-3xl font-nanum-gothic font-bold text-gray-800 mb-2">
-                    어디로 떠나시나요?
-                </h1>
-                <p className="text-lg font-nanum-gothic text-gray-500 mt-2">
-                    다양한 여행지 중에 하나를 선택하세요.
-                </p>
-            </div>
-
-            {/* 국가 카드 리스트 */}
-            <div className="w-full space-y-2 pb-8">
-                {destinations.map((destination) => (
-                    <button
-                        key={destination.id}
-                        onClick={() => handleDestinationClick(destination.id)}
-                        className="relative overflow-hidden rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-300 w-full text-left"
-                    >
-                        <img
-                            src={destination.image}
-                            alt={destination.name}
-                            className="w-full h-48 object-cover" // 고정된 높이 설정 (h-60)
-                        />
-                        <div className="absolute inset-0 flex flex-col justify-end p-4">
-                            <h2 className="font-faculty-glyphic font-semibold text-white text-2xl opacity-95 pl-4 pb-2">
-                                {destination.name}
-                            </h2>
+                <Slider
+                    {...sliderSettings}
+                    className="relative z-10 w-full max-w-md"
+                >
+                    {destinations.map((destination, index) => (
+                        <div
+                            key={destination.id}
+                            className="relative flex justify-center items-center"
+                            onClick={() => handleDestinationClick(destination.id)}
+                        >
+                            <div
+                                className={`w-80 h-[500px] bg-white shadow-lg rounded-xl overflow-hidden relative flex items-center justify-center transition-transform duration-500 ${
+                                    cardPosition === index ? 'transform translate-y-[-20px]' : '' // 중간 카드만 위로 조금 올라가게 애니메이션 적용
+                                }`}
+                            >
+                                <img
+                                    src={destination.image}
+                                    alt={destination.name}
+                                    className="object-cover w-[calc(100%-30px)] h-[calc(100%-80px)] mt-32 mb-20 rounded-lg"
+                                />
+                            </div>
                         </div>
-                    </button>
-                ))}
+                    ))}
+                </Slider>
             </div>
-
 
             <button
                 onClick={handleSkipClick}
-                className="fixed bottom-6 right-6 bg-gray-300 bg-opacity-80 text-white font-semibold rounded-lg px-4 py-2 shadow-md border border-gray-300 hover:bg-gray-100 transition duration-300"
+                className="fixed bottom-6 right-6 text-lg text-white font-semibold rounded-lg px-4 py-2 shadow-md hover:bg-gray-100 transition duration-300"
             >
                 Skip &#62;
             </button>
+
         </div>
     );
 }
