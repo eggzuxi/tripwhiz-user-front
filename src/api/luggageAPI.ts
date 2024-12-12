@@ -4,7 +4,7 @@ import { secondaryDatabase } from "../firebase/firebaseConfig";
 import { LuggageDTO, Point } from "../types/luggage";
 
 // 백엔드 API 엔드포인트
-const API_BASE_URL = "http://localhost:8081/luggage";
+const API_BASE_URL = "/luggage";
 // const API_BASE_URL = "/luggage";
 
 // Firebase에서 특정 위치 데이터를 가져오는 함수
