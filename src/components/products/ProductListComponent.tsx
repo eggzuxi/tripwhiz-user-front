@@ -1,7 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { ProductReadDTO } from '../../types/product';
-import { fetchProductById } from '../../api/productAPI';
+import { useEffect, useState, useCallback, useRef } from "react";
+import { IProduct } from "../../types/product";
+import { getList } from "../../api/productAPI";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { cartStore } from "../../store/CartStore.ts";
+import CategoryFilterComponent from "./CategoryFilterComponent.tsx";
+import {addCart} from "../../api/cartAPI.ts";
+
+const initialState: IProduct[] = [
+    {
+        pno: 0,
+        pname: "",
+        price: 0,
+        pdesc: "",
+        cno: 0,
+        scno: 0,
+        tno: 0,
+        delflag: false,
+        attachFiles: [],
+    },
+];
+
+const ProductListComponent = () => {
+    const navigate = useNavigate();
+    const [products, setProducts] = useState<IProduct[]>([...initialState]);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const observerRef = useRef<IntersectionObserver | null>(null);
+    const lastProductRef = useRef<HTMLDivElement | null>(null);
+
+    const [searchParams] = useSearchParams();
+
+    const IMAGE_BASE_URL = "http://localhost:8082/api/admin/product/image"; // 이미지 파일의 기본 경로 설정
+
+    // 쿼리스트링에서 값 가져오기 및 숫자로 변환_SY
+    const tno = searchParams.get("tno") ? parseInt(searchParams.get("tno") as string, 10) : null;
+    const cno = searchParams.get("cno") ? parseInt(searchParams.get("cno") as string, 10) : null;
+    const scno = searchParams.get("scno") ? parseInt(searchParams.get("scno") as string, 10) : null;
+
+    // 장바구니 슬라이드 패널 상태
+    const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
+    const [qty, setQty] = useState(1);
+
+    // const addToCart = cartStore((state) => state.addToCart);
 
 const ProductReadComponent: React.FC = () => {
     const { pno } = useParams<{ pno: string }>();

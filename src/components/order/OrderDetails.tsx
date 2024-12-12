@@ -16,7 +16,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ orderId, email }) => {
     const loadOrderDetails = async () => {
         setLoading(true);
         try {
-            const data = await fetchOrderDetails(orderId, email);
+            const data = await fetchOrderDetails(orderId);
             setOrder(data);
         } catch (error) {
             console.error("Failed to fetch order details:", error);

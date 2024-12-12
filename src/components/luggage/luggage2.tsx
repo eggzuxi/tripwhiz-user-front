@@ -8,7 +8,7 @@ const containerStyle = {
     height: "500px",
 };
 
-const Luggage = () => {
+const Luggage2 = () => {
     const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
     const [startPoint, setStartPoint] = useState<{ lat: number; lng: number } | null>(null);
     const [endPoint, setEndPoint] = useState<{ lat: number; lng: number } | null>(null);
@@ -202,4 +202,4 @@ const Luggage = () => {
     );
 };
 
-export default Luggage;
+export default Luggage2;

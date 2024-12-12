@@ -32,7 +32,7 @@ export interface OrderReadDTO {
 
 // 주문 완료 요청을 서버로 보낼 때 사용하는 타입
 export interface CompleteOrderRequest {
-    orderId: number; // 주문 ID
+    ono: number; // 주문 ID
     email: string; // 유저 이메일
     fcmToken: string; // 유저의 FCM 토큰
 }

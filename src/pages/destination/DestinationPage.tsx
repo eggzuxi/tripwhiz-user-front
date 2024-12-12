@@ -6,12 +6,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const destinations = [
-    { id: 1, name: "Cambodia", image: "/images/country/Cambodia.jpg" },
+    { id: 1, name: "Cambodia", image: "/images/country/Cambodia.jpeg" },
     { id: 2, name: "Malaysia", image: "/images/country/Malaysia.png" },
     { id: 3, name: "Japan", image: "/images/country/Japan.jpg" },
-    { id: 4, name: "Vietnam", image: "/images/country/Vietnam.png" },
-    { id: 5, name: "Philippines", image: "/images/country/Philippines.png" },
-    { id: 6, name: "Thailand", image: "/images/country/Thailand.png" },
+    { id: 4, name: "Vietnam", image: "/images/country/Vietnam.jpg" },
+    { id: 5, name: "Philippines", image: "/images/country/Philippines.jpg" },
+    { id: 6, name: "Thailand", image: "/images/country/Thailand.jpg" },
 ];
 
 function DestinationPage(): JSX.Element {
@@ -36,7 +36,7 @@ function DestinationPage(): JSX.Element {
         return (
             <div className="flex items-center justify-center h-screen bg-white">
                 <img
-                    src="/images/tripwhiz logo.png"
+                    src="/images/tripwhiz_logo.png"
                     alt="ewhiz"
                     className="animate-pulse w-40 h-40"
                 />
@@ -53,7 +53,7 @@ function DestinationPage(): JSX.Element {
 
     const handleSkipClick = () => {
         // 목적지 선택 건너뛰기 버튼 클릭 시 전체 상품 리스트로 이동
-        navigate("/product/list");
+        navigate("/theme");
     };
 
     const sliderSettings = {
