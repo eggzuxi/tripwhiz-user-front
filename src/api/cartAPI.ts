@@ -1,7 +1,7 @@
 import axios from "axios";
 import useAuthStore from "../store/AuthStore.ts";
 
-const host = 'http://localhost:8081/api/cart'
+const host = '/api/cart'
 // const host = '/api/cart'
 
 const getEmailFromAuthStore = () => {
