@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import "../../App.css";
+import { useEffect, useRef, useState } from "react";
+// import "../../App.css";
 import storeAPI from "../../api/storeAPI.ts";
 import MapMarker from "./MapMarker.tsx";
 

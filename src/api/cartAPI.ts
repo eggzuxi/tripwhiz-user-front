@@ -32,8 +32,9 @@ export const getList = async () => {
 
 // 수량 변경
 export const changeQty = async (pno: number, qty: number) => {
+    const email = getEmailFromAuthStore(); // Zustand에서 email 가져오기
 
-    const res = await axios.patch(`${host}/changeQty`, { pno, qty },{
+    const res = await axios.patch(`${host}/changeQty`, { email, pno, qty },{
 
     });
 
