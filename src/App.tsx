@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import QRCodeComponent from './components/qrcode/QRCodeComponent';
 import BaseLayout from './layouts/BaseLayout';
 import { useEffect, useState } from 'react';
-import useFCM from './hooks/useFCM'; // FCM Hook 추가
+import useFCM from '../src/hooks/useFCM'; // FCM Hook 추가
 
 function App() {
     // 알림 상태
