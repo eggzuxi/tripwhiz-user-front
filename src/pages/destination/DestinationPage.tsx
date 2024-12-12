@@ -6,12 +6,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const destinations = [
-    { id: 1, name: "Cambodia", image: "/images/country/Cambodia.jpg" },
+    { id: 1, name: "Cambodia", image: "/images/country/Cambodia.jpeg" },
     { id: 2, name: "Malaysia", image: "/images/country/Malaysia.png" },
     { id: 3, name: "Japan", image: "/images/country/Japan.jpg" },
-    { id: 4, name: "Vietnam", image: "/images/country/Vietnam.png" },
-    { id: 5, name: "Philippines", image: "/images/country/Philippines.png" },
-    { id: 6, name: "Thailand", image: "/images/country/Thailand.png" },
+    { id: 4, name: "Vietnam", image: "/images/country/Vietnam.jpg" },
+    { id: 5, name: "Philippines", image: "/images/country/Philippines.jpg" },
+    { id: 6, name: "Thailand", image: "/images/country/Thailand.jpg" },
 ];
 
 function DestinationPage(): JSX.Element {

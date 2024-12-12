@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import './App.css'
 import {RouterProvider} from "react-router-dom";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import mainRouter from "./routes/mainRouter.tsx";
