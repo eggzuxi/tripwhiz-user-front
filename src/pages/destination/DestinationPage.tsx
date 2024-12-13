@@ -65,7 +65,7 @@ function DestinationPage(): JSX.Element {
         arrows: true,
         centerMode: true,
         centerPadding: '40px',
-        beforeChange: (current: number, next: number) => {
+        beforeChange: (next: number) => {
             setCurrentBackground(destinations[next].image); // 배경 이미지 동기화
             setCardPosition(next); // 카드 위치 추적
         },

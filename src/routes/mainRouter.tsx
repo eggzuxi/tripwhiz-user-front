@@ -18,6 +18,7 @@ const PickupPage = lazy(() => import("../pages/pickup/PickupPage"));
 const DestinationPage = lazy(() => import("../pages/destination/DestinationPage"));
 const MainPage = lazy(() => import("../pages/MainPage"));
 const ThemePage = lazy(() => import("../pages/theme/ThemePage"));
+const HealthCheck = lazy(() => import("../pages/health/HealthCheckPage.tsx"));
 
 const Loading = <LoadingPage/>;
 
@@ -31,6 +32,10 @@ const mainRouter = createBrowserRouter([
         ),
         children: [
 
+            {
+                path: "/",
+                element: <Suspense fallback={Loading}><HealthCheck/></Suspense>
+            },
             {
                 path: "/main",
                 element: <Suspense fallback={Loading}><MainPage/></Suspense>

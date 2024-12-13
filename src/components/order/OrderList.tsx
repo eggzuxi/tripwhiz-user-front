@@ -13,8 +13,8 @@ const OrderList: React.FC = () => {
     const loadOrders = async () => {
         setLoading(true);
         try {
-            const data = await fetchOrderList(email, page, 10); // API 호출
-            setOrders(data.content);
+            const data = await fetchOrderList(page, 10); // API 호출
+            setOrders(data.dtoList);
             setTotalPages(Math.ceil(data.totalElements / 10)); // 총 페이지 계산
         } catch (error) {
             console.error("Failed to fetch order list:", error);
