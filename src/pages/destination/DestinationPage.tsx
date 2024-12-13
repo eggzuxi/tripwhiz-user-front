@@ -72,8 +72,22 @@ function DestinationPage(): JSX.Element {
     return (
         <div
             className="h-screen w-screen bg-cover bg-center flex flex-col overflow-hidden"
-            style={{ backgroundImage: `url(${currentBackground})` }}
+            style={{backgroundImage: `url(${currentBackground})`}}
         >
+            <div
+                className="w-full flex justify-end pt-6 pr-4" // 오른쪽 여백 pr-4 추가
+                onClick={() => navigate("/main")}
+            >
+                <img
+                    src="/images/home.png"
+                    alt="Home Icon"
+                    className="w-6 h-6 cursor-pointer"
+                    style={{
+                        filter: "brightness(0) invert(1)", // 이미지를 흰색으로 변환
+                    }}
+                />
+            </div>
+
             <div className="text-center pt-20 pb-8">
                 <h1 className="text-4xl font-bold text-white">어디로 떠나시나요?</h1>
                 <p className="text-lg text-white mt-2">다양한 여행지 중에 하나를 선택하세요.</p>

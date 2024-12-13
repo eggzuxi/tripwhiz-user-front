@@ -1,5 +1,5 @@
-import { FaHeart, FaRegHeart, FaArrowLeft } from "react-icons/fa"; // 하트와 뒤로가기 아이콘 추가
-import React, { useState, useEffect } from "react";
+import { FaHeart, FaRegHeart} from "react-icons/fa"; // 하트와 뒤로가기 아이콘 추가
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IProduct } from "../../types/product.ts";
 import { getOne } from "../../api/productAPI.ts";
@@ -7,9 +7,10 @@ import { getCategories, getSubCategories } from "../../api/categoryAPI.ts";
 import { cartStore } from "../../store/CartStore.ts";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { Navigation, Pagination } from "swiper/modules";
+import { Pagination } from "swiper/modules";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import {ICartItems} from "../../types/cart.ts";
 
 const initialState: IProduct = {
     pno: 0,
@@ -29,7 +30,7 @@ function ProductReadComponent() {
     const addToCart = cartStore((state) => state.addToCart);
     const [activeTab, setActiveTab] = useState("detail");
 
-    const IMAGE_BASE_URL = "http://localhost:8081/api/product/image";
+    const IMAGE_BASE_URL = "http://localhost:8082/api/admin/product/image";
 
     const [product, setProduct] = useState<IProduct>(initialState);
     const [categoryNames, setCategoryNames] = useState({
@@ -37,20 +38,40 @@ function ProductReadComponent() {
         sname: "",
     });
     const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 관리
-    const [slideIndex, setSlideIndex] = useState(0);
+
 
     const toggleLike = () => {
         setIsLiked((prev) => !prev);
     };
 
-    const moveToCart = () => {
-        addToCart(product);
-        navigate("/cart");
+    const moveToCart = (product: IProduct, userEmail: string) => {
+        const cartItem: ICartItems = {
+            email: userEmail,       // 사용자 이메일
+            bno: product.pno,       // 상품 번호를 bno로 매핑 (필요시 별도 처리 가능)
+            pno: product.pno,       // 상품 번호
+            pname: product.pname,   // 상품 이름
+            price: product.price,   // 상품 가격
+            qty: 1,                 // 기본 수량
+            delFlag: false          // 기본 삭제 플래그
+        };
+
+        addToCart(cartItem);         // 카트에 추가
+        navigate("/cart");           // 카트 페이지로 이동
     };
 
-    const handleSlideChange = (swiper: any) => {
-        setSlideIndex(swiper.realIndex);
+    const handleMoveToCart = () => {
+        const email = localStorage.getItem('userEmail'); // 또는 sessionStorage
+
+        if (product && email) {
+            moveToCart(product, email);
+        } else {
+            console.error('Product or userEmail is missing!');
+        }
     };
+
+
+
+
 
     useEffect(() => {
         if (!pno) return;
@@ -65,14 +86,14 @@ function ProductReadComponent() {
                 const fetchCategoryNames = async () => {
                     try {
                         if (result.cno) {
-                            const categories = await getCategories();
-                            const cname = categories.find((cat: any) => cat.cno === result.cno)?.cname || "";
-                            setCategoryNames((prev) => ({...prev, cname}));
+                            const categories: { cno: number; cname: string }[] = await getCategories();
+                            const cname = categories.find((cat) => cat.cno === result.cno)?.cname || "";
+                            setCategoryNames((prev) => ({ ...prev, cname }));
                         }
                         if (result.scno && result.cno) {
-                            const subCategories = await getSubCategories(result.cno);
-                            const sname = subCategories.find((sub: any) => sub.scno === result.scno)?.sname || "";
-                            setCategoryNames((prev) => ({...prev, sname}));
+                            const subCategories: { scno: number; sname: string }[] = await getSubCategories(result.cno);
+                            const sname = subCategories.find((sub) => sub.scno === result.scno)?.sname || "";
+                            setCategoryNames((prev) => ({ ...prev, sname }));
                         }
                     } catch (error) {
                         console.error("Error fetching category names:", error);
@@ -86,10 +107,6 @@ function ProductReadComponent() {
             });
     }, [pno]);
 
-    const images = [
-        "/public/images/read/m3.png",
-        "/public/images/read/m5.png",
-    ]; // 이미지 경로 배열
 
     return (
         <div className="flex flex-col bg-gray-100 h-screen relative">
@@ -103,7 +120,7 @@ function ProductReadComponent() {
             </button>
 
             {/* 이미지 캐러셀 */}
-            <div className="relative w-full h-[60vh]">
+            <div className="relative w-full h-[70vh]">
                 <Swiper
                     className="w-full h-full object-cover"
                     modules={[Pagination]}
@@ -111,35 +128,41 @@ function ProductReadComponent() {
                     pagination={{
                         el: ".swiper-pagination",
                         type: "custom",
-                        renderCustom: (swiper, current, total) => {
+                        renderCustom: (_, current, total) => {
                             return `<span class="block text-right mr-4 font-bold text-base text-white">${current} / ${total}</span>`;
                         },
                     }}
                 >
-                    {images.map((image, index) => (
-                        <SwiperSlide key={index}>
-                            <div className="relative w-full h-full">
-                                <img
-                                    src={image}
-                                    alt={`Slide ${index + 1}`}
-                                    className="w-full h-full object-cover"
-                                />
-                                {/* 첫 번째 슬라이드에만 좋아요 하트 버튼 표시 */}
-                                {index === 0 && (
-                                    <button
-                                        onClick={toggleLike}
-                                        className="absolute bottom-4 right-4 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 focus:outline-none z-10"
-                                    >
-                                        {isLiked ? (
-                                            <FaHeart className="text-red-500 text-2xl"/>
-                                        ) : (
-                                            <FaRegHeart className="text-gray-400 text-2xl"/>
-                                        )}
-                                    </button>
-                                )}
-                            </div>
-                        </SwiperSlide>
-                    ))}
+                    {product.attachFiles.length > 0 ? (
+                        product.attachFiles.map((_, index) => (
+                            <SwiperSlide key={index}>
+                                <div className="relative w-full h-full">
+                                    <img
+                                        src={`${IMAGE_BASE_URL}/${product.attachFiles[0]?.file_name}`}
+                                        alt={`Slide ${index + 1}`}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    {/* 첫 번째 슬라이드에만 좋아요 하트 버튼 표시 */}
+                                    {index === 0 && (
+                                        <button
+                                            onClick={toggleLike}
+                                            className="absolute bottom-4 right-4 bg-white p-3 rounded-full shadow-md hover:bg-gray-100 focus:outline-none z-10"
+                                        >
+                                            {isLiked ? (
+                                                <FaHeart className="text-red-500 text-2xl" />
+                                            ) : (
+                                                <FaRegHeart className="text-gray-400 text-2xl" />
+                                            )}
+                                        </button>
+                                    )}
+                                </div>
+                            </SwiperSlide>
+                        ))
+                    ) : (
+                        <div className="flex items-center justify-center w-full h-full bg-gray-200">
+                            <p className="text-gray-500">이미지가 없습니다.</p>
+                        </div>
+                    )}
                 </Swiper>
             </div>
 
@@ -226,22 +249,22 @@ function ProductReadComponent() {
                     <button
                         type="button"
                         className="min-w-[150px] bg-white text-[#1D2D5F] font-bold py-3 px-8 rounded-lg border border-[#2452a3] hover:bg-[#2452a3] hover:text-white focus:outline-none transition duration-300"
-                        onClick={moveToCart}
+                        onClick={handleMoveToCart}
                     >
                         장바구니
                     </button>
 
+
                     <button
                         type="button"
                         className="min-w-[150px] bg-[#1D2D5F] text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-400 focus:outline-none transition duration-300"
-                        onClick={() => navigate("/product/list")}
+                        onClick={() =>  navigate("/order/spot")}
                     >
                         바로구매
                     </button>
                 </div>
             </div>
         </div>
-
 
 
     );
