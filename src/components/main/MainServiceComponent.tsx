@@ -1,5 +1,8 @@
+import {useNavigate} from "react-router-dom";
 
 const MainServiceComponent: React.FC = () => {
+
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -24,6 +27,7 @@ const MainServiceComponent: React.FC = () => {
                             src="/images/main/free-icon-luggage-5793226.png"
                             alt="수화물 서비스"
                             className="w-14 h-14 object-cover rounded-lg"
+                            onClick={() => navigate("/luggage")}
                         />
                     </div>
                     <span className="text-sm text-gray-600 mt-2">수화물 서비스</span> {/* 텍스트 */}
@@ -49,6 +53,7 @@ const MainServiceComponent: React.FC = () => {
                             src="/images/main/free-icon-mountain-12136492.png"
                             alt="테마별 추천"
                             className="w-14 h-14 object-cover rounded-lg"
+                            onClick={() => navigate("/theme")}
                         />
                     </div>
                     <span className="text-sm text-gray-600 mt-2">테마별 추천</span> {/* 텍스트 */}
@@ -61,6 +66,7 @@ const MainServiceComponent: React.FC = () => {
                             src="/images/main/free-icon-online-shopping-3081648.png"
                             alt="전체 상품"
                             className="w-12 h-12 object-cover rounded-lg"
+                            onClick={() => navigate("/product/list")}
                         />
                     </div>
                     <span className="text-sm text-gray-600 mt-2">전체 상품</span> {/* 텍스트 */}

@@ -1,21 +1,18 @@
-import {useState} from "react";
-import {Swiper, SwiperSlide} from "swiper/react";
-import {Pagination} from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
+import { useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
+import { Swiper as SwiperClass } from "swiper/types";
 
 const MainCarouselComponent: React.FC = () => {
-
     const [slideIndex, setSlideIndex] = useState<number>(0);
 
     // 슬라이드 변경 시 현재 슬라이드 인덱스를 업데이트
-    const handleSlideChange = (swiper: any) => {
+    const handleSlideChange = (swiper: SwiperClass) => {
         setSlideIndex(swiper.realIndex);
     };
 
-
     return (
-        <div className="relative bg-gray-200 h-[50vh]">
+        <div className="relative z-30 bg-gray-200 h-[50vh]">
             <Swiper
                 className="w-full h-full object-cover"
                 onSlideChange={handleSlideChange}
@@ -24,7 +21,8 @@ const MainCarouselComponent: React.FC = () => {
                 pagination={{
                     el: ".swiper-pagination",
                     type: "custom",
-                    renderCustom: (swiper, current, total) => {
+                    renderCustom: (_, current, total) => {
+                        // renderCustom에서 매개변수 '_', current, total 사용
                         return `<span class="block text-right mr-4 font-bold text-base text-white">${current} / ${total}</span>`;
                     },
                 }}
@@ -39,11 +37,11 @@ const MainCarouselComponent: React.FC = () => {
                         className={`absolute top-3/4 left-0 w-full text-left text-white transform transition-all duration-1000 ${
                             slideIndex === 0 ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
                         }`}
-                        style={{zIndex: 10}}
+                        style={{ zIndex: 10 }}
                     >
                         <div className="pl-4">
-                            <h1 className="text-3xl font-bold">BELLROY</h1> {/* 텍스트 크기 조정 */}
-                            <p className="mt-2 text-md">부드럽고 견고하며, 가볍지만 강한 벨로이</p> {/* 텍스트 크기 조정 */}
+                            <h1 className="text-3xl font-bold">BELLROY</h1>
+                            <p className="mt-2 text-md">부드럽고 견고하며, 가볍지만 강한 벨로이</p>
                         </div>
                     </div>
                 </SwiperSlide>
@@ -58,7 +56,7 @@ const MainCarouselComponent: React.FC = () => {
                         className={`absolute top-3/4 left-0 w-full text-left text-white transform transition-all duration-1000 ${
                             slideIndex === 1 ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
                         }`}
-                        style={{zIndex: 10}}
+                        style={{ zIndex: 10 }}
                     >
                         <div className="pl-4">
                             <h1 className="text-3xl font-bold">BRAND NEW</h1>
@@ -77,7 +75,7 @@ const MainCarouselComponent: React.FC = () => {
                         className={`absolute top-3/4 left-0 w-full text-left text-white transform transition-all duration-1000 ${
                             slideIndex === 2 ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
                         }`}
-                        style={{zIndex: 10}}
+                        style={{ zIndex: 10 }}
                     >
                         <div className="pl-4">
                             <h1 className="text-3xl font-bold">TRAVEL IN STYLE</h1>
@@ -96,7 +94,7 @@ const MainCarouselComponent: React.FC = () => {
                         className={`absolute top-3/4 left-0 w-full text-left text-white transform transition-all duration-1000 ${
                             slideIndex === 3 ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
                         }`}
-                        style={{zIndex: 10}}
+                        style={{ zIndex: 10 }}
                     >
                         <div className="pl-4">
                             <h1 className="text-3xl font-bold">DURABLE AND LIGHT</h1>
@@ -115,7 +113,7 @@ const MainCarouselComponent: React.FC = () => {
                         className={`absolute top-3/4 left-0 w-full text-left text-white transform transition-all duration-1000 ${
                             slideIndex === 4 ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
                         }`}
-                        style={{zIndex: 10}}
+                        style={{ zIndex: 10 }}
                     >
                         <div className="pl-4">
                             <h1 className="text-3xl font-bold">ECO FRIENDLY</h1>
@@ -127,6 +125,6 @@ const MainCarouselComponent: React.FC = () => {
             </Swiper>
         </div>
     );
-}
+};
 
 export default MainCarouselComponent;

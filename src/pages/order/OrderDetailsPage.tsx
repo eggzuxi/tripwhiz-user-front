@@ -15,7 +15,7 @@ function OrderDetailsPage(): JSX.Element {
 
     return (
         <OrderDetails
-            orderId={parseInt(id, 10)} // 문자열을 숫자로 변환
+            ono={parseInt(id, 10)} // 문자열을 숫자로 변환
             email={email} // email 전달
         />
     );

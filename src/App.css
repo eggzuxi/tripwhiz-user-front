@@ -146,16 +146,6 @@
   margin-bottom: 20px;
 }
 
-.button-container {
-  display: flex;
-  gap: 10px;
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
 
 /* CustomDatePicker.css */
 /* 달력 전체 스타일 */
@@ -233,7 +223,56 @@ button {
 }
 
 
+/*SY*/
+/*수화물 이동 및 보관*/
+.luggage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: #ffffff; /* 배경색 */
+  height: 100vh;
+  font-family: 'Arial', sans-serif;
+}
 
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333333;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #dcdcdc;
+  border-radius: 10px;
+  padding: 20px;
+  width: 150px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.service-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.service-image {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+.service-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #555555;
+}
 
 
 /*so*/

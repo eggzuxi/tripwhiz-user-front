@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const host ='http://10.10.10.73:8080/api/product';
 const host ='/api/product';
+// const host ='/api/product';
 
 // const header = {
 //     headers: {

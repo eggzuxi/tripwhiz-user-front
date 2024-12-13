@@ -7,7 +7,7 @@ function MyOrderComponent() {
     const [orders, setOrders] = useState<OrderListDTO[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
-    const [size, setSize] = useState(10); // 한 페이지에 보여줄 아이템 수
+    const [size] = useState(10); // 한 페이지에 보여줄 아이템 수
     const [totalElements, setTotalElements] = useState(0);
     const navigate = useNavigate()
 

@@ -4,11 +4,11 @@ import { fetchOrderDetails, completeOrder } from "../../api/orderAPI";
 import { OrderReadDTO } from "../../types/ordertype";
 
 interface OrderDetailsProps {
-    orderId: number;
+    ono: number;
     email: string;
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ orderId, email }) => {
+const OrderDetails: React.FC<OrderDetailsProps> = ({ ono, email }) => {
     const [order, setOrder] = useState<OrderReadDTO | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -16,7 +16,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ orderId, email }) => {
     const loadOrderDetails = async () => {
         setLoading(true);
         try {
-            const data = await fetchOrderDetails(orderId, email);
+            const data = await fetchOrderDetails(ono);
             setOrder(data);
         } catch (error) {
             console.error("Failed to fetch order details:", error);
@@ -30,7 +30,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ orderId, email }) => {
         if (!order) return;
         try {
             await completeOrder({
-                orderId: order.ono, // 주문 번호
+                ono: order.ono, // 주문 번호
                 email, // 유저 이메일
                 fcmToken: "USER_FCM_TOKEN_HERE", // 유저 FCM 토큰 (실제 값으로 교체)
             });
@@ -44,7 +44,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ orderId, email }) => {
     // 컴포넌트가 렌더링되었을 때 주문 정보를 불러옴
     useEffect(() => {
         loadOrderDetails();
-    }, [orderId, email]);
+    }, [ono, email]);
 
     if (loading) return <p>Loading...</p>;
     if (!order) return <p>No order found.</p>;
