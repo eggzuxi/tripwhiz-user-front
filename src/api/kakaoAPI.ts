@@ -13,7 +13,7 @@ const access_token_url = 'https://kauth.kakao.com/oauth/token'
 
 // 백엔드 서버의 API URL. 액세스 토큰을 사용하여 사용자 정보를 요청할 때 사용
 
-const host = '/api/member/kakao'
+const host = '/member/kakao'
 // const host = '/api/member/kakao'
 
 // 액세스 토큰을 사용해 사용자 정보를 가져오는 함수
