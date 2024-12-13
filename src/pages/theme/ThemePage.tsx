@@ -26,13 +26,11 @@ function ThemePage(): JSX.Element {
 
 
     return (
-        <div
-            className="font-roboto min-h-screen bg-gray-50 flex flex-col items-start px-6 space-y-6"
-            style={{marginTop: "550px"}} // HeaderLayout의 높이만큼 여백 추가
+        <div className="bg-white w-full min-h-screen"
         >
             {/* Home 아이콘 */}
             <div
-                className="w-full flex justify-end pt-6 pr-2"
+                className="w-full flex justify-end pt-10 pr-4"
                 onClick={() => navigate("/main")}
             >
                 <img
@@ -42,7 +40,7 @@ function ThemePage(): JSX.Element {
                 />
             </div>
 
-            <div className="w-full text-center">
+            <div className="w-full text-center pt-16 pb-8">
                 <h1 className="text-3xl font-nanum-gothic font-bold text-gray-800 mb-4">
                     어떤 여행을 원하시나요?
                 </h1>
@@ -53,26 +51,28 @@ function ThemePage(): JSX.Element {
 
 
             {/* 테마 카드 그리드 */}
-            <div className="w-full space-y-2 pb-8">
+            <div className="flex flex-wrap justify-center gap-y-6 gap-x-6 w-full pt-2 pb-8">
                 {themes.map((theme) => (
-                    <button
-                        key={theme.id}
-                        onClick={() => handleThemeClick(theme.id)}
-                        className="relative overflow-hidden rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-300 w-full text-left"
-                    >
-                    <img
-                        src={theme.image}
-                        alt={theme.name}
-                        className="w-full h-48 object-cover"
-                    />
-                    </button>
+                    <div key={theme.id} className="flex flex-col items-center mb-2">
+                        <button
+                            onClick={() => handleThemeClick(theme.id)}
+                            className="relative overflow-hidden rounded-full shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-300 w-40 h-40"
+                        >
+                            <img
+                                src={theme.image}
+                                alt={theme.name}
+                                className="w-full h-full object-cover rounded-full"
+                            />
+                        </button>
+                    </div>
                 ))}
             </div>
+
 
             {/* 테마 선택 건너뛰기 버튼 */}
             <button
                 onClick={handleSkipClick}
-                className="fixed bottom-6 right-6 text-lg text-white font-semibold rounded-lg px-4 py-2 transition duration-300"
+                className="fixed bottom-6 right-6 text-lg text-gray-800 font-semibold rounded-lg px-4 py-2 transition duration-300"
             >
                 Skip &#62;
             </button>
