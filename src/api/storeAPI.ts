@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // 서버 URL 가져오기
-const USER_SERVER_URL = import.meta.env.VITE_USER_SERVER_URL || "http://localhost:8081";
+const USER_SERVER_URL = import.meta.env.VITE_USER_SERVER_URL || "";
 // const STORE_SERVER_URL = import.meta.env.VITE_STORE_SERVER_URL || "http://localhost:8082";
 
 const storeAPI = {

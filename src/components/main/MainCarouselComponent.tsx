@@ -2,8 +2,6 @@ import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import { Swiper as SwiperClass } from "swiper/types";
-import "swiper/css";
-import "swiper/css/pagination";
 
 const MainCarouselComponent: React.FC = () => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
