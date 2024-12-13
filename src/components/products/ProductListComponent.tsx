@@ -173,9 +173,9 @@ const ProductListComponent = () => {
                         <p>상품이 없습니다.</p>
                     )}
                 </div>
+            </div>
 
-
-                {/* 장바구니 슬라이드 패널 */}
+            {/* 장바구니 슬라이드 패널 */}
             <div
                 className={`fixed bottom-0 left-0 w-full bg-white border-t shadow-lg p-4 transition-transform transform ${
                     isPanelOpen ? "translate-y-0" : "translate-y-full"
@@ -208,7 +208,6 @@ const ProductListComponent = () => {
                         </div>
                     </>
                 )}
-                </div>
             </div>
         </div>
     );
