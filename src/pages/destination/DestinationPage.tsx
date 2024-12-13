@@ -36,7 +36,7 @@ function DestinationPage(): JSX.Element {
                 <img
                     src="/images/tripwhiz_logo.png"
                     alt="ewhiz"
-                    className="animate-pulse w-40 h-40"
+                    className="animate-pulse w-40 h-15"
                 />
             </div>
         );
