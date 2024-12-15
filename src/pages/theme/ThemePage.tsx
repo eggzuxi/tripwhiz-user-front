@@ -30,7 +30,7 @@ function ThemePage(): JSX.Element {
         >
             {/* Home 아이콘 */}
             <div
-                className="w-full flex justify-end pt-10 pr-4"
+                className="w-full flex justify-end pt-6 pr-4"
                 onClick={() => navigate("/main")}
             >
                 <img
