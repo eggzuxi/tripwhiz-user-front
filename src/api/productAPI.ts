@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host ='http://localhost:8081/api/product';
+const host ='api/product';
 // const host ='/api/product';
 
 // const header = {
