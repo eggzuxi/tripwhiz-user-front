@@ -30,6 +30,8 @@ const MainPage = () => {
                 setCategories(data);
             } catch (error) {
                 console.error("Error fetching categories:", error);
+                setCategories([]); // 에러 시 빈 배열로 설정
+
             }
         };
 
