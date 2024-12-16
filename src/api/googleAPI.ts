@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = 'api/member/google'
+const host = 'https://tripwhiz.shop/api/member/google'
 // const host = '/api/member/google'
 
 // 액세스 토큰을 사용해 사용자 정보를 가져오는 함수
