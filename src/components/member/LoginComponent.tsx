@@ -16,7 +16,7 @@ function LoginComponent() {
             await getGoogleWithAccessToken(tokenResponse.access_token, setUser);
 
             // 로그인 후 리다이렉션 처리
-            window.location.href = "http://localhost:5173/product/list";
+            window.location.href = "https://tripwhiz.shop/product/list";
         },
         onError: () => console.error("Failed Login.."),
         scope: "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
