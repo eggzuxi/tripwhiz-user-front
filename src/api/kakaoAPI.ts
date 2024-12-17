@@ -5,7 +5,7 @@ const rest_api_key = '3e34907a71ec50993d339fa571affddf'
 
 // 인증 후 리디렉션될 URI. 사용자가 카카오 로그인 인증을 완료하면 이 URI로 돌아옴
 // const redirect_uri = 'http://10.10.10.73:5173/member/kakao'
-const redirect_uri = 'https://tripwhiz.shop/api/member/kakao'
+const redirect_uri = 'https://tripwhiz.shop/member/kakao'
 
 const auth_code_path = `https://kauth.kakao.com/oauth/authorize`
 
