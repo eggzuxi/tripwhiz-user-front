@@ -3,7 +3,7 @@ import axios from 'axios';
 const rest_api_key = '3e34907a71ec50993d339fa571affddf';
 
 // 인증 후 리디렉션될 URI. 사용자가 카카오 로그인 인증을 완료하면 이 URI로 돌아옴
-const redirect_uri = 'https://tripwhiz.shop/member/kakao';
+const redirect_uri = encodeURIComponent('https://tripwhiz.shop/member/kakao');
 
 console.log("DEBUG - Redirect URI:", redirect_uri); // 리다이렉트 URI 출력
 
