@@ -48,7 +48,7 @@ const ProductListComponent = () => {
     // const addToCart = cartStore((state) => state.addToCart);
 
     const moveToDetails = (pno: number) => {
-        navigate(`/product/read/${pno}`);
+        navigate(`api/product/read/${pno}`);
     };
 
     const fetchProducts = useCallback(async () => {
