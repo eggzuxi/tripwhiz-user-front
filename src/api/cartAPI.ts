@@ -1,7 +1,7 @@
 import axios from "axios";
 import useAuthStore from "../store/AuthStore.ts";
 
-const host = 'api/cart'
+const host = 'https://tripwhiz.shop/api/cart'
 // const host = '/api/cart'
 
 const getEmailFromAuthStore = () => {

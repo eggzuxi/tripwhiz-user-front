@@ -35,13 +35,4 @@ export default defineConfig({
       }
     })
   ],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://tripwhiz.shop', // 백엔드 서버 주소
-        changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    }
-  }
 });
