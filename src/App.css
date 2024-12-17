@@ -274,6 +274,15 @@
   color: #555555;
 }
 
+.slick-list {
+  overflow: visible !important; /* slick-list가 카드 위쪽 짤림 방지 */
+}
+
+.slick-track {
+  overflow: visible !important; /* slick-track도 동일하게 설정 */
+}
+
+
 
 /*so*/
 /*.container {*/

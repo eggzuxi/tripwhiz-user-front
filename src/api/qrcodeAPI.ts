@@ -1,7 +1,7 @@
 // /api/orderApi.ts
 import axios from 'axios';
 
-const host = '/api/order';
+const host = 'api/order';
 // const host = '/api/order';
 
 

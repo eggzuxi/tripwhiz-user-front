@@ -23,7 +23,6 @@ function DestinationPage(): JSX.Element {
     const [cardPosition, setCardPosition] = useState(0);
 
     useEffect(() => {
-        // 2초 후 로딩 상태 종료
         const timer = setTimeout(() => {
             setIsLoading(false);
         }, 2000);
@@ -31,10 +30,9 @@ function DestinationPage(): JSX.Element {
         return () => clearTimeout(timer);
     }, []);
 
-    // 로딩 화면
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center h-screen bg-white">
+            <div className="flex items-center justify-center h-screen bg-white overflow-hidden">
                 <img
                     src="/images/tripwhiz_logo.png"
                     alt="ewhiz"
@@ -52,39 +50,51 @@ function DestinationPage(): JSX.Element {
     };
 
     const handleSkipClick = () => {
-        // 목적지 선택 건너뛰기 버튼 클릭 시 전체 상품 리스트로 이동
         navigate("/theme");
     };
 
     const sliderSettings = {
-        dots: true,
+        dots: false,
         infinite: true,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: true,
         centerMode: true,
-        centerPadding: '40px',
-        beforeChange: (next: number) => {
-            setCurrentBackground(destinations[next].image); // 배경 이미지 동기화
-            setCardPosition(next); // 카드 위치 추적
+        centerPadding: "40px",
+        beforeChange: (_: number, next: number) => { // current 대신 _
+            setCurrentBackground(destinations[next].image);
+            setCardPosition(next);
         },
     };
 
+
     return (
         <div
-            className="h-screen w-screen bg-cover bg-center flex flex-col"
-            style={{ backgroundImage: `url(${currentBackground})` }}
+            className="h-screen w-screen bg-cover bg-center flex flex-col overflow-hidden"
+            style={{backgroundImage: `url(${currentBackground})`}}
         >
-            <div className="text-center pt-6 pb-4">
-                <h1 className="text-3xl font-bold text-white">어디로 떠나시나요?</h1>
-                <p className="text-lg text-white">다양한 여행지 중에 하나를 선택하세요.</p>
+            <div
+                className="w-full flex justify-end pt-6 pr-4" // 오른쪽 여백 pr-4 추가
+                onClick={() => navigate("/main")}
+            >
+                <img
+                    src="/images/home.png"
+                    alt="Home Icon"
+                    className="w-6 h-6 cursor-pointer"
+                    style={{
+                        filter: "brightness(0) invert(1)", // 이미지를 흰색으로 변환
+                    }}
+                />
             </div>
 
-            {/* 캐러셀 */}
+            <div className="text-center pt-20 pb-8">
+                <h1 className="text-4xl font-bold text-white">어디로 떠나시나요?</h1>
+                <p className="text-lg text-white mt-2">다양한 여행지 중에 하나를 선택하세요.</p>
+            </div>
+
             <div
-                className="flex flex-col justify-center items-center flex-1 pb-4"
-                style={{ minHeight: 'calc(100vh + 150px)' }} // 부모 컨테이너 높이 충분히 확보
+                className="flex justify-center items-center flex-1 pb-8"
             >
                 <Slider
                     {...sliderSettings}
@@ -98,7 +108,7 @@ function DestinationPage(): JSX.Element {
                         >
                             <div
                                 className={`w-80 h-[500px] bg-white shadow-lg rounded-xl overflow-hidden relative flex items-center justify-center transition-transform duration-500 ${
-                                    cardPosition === index ? 'transform translate-y-[-20px]' : '' // 중간 카드만 위로 조금 올라가게 애니메이션 적용
+                                    cardPosition === index ? "transform translate-y-[-40px]" : ""
                                 }`}
                             >
                                 <img
@@ -118,7 +128,6 @@ function DestinationPage(): JSX.Element {
             >
                 Skip &#62;
             </button>
-
         </div>
     );
 }
