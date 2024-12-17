@@ -1,6 +1,6 @@
 export interface IProductImage {
     ord: number; // 순서
-    fileName: string; // 기존 파일명을 나타내는 문자열 타입
+    file_name: string; // 기존 파일명을 나타내는 문자열 타입
 }
 
 export interface IProduct {
@@ -14,6 +14,7 @@ export interface IProduct {
     delflag: false
     attachFiles: IProductImage[]; // 기존 IProductImage 객체 배열
 }
+
 
 // export interface ICartItem {
 //     product: IProduct

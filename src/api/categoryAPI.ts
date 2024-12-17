@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host ='/api/categories';
+const host ='api/categories';
 // const host ='/api/categories';
 
 

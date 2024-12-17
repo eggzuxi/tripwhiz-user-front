@@ -24,6 +24,7 @@
     "@react-google-maps/api": "^2.20.3",
     "@react-oauth/google": "^0.12.1",
     "@tosspayments/tosspayments-sdk": "^2.2.1",
+    "@types/react-slick": "^0.23.13",
     "axios": "^1.7.7",
     "buffer": "^6.0.3",
     "cors": "^2.8.5",

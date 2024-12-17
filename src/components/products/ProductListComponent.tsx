@@ -138,34 +138,37 @@ const ProductListComponent = () => {
                 />
                 <div className="grid grid-cols-2 gap-4">
                     {products.length > 0 ? (
-                        products.map((product, index) => (
-                            <div
-                                key={`${product.pno}-${index}`}
-                                className="relative border p-6 rounded-lg shadow-md"
-                                onClick={() => moveToDetails(product.pno)}
-                                ref={index === products.length - 1 ? lastProductRef : null}
-                            >
-                                {/* 이미지 표시 */}
-                                {product.attachFiles.length > 0 && (
-                                    <img
-                                        src={`${IMAGE_BASE_URL}/${product.attachFiles[0].fileName}`}
-                                        alt={product.pname}
-                                        className="mb-2 w-full h-40 object-cover rounded"
+                        products.map((product, index) => {
+                            if (product.price === 0) return null; // 0원 상품은 렌더링하지 않음
+                            return (
+                                <div
+                                    key={`${product.pno}-${index}`}
+                                    className="relative border p-6 rounded-lg shadow-md"
+                                    onClick={() => moveToDetails(product.pno)}
+                                    ref={index === products.length - 1 ? lastProductRef : null}
+                                >
+                                    {/* 이미지 표시 */}
+                                    {product.attachFiles.length > 0 && (
+                                        <img
+                                            src={`${IMAGE_BASE_URL}/${product.attachFiles[0]?.file_name}`}
+                                            alt={product.pname}
+                                            className="mb-2 w-full h-40 object-cover rounded"
+                                        />
+                                    )}
+                                    <h3 className="text-lg font-semibold">{product.pname}</h3>
+                                    <p className="text-gray-700">{product.pdesc}</p>
+                                    <p className="text-gray-700">가격: {product.price}원</p>
+                                    <FontAwesomeIcon
+                                        icon={faCartShopping}
+                                        className="text-gray-700 text-xl absolute bottom-2 right-2 cursor-pointer"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            openPanel(product);
+                                        }}
                                     />
-                                )}
-                                <h3 className="text-lg font-semibold">{product.pname}</h3>
-                                <p className="text-gray-700">{product.pdesc}</p>
-                                <p className="text-gray-700">가격: {product.price}원</p>
-                                <FontAwesomeIcon
-                                    icon={faCartShopping}
-                                    className="text-gray-700 text-xl absolute bottom-2 right-2 cursor-pointer"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        openPanel(product);
-                                    }}
-                                />
-                            </div>
-                        ))
+                                </div>
+                            );
+                        })
                     ) : (
                         <p>상품이 없습니다.</p>
                     )}
