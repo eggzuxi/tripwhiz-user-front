@@ -33,7 +33,8 @@ const ProductListComponent = () => {
 
     const [searchParams] = useSearchParams();
 
-    const IMAGE_BASE_URL = "/api/admin/product/image"; // 이미지 파일의 기본 경로 설정
+    // const IMAGE_BASE_URL = "/api/admin/product/image"; // 이미지 파일의 기본 경로 설정
+    const IMAGE_BASE_URL = "http://localhost:8082/api/admin/product/image"; // 이미지 파일의 기본 경로 설정
 
     // 쿼리스트링에서 값 가져오기 및 숫자로 변환_SY
     const tno = searchParams.get("tno") ? parseInt(searchParams.get("tno") as string, 10) : null;
@@ -48,7 +49,7 @@ const ProductListComponent = () => {
     // const addToCart = cartStore((state) => state.addToCart);
 
     const moveToDetails = (pno: number) => {
-        navigate(`/product/read/${pno}`);
+        navigate(`/product/read/native/${pno}`);
     };
 
     const fetchProducts = useCallback(async () => {

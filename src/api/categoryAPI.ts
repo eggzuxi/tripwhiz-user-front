@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const host ='/api/categories';
 // const host ='/api/categories';
+const host ='http://localhost:8081/api/categories';
 
 
 // 상위 카테고리 목록 가져오기

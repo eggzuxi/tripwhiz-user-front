@@ -1,8 +1,8 @@
 // /api/orderApi.ts
 import axios from 'axios';
 
-const host = '/api/order';
 // const host = '/api/order';
+const host = 'http://localhost:8081/api/order';
 
 
 // 주문을 완료하고 QR 코드를 생성하는 함수

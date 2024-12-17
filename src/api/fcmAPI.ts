@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // 서버 URL 가져오기
-const USER_SERVER_URL = import.meta.env.VITE_USER_SERVER_URL || "";
-const STORE_SERVER_URL = import.meta.env.VITE_STORE_SERVER_URL || "";
+const USER_SERVER_URL = import.meta.env.VITE_USER_SERVER_URL || "http://localhost:8081";
+const STORE_SERVER_URL = import.meta.env.VITE_STORE_SERVER_URL || "http://localhost:8081";
 
 // FCM Token 등록 응답 타입 정의
 interface FCMRegisterResponse {
