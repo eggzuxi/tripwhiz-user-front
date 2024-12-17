@@ -35,7 +35,7 @@ import axios from "axios";
 import {SpotDTO} from "../types/luggage.ts";
 
 // 기본 API URL (Vite 프록시 설정이 `/api`로 시작하는 요청을 백엔드로 라우팅)
-const BASE_URL = "https://tripwhiz.shop/api/spot";
+const BASE_URL = "api/spot";
 
 export const storeAPI = {
     /**
