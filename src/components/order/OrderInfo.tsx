@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { cartStore } from "../../store/CartStore";
 import { createOrder } from "../../api/orderAPI.ts";
+import useFCMToken from "../../hooks/useFCM.ts";
 
 const OrderInfo: React.FC = () => {
     // Zustand 상태를 안전하게 읽기
@@ -35,6 +36,7 @@ const OrderInfo: React.FC = () => {
             alert("이메일 정보가 누락되었습니다.");
             return;
         }
+        useFCMToken(email); // FCM 훅 호출
 
         console.log("결제 진행 중...");
         console.log("이메일:", email);
