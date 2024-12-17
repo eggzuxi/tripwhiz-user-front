@@ -36,7 +36,7 @@ function DestinationPage(): JSX.Element {
                 <img
                     src="/images/tripwhiz_logo.png"
                     alt="ewhiz"
-                    className="animate-pulse w-40 h-40"
+                    className="animate-pulse w-40 h-15"
                 />
             </div>
         );
@@ -124,7 +124,7 @@ function DestinationPage(): JSX.Element {
 
             <button
                 onClick={handleSkipClick}
-                className="fixed bottom-6 right-6 text-lg text-white font-semibold rounded-lg px-4 py-2 shadow-md hover:bg-gray-100 transition duration-300"
+                className="fixed bottom-6 right-6 text-lg text-white font-semibold rounded-lg px-4 py-2 transition duration-300"
             >
                 Skip &#62;
             </button>
