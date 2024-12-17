@@ -8,9 +8,7 @@ import paymentRouter from "./paymentRouter";
 // import GoogleMapsPage from "../pages/map/GoogleMapsPage";
 import sidebarRouter from "./sidebarRouter.tsx";
 import OrderRouter from "./orderRouter.tsx";
-import bookingDateRouter from "./bookingDateRouter.tsx";
 import luggageRouter from "./luggageRouter.tsx";
-
 
 
 const LoadingPage = lazy(() => import("../pages/LoadingPage"));
@@ -18,7 +16,7 @@ const PickupPage = lazy(() => import("../pages/pickup/PickupPage"));
 const DestinationPage = lazy(() => import("../pages/destination/DestinationPage"));
 const MainPage = lazy(() => import("../pages/MainPage"));
 const ThemePage = lazy(() => import("../pages/theme/ThemePage"));
-const HealthCheck = lazy(() => import("../pages/health/HealthCheckPage.tsx"));
+// const HealthCheck = lazy(() => import("../pages/health/HealthCheckPage.tsx"));
 
 const Loading = <LoadingPage/>;
 
@@ -33,8 +31,8 @@ const mainRouter = createBrowserRouter([
         children: [
 
             {
-                path: "/",
-                element: <Suspense fallback={Loading}><HealthCheck/></Suspense>
+                path: "/main",
+                element: <Suspense fallback={Loading}><MainPage/></Suspense>
             },
             {
                 path: "/main",
@@ -54,7 +52,6 @@ const mainRouter = createBrowserRouter([
             paymentRouter,
             sidebarRouter,
             OrderRouter,
-            bookingDateRouter,
             luggageRouter
         ],
     },
