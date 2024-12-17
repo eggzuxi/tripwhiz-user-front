@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const destinations = [
-    { id: 1, name: "Cambodia", image: "/images/country/Cambodia.jpeg" },
+    { id: 1, name: "Cambodia", image: "/images/country/Cambodia.jpg" },
     { id: 2, name: "Malaysia", image: "/images/country/Malaysia.png" },
     { id: 3, name: "Japan", image: "/images/country/Japan.jpg" },
     { id: 4, name: "Vietnam", image: "/images/country/Vietnam.jpg" },
