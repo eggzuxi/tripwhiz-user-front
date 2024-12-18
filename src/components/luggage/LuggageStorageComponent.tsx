@@ -129,8 +129,9 @@ const LuggageStorageComponent: React.FC = () => {
     useEffect(() => {
         const fetchSpots = async () => {
             try {
+                console.log("Fetching spots..."); // API 호출 시점
                 const spotList = await storeAPI.list();
-                console.log("Fetched spot list:", spotList);
+                console.log("Fetched spot list:", spotList); // API 응답 확인
                 if (Array.isArray(spotList)) {
                     setSpots(spotList);
                 } else {
@@ -145,6 +146,7 @@ const LuggageStorageComponent: React.FC = () => {
 
         fetchSpots();
     }, []);
+
 
     const handleSave = async () => {
         if (!selectedSpot || !email) {
@@ -175,6 +177,9 @@ const LuggageStorageComponent: React.FC = () => {
             storedUntil: formattedStoredUntil,
             status: LuggageStorageStatus.PENDING, // 열거형 값 사용
         };
+
+        // 여기에서 payload를 출력
+        console.log("Payload to be sent to the server:", payload);
 
         try {
             await createLuggageStorage(payload);
