@@ -15,11 +15,11 @@ const getEmailFromAuthStore = () => {
 };
 
 // API 기본 URL 설정
-// const USER_BASE_URL = "/api/user/order"; // 유저 백엔드 URL
-const USER_BASE_URL = "http://localhost:8081/api/user/order"; // 유저 백엔드 URL
+const USER_BASE_URL = "/api/user/order"; // 유저 백엔드 URL
+// const USER_BASE_URL = "http://localhost:8081/api/user/order"; // 유저 백엔드 URL
 
-// const STORE_BASE_URL = "/api/storeowner/order"; // 점주 백엔드 URL
-const STORE_BASE_URL = "http://localhost:8081/api/storeowner/order"; // 점주 백엔드 URL
+const STORE_BASE_URL = "/api/storeowner/order"; // 점주 백엔드 URL
+// const STORE_BASE_URL = "http://localhost:8081/api/storeowner/order"; // 점주 백엔드 URL
 
 
 // 주문 생성 함수

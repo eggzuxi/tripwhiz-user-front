@@ -1,33 +1,40 @@
 import { useEffect } from "react";
-import { requestFCMToken, onMessageListener } from "../firebase/firebaseConfig";
-import { registerFCMToken } from "../api/fcmAPI";
-import { MessagePayload } from "firebase/messaging";
+import { requestFCMToken, registerServiceWorker, onMessageListener } from "../firebase/firebaseConfig";
+import {registerFCMToken} from "../api/fcmAPI.ts";
 
-const useFCMToken = (email: string | null) => {
+const useFCM = (email: string | null) => {
     useEffect(() => {
-        const fetchAndRegisterFCMToken = async () => {
+        const initializeFCM = async () => {
             try {
-                const token = await requestFCMToken();
-                if (token && email) {
-                    await registerFCMToken(token, email, true);
-                    console.log("FCM 토큰 등록 성공:", token);
+                await registerServiceWorker(); // Service Worker 등록
+                const token = await requestFCMToken(); // FCM 토큰 요청
+                if (token) {
+                    console.log("FCM 토큰:", token);
+                    if (email) {
+                        console.log(`서버에 FCM 토큰 등록: ${email}`);
+                        // 서버에 FCM 토큰 등록 API 호출
+                        await registerFCMToken(token, email, true); // isUser = true로 설정
+                    }
                 }
             } catch (error) {
-                console.error("FCM 토큰 등록 오류:", error);
+                console.error("FCM 초기화 오류:", error);
             }
         };
 
-        fetchAndRegisterFCMToken();
 
-        // 알림 수신 리스너 설정
-        onMessageListener()
-            .then((payload) => {
-                const messagePayload = payload as MessagePayload;
-                console.log("알림 수신:", messagePayload);
-                alert(`새 알림: ${messagePayload.notification?.title} - ${messagePayload.notification?.body}`);
-            })
-            .catch((err) => console.error("알림 수신 오류:", err));
-    }, [email]);
+        const listenToMessages = () => {
+            onMessageListener()
+                .then((payload) => {
+                    console.log("포그라운드 알림 수신:", payload);
+                })
+                .catch((err) => console.error("알림 수신 오류:", err));
+        };
+
+        if (email) {
+            initializeFCM();
+            listenToMessages();
+        }
+    }, [email]); // email이 변경될 때마다 실행
 };
 
-export default useFCMToken;
+export default useFCM;
