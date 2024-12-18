@@ -1,24 +1,29 @@
-importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js');
-
-// Firebase 설정
-firebase.initializeApp({
-    apiKey: "AIzaSyAq4LWQ1QYwqK1xErJFBp3J9Pu1_Tw0K",
+importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js");
+importScripts(
+    "https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"
+);
+const firebaseConfig = {
+    apiKey: "AIzaSyApw4fL9QVmVyqKLwrJIFp3JqP9uU_IwQk",
     authDomain: "jin1107-c14a2.firebaseapp.com",
     projectId: "jin1107-c14a2",
-    storageBucket: "jin1107-c14a2.appspot.com",
-    messagingSenderId: "11502337642045",
-    appId: "1:11502337642045:web:7d696f03b008c1a616e854",
-});
+    storageBucket: "jin1107-c14a2.firebasestorage.app",
+    messagingSenderId: "1052337642045",
+    appId: "1:1052337642045:web:7d690f0630b00c1a61e854",
+    measurementId: "G-1B0D6X39YP"
+};
 
+// Retrieve firebase messaging
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage((payload) => {
-    console.log('[firebase-messaging-sw.js] 백그라운드 메시지 수신:', payload);
 
-    const { title, body } = payload.notification;
-    self.registration.showNotification(title, {
-        body,
-        icon: '/firebase-logo.png',
-    });
+messaging.onBackgroundMessage((payload) => {
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+        body: payload.notification.body,
+        icon: payload.notification.image,
+    };
+
+
+    self.registration.showNotification(notificationTitle, notificationOptions);
 });
+
