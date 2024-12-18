@@ -30,7 +30,8 @@ function ProductReadComponent() {
     const addToCart = cartStore((state) => state.addToCart);
     const [activeTab, setActiveTab] = useState("detail");
 
-    const IMAGE_BASE_URL = "http://localhost:8082/api/admin/product/image";
+    const IMAGE_BASE_URL = "https://tripwhiz.store/api/admin/product/image";
+    // const IMAGE_BASE_URL = "http://localhost:8082/api/admin/product/image";
 
     const [product, setProduct] = useState<IProduct>(initialState);
     const [categoryNames, setCategoryNames] = useState({
