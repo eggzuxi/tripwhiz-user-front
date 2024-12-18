@@ -1,27 +1,24 @@
-importScripts("https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/9.21.0/firebase-messaging.js");
+importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js');
 
-const firebaseConfig = {
-    apiKey: "AIzaSyApw4fL9QVmVyqKLwrJIFp3JqP9uU_IwQk",
-    authDomain: "jin1107-c14a2.firebaseapp.com",
-    projectId: "jin1107-c14a2",
-    storageBucket: "jin1107-c14a2.appspot.com",
-    messagingSenderId: "1052337642045",
-    appId: "1:1052337642045:web:7d690f0630b00c1a61e854",
-    measurementId: "G-1B0D6X39YP",
-};
-
-firebase.initializeApp(firebaseConfig);
+// Firebase 설정 (직접 입력하거나 환경변수 대체)
+firebase.initializeApp({
+    apiKey: "VITE_FIREBASE_API_KEY",
+    authDomain: "VITE_FIREBASE_AUTH_DOMAIN",
+    projectId: "VITE_FIREBASE_PROJECT_ID",
+    storageBucket: "VITE_FIREBASE_STORAGE_BUCKET",
+    messagingSenderId: "VITE_FIREBASE_MESSAGING_SENDER_ID",
+    appId: "VITE_FIREBASE_APP_ID",
+});
 
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-    console.log("Background Message received: ", payload);
+    console.log('[firebase-messaging-sw.js] 백그라운드 메시지 수신:', payload);
 
-    const notificationTitle = payload.notification.title;
-    const notificationOptions = {
-        body: payload.notification.body,
-    };
-
-    self.registration.showNotification(notificationTitle, notificationOptions);
+    const { title, body } = payload.notification;
+    self.registration.showNotification(title, {
+        body,
+        icon: '/firebase-logo.png', // 아이콘 경로
+    });
 });
