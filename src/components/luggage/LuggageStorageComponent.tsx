@@ -110,10 +110,15 @@ const LuggageStorageComponent: React.FC = () => {
     const [spots, setSpots] = useState<SpotDTO[]>([]);
     const [selectedSpot, setSelectedSpot] = useState<SpotDTO | null>(null);
 
-    const [year, setYear] = useState<number>(2024);
-    const [month, setMonth] = useState<number>(1);
-    const [day, setDay] = useState<number>(1);
-    const [hour, setHour] = useState<number>(12);
+    const [storageYear, setStorageYear] = useState<number>(2024);
+    const [storageMonth, setStorageMonth] = useState<number>(1);
+    const [storageDay, setStorageDay] = useState<number>(1);
+    const [storageHour, setStorageHour] = useState<number>(12);
+
+    const [retrieveYear, setRetrieveYear] = useState<number>(2024);
+    const [retrieveMonth, setRetrieveMonth] = useState<number>(1);
+    const [retrieveDay, setRetrieveDay] = useState<number>(1);
+    const [retrieveHour, setRetrieveHour] = useState<number>(12);
 
     const [searchInput, setSearchInput] = useState<string>("");
     const [center] = useState<{ lat: number; lng: number }>({
@@ -152,12 +157,15 @@ const LuggageStorageComponent: React.FC = () => {
             return;
         }
 
-        const formattedStorageDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${String(
-            hour
-        ).padStart(2, "0")}:00:00`;
-        const formattedStoredUntil = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${String(
-            hour + 8
-        ).padStart(2, "0")}:00:00`;
+        // 맡기실 시간
+        const storageDate = new Date(storageYear, storageMonth - 1, storageDay, storageHour);
+        const formattedStorageDate = storageDate.toISOString().slice(0, 19); // ISO 8601 형식: YYYY-MM-DDTHH:mm:ss
+
+// 찾으실 시간 (맡기실 시간에 8시간 추가)
+        const storedUntilDate = new Date(storageDate.getTime());
+        storedUntilDate.setHours(storageDate.getHours() + 8); // 8시간 추가
+        const formattedStoredUntil = storedUntilDate.toISOString().slice(0, 19); // ISO 8601 형식
+
 
         const payload = {
             storageSpot: {
@@ -225,27 +233,33 @@ const LuggageStorageComponent: React.FC = () => {
             {/* 날짜 및 시간 선택 */}
             <h4 className="font-bold mb-2 text-left ml-4 text-lg mt-4">맡기실 시간</h4>
             <div className="flex items-center gap-1 mb-4 mx-4">
-                <NumberPicker range={[...Array(11)].map((_, i) => 2024 + i)} value={year} onChange={setYear}/>
+                <NumberPicker range={[...Array(11)].map((_, i) => 2024 + i)} value={storageYear}
+                              onChange={setStorageYear}/>
                 <span>년</span>
-                <NumberPicker range={[...Array(12)].map((_, i) => i + 1)} value={month} onChange={setMonth}/>
+                <NumberPicker range={[...Array(12)].map((_, i) => i + 1)} value={storageMonth}
+                              onChange={setStorageMonth}/>
                 <span>월</span>
-                <NumberPicker range={[...Array(31)].map((_, i) => i + 1)} value={day} onChange={setDay}/>
+                <NumberPicker range={[...Array(31)].map((_, i) => i + 1)} value={storageDay} onChange={setStorageDay}/>
                 <span>일</span>
-                <NumberPicker range={[...Array(24)].map((_, i) => i)} value={hour} onChange={setHour}/>
+                <NumberPicker range={[...Array(24)].map((_, i) => i)} value={storageHour} onChange={setStorageHour}/>
                 <span>시</span>
             </div>
 
             <h4 className="font-bold mb-2 text-left ml-4 text-lg mt-4">찾으실 시간</h4>
             <div className="flex items-center gap-1 mb-4 mx-4">
-                <NumberPicker range={[...Array(11)].map((_, i) => 2024 + i)} value={year} onChange={setYear}/>
+                <NumberPicker range={[...Array(11)].map((_, i) => 2024 + i)} value={retrieveYear}
+                              onChange={setRetrieveYear}/>
                 <span>년</span>
-                <NumberPicker range={[...Array(12)].map((_, i) => i + 1)} value={month} onChange={setMonth}/>
+                <NumberPicker range={[...Array(12)].map((_, i) => i + 1)} value={retrieveMonth}
+                              onChange={setRetrieveMonth}/>
                 <span>월</span>
-                <NumberPicker range={[...Array(31)].map((_, i) => i + 1)} value={day} onChange={setDay}/>
+                <NumberPicker range={[...Array(31)].map((_, i) => i + 1)} value={retrieveDay}
+                              onChange={setRetrieveDay}/>
                 <span>일</span>
-                <NumberPicker range={[...Array(24)].map((_, i) => i)} value={hour} onChange={setHour}/>
+                <NumberPicker range={[...Array(24)].map((_, i) => i)} value={retrieveHour} onChange={setRetrieveHour}/>
                 <span>시</span>
             </div>
+
 
             {/* 이전 및 다음 버튼 */}
             <button
