@@ -1,14 +1,14 @@
 importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js');
 
-// Firebase 설정 (직접 입력하거나 환경변수 대체)
+// Firebase 설정
 firebase.initializeApp({
-    apiKey: "VITE_FIREBASE_API_KEY",
-    authDomain: "VITE_FIREBASE_AUTH_DOMAIN",
-    projectId: "VITE_FIREBASE_PROJECT_ID",
-    storageBucket: "VITE_FIREBASE_STORAGE_BUCKET",
-    messagingSenderId: "VITE_FIREBASE_MESSAGING_SENDER_ID",
-    appId: "VITE_FIREBASE_APP_ID",
+    apiKey: "AIzaSyAq4LWQ1QYwqK1xErJFBp3J9Pu1_Tw0K",
+    authDomain: "jin1107-c14a2.firebaseapp.com",
+    projectId: "jin1107-c14a2",
+    storageBucket: "jin1107-c14a2.appspot.com",
+    messagingSenderId: "11502337642045",
+    appId: "1:11502337642045:web:7d696f03b008c1a616e854",
 });
 
 const messaging = firebase.messaging();
@@ -19,6 +19,6 @@ messaging.onBackgroundMessage((payload) => {
     const { title, body } = payload.notification;
     self.registration.showNotification(title, {
         body,
-        icon: '/firebase-logo.png', // 아이콘 경로
+        icon: '/firebase-logo.png',
     });
 });
