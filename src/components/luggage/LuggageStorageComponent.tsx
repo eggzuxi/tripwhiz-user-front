@@ -17,47 +17,42 @@ const GoogleMap: React.FC<{
     const mapInstance = useRef<google.maps.Map | null>(null);
 
     useEffect(() => {
-        if (mapRef.current) {
-            // 지도 초기화
+        if (mapRef.current && !mapInstance.current) {
+            // 지도 초기화 (초기화는 한 번만 실행)
             const map = new google.maps.Map(mapRef.current, {
                 center,
                 zoom: 12,
             });
             mapInstance.current = map;
-
-            // 마커 추가
-            if (Array.isArray(spots) && spots.length > 0) {
-                spots.forEach((spot) => {
-                    const marker = new google.maps.Marker({
-                        position: { lat: spot.latitude, lng: spot.longitude },
-                        map,
-                        title: spot.spotname,
-                    });
-
-                    // 마커 클릭 이벤트
-                    const infoWindow = new google.maps.InfoWindow({
-                        content: `<div><strong>${spot.spotname}</strong><br>${spot.address}</div>`,
-                    });
-
-                    marker.addListener("click", () => {
-                        infoWindow.open(map, marker);
-                        onSelectSpot(spot);
-                    });
-                });
-            } else {
-                console.warn("No spots to display on the map.");
-            }
-        }
-    }, [spots, onSelectSpot, center]);
-
-    useEffect(() => {
-        if (mapInstance.current) {
-            mapInstance.current.setCenter(center);
         }
     }, [center]);
 
+    useEffect(() => {
+        // 마커 추가
+        if (mapInstance.current && Array.isArray(spots) && spots.length > 0) {
+            spots.forEach((spot) => {
+                const marker = new google.maps.Marker({
+                    position: { lat: spot.latitude, lng: spot.longitude },
+                    map: mapInstance.current!,
+                    title: spot.spotname,
+                });
+
+                // 마커 클릭 이벤트
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `<div><strong>${spot.spotname}</strong><br>${spot.address}</div>`,
+                });
+
+                marker.addListener("click", () => {
+                    infoWindow.open(mapInstance.current!, marker);
+                    onSelectSpot(spot);
+                });
+            });
+        }
+    }, [spots, onSelectSpot]);
+
     return <div ref={mapRef} style={{ width: "100%", height: "500px" }} />;
 };
+
 
 // NumberPicker 컴포넌트
 const NumberPicker: React.FC<{
