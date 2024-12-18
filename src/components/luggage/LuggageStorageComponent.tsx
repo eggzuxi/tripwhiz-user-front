@@ -5,7 +5,7 @@ import {LuggageStorageStatus, SpotDTO} from "../../types/luggage";
 
 import useAuthStore from "../../store/AuthStore";
 import {storeAPI} from "../../api/storeAPI.ts";
-import useFCMToken from "../../hooks/useFCM.ts";
+import useFCM from "../../hooks/useFCM.ts";
 
 // GoogleMap 컴포넌트
 const GoogleMap: React.FC<{
@@ -123,11 +123,8 @@ const LuggageStorageComponent: React.FC = () => {
 
     const email = useAuthStore((state) => state.email);
 
-    // FCM 훅 사용
-    useFCMToken(email);
-
-
-
+    // FCM 훅 실행
+    useFCM(email);
 
     useEffect(() => {
         const fetchSpots = async () => {
