@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { createLuggageStorage } from "../../api/luggageAPI";
-import {LuggageStorageStatus, SpotDTO} from "../../types/luggage";
+import { LuggageStorageStatus, SpotDTO } from "../../types/luggage";
 
 import useAuthStore from "../../store/AuthStore";
-import {storeAPI} from "../../api/storeAPI.ts";
+import { storeAPI } from "../../api/storeAPI.ts";
 import useFCM from "../../hooks/useFCM.ts";
 
 // GoogleMap 컴포넌트
@@ -161,11 +161,10 @@ const LuggageStorageComponent: React.FC = () => {
         const storageDate = new Date(storageYear, storageMonth - 1, storageDay, storageHour);
         const formattedStorageDate = storageDate.toISOString().slice(0, 19); // ISO 8601 형식: YYYY-MM-DDTHH:mm:ss
 
-// 찾으실 시간 (맡기실 시간에 8시간 추가)
+        // 찾으실 시간 (맡기실 시간에 8시간 추가)
         const storedUntilDate = new Date(storageDate.getTime());
         storedUntilDate.setHours(storageDate.getHours() + 8); // 8시간 추가
         const formattedStoredUntil = storedUntilDate.toISOString().slice(0, 19); // ISO 8601 형식
-
 
         const payload = {
             storageSpot: {
@@ -181,7 +180,6 @@ const LuggageStorageComponent: React.FC = () => {
             storedUntil: formattedStoredUntil,
             status: LuggageStorageStatus.PENDING, // 열거형 값 사용
         };
-
 
         try {
             await createLuggageStorage(payload);
@@ -224,7 +222,7 @@ const LuggageStorageComponent: React.FC = () => {
 
             {/* 선택한 지점 정보 */}
             {selectedSpot && (
-                <div className="mx-4 my-4 p-4 border rounded-md" style={{borderColor: "#1D2D5F"}}>
+                <div className="mx-4 my-4 p-4 border rounded-md" style={{ borderColor: "#1D2D5F" }}>
                     <h4 className="font-bold text-lg text-[#1D2D5F]">{selectedSpot.spotname}</h4>
                     <p className="text-gray-600">{selectedSpot.address}</p>
                 </div>
@@ -233,33 +231,27 @@ const LuggageStorageComponent: React.FC = () => {
             {/* 날짜 및 시간 선택 */}
             <h4 className="font-bold mb-2 text-left ml-4 text-lg mt-4">맡기실 시간</h4>
             <div className="flex items-center gap-1 mb-4 mx-4">
-                <NumberPicker range={[...Array(11)].map((_, i) => 2024 + i)} value={storageYear}
-                              onChange={setStorageYear}/>
+                <NumberPicker range={[...Array(11)].map((_, i) => 2024 + i)} value={storageYear} onChange={setStorageYear} />
                 <span>년</span>
-                <NumberPicker range={[...Array(12)].map((_, i) => i + 1)} value={storageMonth}
-                              onChange={setStorageMonth}/>
+                <NumberPicker range={[...Array(12)].map((_, i) => i + 1)} value={storageMonth} onChange={setStorageMonth} />
                 <span>월</span>
-                <NumberPicker range={[...Array(31)].map((_, i) => i + 1)} value={storageDay} onChange={setStorageDay}/>
+                <NumberPicker range={[...Array(31)].map((_, i) => i + 1)} value={storageDay} onChange={setStorageDay} />
                 <span>일</span>
-                <NumberPicker range={[...Array(24)].map((_, i) => i)} value={storageHour} onChange={setStorageHour}/>
+                <NumberPicker range={[...Array(24)].map((_, i) => i)} value={storageHour} onChange={setStorageHour} />
                 <span>시</span>
             </div>
 
             <h4 className="font-bold mb-2 text-left ml-4 text-lg mt-4">찾으실 시간</h4>
             <div className="flex items-center gap-1 mb-4 mx-4">
-                <NumberPicker range={[...Array(11)].map((_, i) => 2024 + i)} value={retrieveYear}
-                              onChange={setRetrieveYear}/>
+                <NumberPicker range={[...Array(11)].map((_, i) => 2024 + i)} value={retrieveYear} onChange={setRetrieveYear} />
                 <span>년</span>
-                <NumberPicker range={[...Array(12)].map((_, i) => i + 1)} value={retrieveMonth}
-                              onChange={setRetrieveMonth}/>
+                <NumberPicker range={[...Array(12)].map((_, i) => i + 1)} value={retrieveMonth} onChange={setRetrieveMonth} />
                 <span>월</span>
-                <NumberPicker range={[...Array(31)].map((_, i) => i + 1)} value={retrieveDay}
-                              onChange={setRetrieveDay}/>
+                <NumberPicker range={[...Array(31)].map((_, i) => i + 1)} value={retrieveDay} onChange={setRetrieveDay} />
                 <span>일</span>
-                <NumberPicker range={[...Array(24)].map((_, i) => i)} value={retrieveHour} onChange={setRetrieveHour}/>
+                <NumberPicker range={[...Array(24)].map((_, i) => i)} value={retrieveHour} onChange={setRetrieveHour} />
                 <span>시</span>
             </div>
-
 
             {/* 이전 및 다음 버튼 */}
             <button
