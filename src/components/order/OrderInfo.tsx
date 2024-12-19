@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { cartStore } from "../../store/CartStore";
 import { createOrder } from "../../api/orderAPI";
-import useFCM from "../../hooks/useFCM"; // 훅 임포트
+
 
 const OrderInfo: React.FC = () => {
     // Zustand 상태를 읽기
@@ -11,7 +11,7 @@ const OrderInfo: React.FC = () => {
     const pickupdate = cartStore((state) => state.pickUpDate);
 
     const navigate = useNavigate();
-    useFCM(); // FCM Hook을 컴포넌트 레벨에서 호출
+
 
     const formatDateForServer = (date: Date): string => {
         const year = date.getFullYear();
@@ -37,15 +37,22 @@ const OrderInfo: React.FC = () => {
             return;
         }
 
-        console.log("결제 진행 중...");
-        console.log("이메일:", email);
-        console.log("지점 번호:", spno);
-        console.log("픽업 날짜:", pickUpDate);
-        console.log("상품:", cartItems);
-
         try {
             const response = await createOrder(email, spno, pickUpDate);
             console.log("주문 생성 응답:", response);
+
+            // FCM 알림 요청
+            await fetch("/api/send-notification", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    title: "새 주문이 도착했습니다!",
+                    message: `주문 번호: ${response.orderId}, 픽업 날짜: ${pickUpDate}`,
+                    spno,
+                }),
+            });
 
             alert("결제가 완료되었습니다!");
             navigate("/side/myorder");
