@@ -37,10 +37,16 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/api': {
+      '/api/shop': {
         target: 'https://tripwhiz.shop',
         changeOrigin: true,
+        rewrite: (path: string) => path.replace(/^\/api\/shop/, '/api')
+      },
+      '/api/store': {
+        target: 'https://tripwhiz.store',
+        changeOrigin: true,
+        rewrite: (path: string) => path.replace(/^\/api\/store/, '/api')
       }
     }
-  }
-});
+  } // 이 중괄호가 server 객체를 닫습니다.
+}); // 이 중괄호가 전체 설정을 닫습니다.
