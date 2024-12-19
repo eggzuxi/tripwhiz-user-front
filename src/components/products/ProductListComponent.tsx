@@ -60,8 +60,6 @@ const ProductListComponent = () => {
         setLoading(true);
         setTimeout(async () => {
             const data = await getList(page, tno, cno, scno);
-
-            console.log(data)
             if (Array.isArray(data)) {
                 setProducts((prevProducts) => [...prevProducts, ...data]);
                 setHasMore(data.length > 0);
@@ -141,14 +139,14 @@ const ProductListComponent = () => {
                         setLoading(false); // 로딩 상태 초기화
                     }}
                 />
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 gap-4">
                     {products.length > 0 ? (
                         products.map((product, index) => {
                             if (product.price === 0) return null; // 0원 상품은 렌더링하지 않음
                             return (
                                 <div
                                     key={`${product.pno}-${index}`}
-                                    className="relative border p-4 rounded-lg shadow-md"
+                                    className="relative border p-6 rounded-lg shadow-md"
                                     onClick={() => moveToDetails(product.pno)}
                                     ref={index === products.length - 1 ? lastProductRef : null}
                                 >

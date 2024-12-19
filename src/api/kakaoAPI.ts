@@ -12,6 +12,7 @@ const auth_code_path = `https://kauth.kakao.com/oauth/authorize`;
 const access_token_url = 'https://kauth.kakao.com/oauth/token';
 
 // 백엔드 서버의 API URL. 액세스 토큰을 사용하여 사용자 정보를 요청할 때 사용
+// const host = '/api/member/kakao';
 const host = 'http://localhost:8081/api/member/kakao';
 
 // 액세스 토큰을 사용해 사용자 정보를 가져오는 함수
@@ -35,7 +36,11 @@ export const getKakaoWithAccessToken = async (
 
         return res.data;
     } catch (error) {
-        console.error("API 호출 오류:", error.response?.data || error.message); // 더 자세한 오류 확인
+        if (axios.isAxiosError(error)) {
+            console.error('DEBUG - Error in fetching Access Token:', error.response?.data || error.message);
+        } else {
+            console.error('DEBUG - Unknown Error:', error);
+        }
         throw error;
     }
 };
@@ -78,7 +83,11 @@ export const getAccessToken = async (authCode: string) => {
 
         return accessToken;
     } catch (error) {
-        console.error("DEBUG - Error in fetching Access Token:", error.response?.data || error.message);
+        if (axios.isAxiosError(error)) {
+            console.error('DEBUG - Error in fetching Access Token:', error.response?.data || error.message);
+        } else {
+            console.error('DEBUG - Unknown Error:', error);
+        }
         throw error;
     }
 };

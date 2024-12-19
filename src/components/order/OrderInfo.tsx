@@ -1,16 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { cartStore } from "../../store/CartStore";
-import { createOrder } from "../../api/orderAPI.ts";
-import useFCMToken from "../../hooks/useFCM.ts";
+import { createOrder } from "../../api/orderAPI";
+
 
 const OrderInfo: React.FC = () => {
-    // Zustand 상태를 안전하게 읽기
+    // Zustand 상태를 읽기
     const cartItems = cartStore((state) => state.cartItems);
     const spno = cartStore((state) => state.spno);
     const pickupdate = cartStore((state) => state.pickUpDate);
 
     const navigate = useNavigate();
+
 
     const formatDateForServer = (date: Date): string => {
         const year = date.getFullYear();
@@ -30,27 +31,31 @@ const OrderInfo: React.FC = () => {
             return;
         }
 
-        // 이메일을 cartItems에서 가져옴
         const email = cartItems[0]?.email;
         if (!email) {
             alert("이메일 정보가 누락되었습니다.");
             return;
         }
-        useFCMToken(email); // FCM 훅 호출
-
-        console.log("결제 진행 중...");
-        console.log("이메일:", email);
-        console.log("지점 번호:", spno);
-        console.log("픽업 날짜:", pickUpDate);
-        console.log("상품:", cartItems);
 
         try {
-            // 주문 생성 API 호출
             const response = await createOrder(email, spno, pickUpDate);
             console.log("주문 생성 응답:", response);
 
+            // FCM 알림 요청
+            await fetch("/api/send-notification", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    title: "새 주문이 도착했습니다!",
+                    message: `주문 번호: ${response.orderId}, 픽업 날짜: ${pickUpDate}`,
+                    spno,
+                }),
+            });
+
             alert("결제가 완료되었습니다!");
-            navigate("/side/myorder"); // 주문 내역 페이지로 이동
+            navigate("/side/myorder");
         } catch (error) {
             console.error("결제 중 오류 발생:", error);
             alert("결제에 실패했습니다. 다시 시도해 주세요.");

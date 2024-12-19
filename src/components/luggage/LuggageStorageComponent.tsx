@@ -4,8 +4,9 @@ import { createLuggageStorage } from "../../api/luggageAPI";
 import { LuggageStorageStatus, SpotDTO } from "../../types/luggage";
 
 import useAuthStore from "../../store/AuthStore";
-import { storeAPI } from "../../api/storeAPI.ts";
-import useFCM from "../../hooks/useFCM.ts";
+import {storeAPI} from "../../api/storeAPI.ts";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // GoogleMap 컴포넌트
 const GoogleMap: React.FC<{
@@ -50,9 +51,8 @@ const GoogleMap: React.FC<{
         }
     }, [spots, onSelectSpot]);
 
-    return <div ref={mapRef} style={{ width: "100%", height: "420px" }} />;
+    return <div ref={mapRef} style={{ width: "100%", height: "500px" }} />;
 };
-
 
 // NumberPicker 컴포넌트
 const NumberPicker: React.FC<{
@@ -101,30 +101,28 @@ const NumberPicker: React.FC<{
 };
 
 // LuggageStorageComponent
-const LuggageStorageComponent: React.FC = () => {
-    const [spots, setSpots] = useState<SpotDTO[]>([]);
-    const [selectedSpot, setSelectedSpot] = useState<SpotDTO | null>(null);
+        const LuggageStorageComponent: React.FC = () => {
+            const [spots, setSpots] = useState<SpotDTO[]>([]);
+            const [selectedSpot, setSelectedSpot] = useState<SpotDTO | null>(null);
 
-    const [storageYear, setStorageYear] = useState<number>(2024);
-    const [storageMonth, setStorageMonth] = useState<number>(1);
-    const [storageDay, setStorageDay] = useState<number>(1);
-    const [storageHour, setStorageHour] = useState<number>(12);
+            const [storageYear, setStorageYear] = useState<number>(2024);
+            const [storageMonth, setStorageMonth] = useState<number>(1);
+            const [storageDay, setStorageDay] = useState<number>(1);
+            const [storageHour, setStorageHour] = useState<number>(12);
 
-    const [retrieveYear, setRetrieveYear] = useState<number>(2024);
-    const [retrieveMonth, setRetrieveMonth] = useState<number>(1);
-    const [retrieveDay, setRetrieveDay] = useState<number>(1);
-    const [retrieveHour, setRetrieveHour] = useState<number>(12);
+            const [retrieveYear, setRetrieveYear] = useState<number>(2024);
+            const [retrieveMonth, setRetrieveMonth] = useState<number>(1);
+            const [retrieveDay, setRetrieveDay] = useState<number>(1);
+            const [retrieveHour, setRetrieveHour] = useState<number>(12);
 
-    const [searchInput, setSearchInput] = useState<string>("");
-    const [center] = useState<{ lat: number; lng: number }>({
-        lat: 37.5665,
-        lng: 126.978,
-    });
-
+            const [searchInput, setSearchInput] = useState<string>("");
+            const [center] = useState<{ lat: number; lng: number }>({
+                lat: 37.5665,
+                lng: 126.978,
+            });
     const email = useAuthStore((state) => state.email);
 
-    // FCM 훅 실행
-    useFCM(email);
+
 
     useEffect(() => {
         const fetchSpots = async () => {
@@ -147,7 +145,6 @@ const LuggageStorageComponent: React.FC = () => {
         fetchSpots();
     }, []);
 
-
     const handleSave = async () => {
         if (!selectedSpot || !email) {
             alert("모든 정보를 입력해주세요.");
@@ -162,6 +159,7 @@ const LuggageStorageComponent: React.FC = () => {
         const storedUntilDate = new Date(storageDate.getTime());
         storedUntilDate.setHours(storageDate.getHours() + 8); // 8시간 추가
         const formattedStoredUntil = storedUntilDate.toISOString().slice(0, 19); // ISO 8601 형식
+
 
         const payload = {
             storageSpot: {
@@ -182,11 +180,25 @@ const LuggageStorageComponent: React.FC = () => {
         console.log("Payload to be sent to the server:", payload);
 
         try {
+            // API 호출로 데이터 저장
             await createLuggageStorage(payload);
             alert("데이터가 성공적으로 저장되었습니다.");
+
+            // FCM 알림 전송
+            await fetch(`${BASE_URL}/api/storeowner/luggagestorage/create`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                mode: "cors",
+                body: JSON.stringify(payload),
+            });
+
+            // 성공적으로 저장 및 알림 전송 완료 시 알림
+            alert("알림이 성공적으로 전송되었습니다.");
         } catch (error) {
-            console.error("Failed to save luggage storage:", error);
-            alert("데이터 저장에 실패했습니다.");
+            console.error("데이터 저장 또는 알림 전송 중 오류 발생:", error);
+            alert("작업 중 오류가 발생했습니다. 다시 시도해 주세요.");
         }
     };
 
@@ -252,6 +264,7 @@ const LuggageStorageComponent: React.FC = () => {
                 <NumberPicker range={[...Array(24)].map((_, i) => i)} value={retrieveHour} onChange={setRetrieveHour} />
                 <span>시</span>
             </div>
+
 
             {/* 이전 및 다음 버튼 */}
             <button
