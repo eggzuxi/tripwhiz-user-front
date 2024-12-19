@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { createLuggageStorage } from "../../api/luggageAPI";
-import {LuggageStorageStatus, SpotDTO} from "../../types/luggage";
+import { LuggageStorageStatus, SpotDTO } from "../../types/luggage";
 
 import useAuthStore from "../../store/AuthStore";
 import {storeAPI} from "../../api/storeAPI.ts";
@@ -17,44 +17,38 @@ const GoogleMap: React.FC<{
     const mapInstance = useRef<google.maps.Map | null>(null);
 
     useEffect(() => {
-        if (mapRef.current) {
-            // 지도 초기화
+        if (mapRef.current && !mapInstance.current) {
+            // 지도 초기화 (초기화는 한 번만 실행)
             const map = new google.maps.Map(mapRef.current, {
                 center,
                 zoom: 12,
             });
             mapInstance.current = map;
-
-            // 마커 추가
-            if (Array.isArray(spots) && spots.length > 0) {
-                spots.forEach((spot) => {
-                    const marker = new google.maps.Marker({
-                        position: { lat: spot.latitude, lng: spot.longitude },
-                        map,
-                        title: spot.spotname,
-                    });
-
-                    // 마커 클릭 이벤트
-                    const infoWindow = new google.maps.InfoWindow({
-                        content: `<div><strong>${spot.spotname}</strong><br>${spot.address}</div>`,
-                    });
-
-                    marker.addListener("click", () => {
-                        infoWindow.open(map, marker);
-                        onSelectSpot(spot);
-                    });
-                });
-            } else {
-                console.warn("No spots to display on the map.");
-            }
-        }
-    }, [spots, onSelectSpot, center]);
-
-    useEffect(() => {
-        if (mapInstance.current) {
-            mapInstance.current.setCenter(center);
         }
     }, [center]);
+
+    useEffect(() => {
+        // 마커 추가
+        if (mapInstance.current && Array.isArray(spots) && spots.length > 0) {
+            spots.forEach((spot) => {
+                const marker = new google.maps.Marker({
+                    position: { lat: spot.latitude, lng: spot.longitude },
+                    map: mapInstance.current!,
+                    title: spot.spotname,
+                });
+
+                // 마커 클릭 이벤트
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `<div><strong>${spot.spotname}</strong><br>${spot.address}</div>`,
+                });
+
+                marker.addListener("click", () => {
+                    infoWindow.open(mapInstance.current!, marker);
+                    onSelectSpot(spot);
+                });
+            });
+        }
+    }, [spots, onSelectSpot]);
 
     return <div ref={mapRef} style={{ width: "100%", height: "500px" }} />;
 };
@@ -106,26 +100,25 @@ const NumberPicker: React.FC<{
 };
 
 // LuggageStorageComponent
-const LuggageStorageComponent: React.FC = () => {
-    const [spots, setSpots] = useState<SpotDTO[]>([]);
-    const [selectedSpot, setSelectedSpot] = useState<SpotDTO | null>(null);
+        const LuggageStorageComponent: React.FC = () => {
+            const [spots, setSpots] = useState<SpotDTO[]>([]);
+            const [selectedSpot, setSelectedSpot] = useState<SpotDTO | null>(null);
 
-    const [storageYear, setStorageYear] = useState<number>(2024);
-    const [storageMonth, setStorageMonth] = useState<number>(1);
-    const [storageDay, setStorageDay] = useState<number>(1);
-    const [storageHour, setStorageHour] = useState<number>(12);
+            const [storageYear, setStorageYear] = useState<number>(2024);
+            const [storageMonth, setStorageMonth] = useState<number>(1);
+            const [storageDay, setStorageDay] = useState<number>(1);
+            const [storageHour, setStorageHour] = useState<number>(12);
 
-    const [retrieveYear, setRetrieveYear] = useState<number>(2024);
-    const [retrieveMonth, setRetrieveMonth] = useState<number>(1);
-    const [retrieveDay, setRetrieveDay] = useState<number>(1);
-    const [retrieveHour, setRetrieveHour] = useState<number>(12);
+            const [retrieveYear, setRetrieveYear] = useState<number>(2024);
+            const [retrieveMonth, setRetrieveMonth] = useState<number>(1);
+            const [retrieveDay, setRetrieveDay] = useState<number>(1);
+            const [retrieveHour, setRetrieveHour] = useState<number>(12);
 
-    const [searchInput, setSearchInput] = useState<string>("");
-    const [center] = useState<{ lat: number; lng: number }>({
-        lat: 37.5665,
-        lng: 126.978,
-    });
-
+            const [searchInput, setSearchInput] = useState<string>("");
+            const [center] = useState<{ lat: number; lng: number }>({
+                lat: 37.5665,
+                lng: 126.978,
+            });
     const email = useAuthStore((state) => state.email);
 
 
@@ -133,8 +126,9 @@ const LuggageStorageComponent: React.FC = () => {
     useEffect(() => {
         const fetchSpots = async () => {
             try {
+                console.log("Fetching spots..."); // API 호출 시점
                 const spotList = await storeAPI.list();
-                console.log("Fetched spot list:", spotList);
+                console.log("Fetched spot list:", spotList); // API 응답 확인
                 if (Array.isArray(spotList)) {
                     setSpots(spotList);
                 } else {
@@ -160,7 +154,7 @@ const LuggageStorageComponent: React.FC = () => {
         const storageDate = new Date(storageYear, storageMonth - 1, storageDay, storageHour);
         const formattedStorageDate = storageDate.toISOString().slice(0, 19); // ISO 8601 형식: YYYY-MM-DDTHH:mm:ss
 
-// 찾으실 시간 (맡기실 시간에 8시간 추가)
+        // 찾으실 시간 (맡기실 시간에 8시간 추가)
         const storedUntilDate = new Date(storageDate.getTime());
         storedUntilDate.setHours(storageDate.getHours() + 8); // 8시간 추가
         const formattedStoredUntil = storedUntilDate.toISOString().slice(0, 19); // ISO 8601 형식
@@ -180,6 +174,9 @@ const LuggageStorageComponent: React.FC = () => {
             storedUntil: formattedStoredUntil,
             status: LuggageStorageStatus.PENDING, // 열거형 값 사용
         };
+
+        // 여기에서 payload를 출력
+        console.log("Payload to be sent to the server:", payload);
 
         try {
             // API 호출로 데이터 저장
@@ -239,7 +236,7 @@ const LuggageStorageComponent: React.FC = () => {
 
             {/* 선택한 지점 정보 */}
             {selectedSpot && (
-                <div className="mx-4 my-4 p-4 border rounded-md" style={{borderColor: "#1D2D5F"}}>
+                <div className="mx-4 my-4 p-4 border rounded-md" style={{ borderColor: "#1D2D5F" }}>
                     <h4 className="font-bold text-lg text-[#1D2D5F]">{selectedSpot.spotname}</h4>
                     <p className="text-gray-600">{selectedSpot.address}</p>
                 </div>
@@ -248,30 +245,25 @@ const LuggageStorageComponent: React.FC = () => {
             {/* 날짜 및 시간 선택 */}
             <h4 className="font-bold mb-2 text-left ml-4 text-lg mt-4">맡기실 시간</h4>
             <div className="flex items-center gap-1 mb-4 mx-4">
-                <NumberPicker range={[...Array(11)].map((_, i) => 2024 + i)} value={storageYear}
-                              onChange={setStorageYear}/>
+                <NumberPicker range={[...Array(11)].map((_, i) => 2024 + i)} value={storageYear} onChange={setStorageYear} />
                 <span>년</span>
-                <NumberPicker range={[...Array(12)].map((_, i) => i + 1)} value={storageMonth}
-                              onChange={setStorageMonth}/>
+                <NumberPicker range={[...Array(12)].map((_, i) => i + 1)} value={storageMonth} onChange={setStorageMonth} />
                 <span>월</span>
-                <NumberPicker range={[...Array(31)].map((_, i) => i + 1)} value={storageDay} onChange={setStorageDay}/>
+                <NumberPicker range={[...Array(31)].map((_, i) => i + 1)} value={storageDay} onChange={setStorageDay} />
                 <span>일</span>
-                <NumberPicker range={[...Array(24)].map((_, i) => i)} value={storageHour} onChange={setStorageHour}/>
+                <NumberPicker range={[...Array(24)].map((_, i) => i)} value={storageHour} onChange={setStorageHour} />
                 <span>시</span>
             </div>
 
             <h4 className="font-bold mb-2 text-left ml-4 text-lg mt-4">찾으실 시간</h4>
             <div className="flex items-center gap-1 mb-4 mx-4">
-                <NumberPicker range={[...Array(11)].map((_, i) => 2024 + i)} value={retrieveYear}
-                              onChange={setRetrieveYear}/>
+                <NumberPicker range={[...Array(11)].map((_, i) => 2024 + i)} value={retrieveYear} onChange={setRetrieveYear} />
                 <span>년</span>
-                <NumberPicker range={[...Array(12)].map((_, i) => i + 1)} value={retrieveMonth}
-                              onChange={setRetrieveMonth}/>
+                <NumberPicker range={[...Array(12)].map((_, i) => i + 1)} value={retrieveMonth} onChange={setRetrieveMonth} />
                 <span>월</span>
-                <NumberPicker range={[...Array(31)].map((_, i) => i + 1)} value={retrieveDay}
-                              onChange={setRetrieveDay}/>
+                <NumberPicker range={[...Array(31)].map((_, i) => i + 1)} value={retrieveDay} onChange={setRetrieveDay} />
                 <span>일</span>
-                <NumberPicker range={[...Array(24)].map((_, i) => i)} value={retrieveHour} onChange={setRetrieveHour}/>
+                <NumberPicker range={[...Array(24)].map((_, i) => i)} value={retrieveHour} onChange={setRetrieveHour} />
                 <span>시</span>
             </div>
 
