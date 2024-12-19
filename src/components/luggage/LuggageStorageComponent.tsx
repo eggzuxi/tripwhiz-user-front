@@ -184,7 +184,7 @@ const NumberPicker: React.FC<{
             alert("데이터가 성공적으로 저장되었습니다.");
 
             // FCM 알림 전송
-            await fetch("/api/storeowner/luggagestorage/create", {
+            await fetch("https://tripwhiz.store/api/storeowner/luggagestorage/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
