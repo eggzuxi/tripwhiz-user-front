@@ -33,8 +33,10 @@ const ProductListComponent = () => {
 
     const [searchParams] = useSearchParams();
 
-    const IMAGE_BASE_URL = "https://tripwhiz.store/api/admin/product/image"; // 이미지 파일의 기본 경로 설정
-    // const IMAGE_BASE_URL = "http://localhost:8082/api/admin/product/image"; // 이미지 파일의 기본 경로 설정
+    // const IMAGE_BASE_URL = "/api/admin/product/image"; // 이미지 파일의 기본 경로 설정
+    const IMAGE_BASE_URL = import.meta.env.VITE_BUCKET_URL; // 이미지 파일의 기본 경로 설정
+
+    console.log(IMAGE_BASE_URL)
 
     // 쿼리스트링에서 값 가져오기 및 숫자로 변환_SY
     const tno = searchParams.get("tno") ? parseInt(searchParams.get("tno") as string, 10) : null;
@@ -151,22 +153,31 @@ const ProductListComponent = () => {
                                     {/* 이미지 표시 */}
                                     {product.attachFiles.length > 0 && (
                                         <img
-                                            src={`${IMAGE_BASE_URL}/${product.attachFiles[0]?.file_name}`}
+                                            src={`${IMAGE_BASE_URL}/${product.attachFiles[0].file_name}`}
                                             alt={product.pname}
                                             className="mb-2 w-full h-40 object-cover rounded"
                                         />
                                     )}
-                                    <h3 className="text-lg font-semibold">{product.pname}</h3>
-                                    <p className="text-gray-700">{product.pdesc}</p>
-                                    <p className="text-gray-700">가격: {product.price}원</p>
-                                    <FontAwesomeIcon
-                                        icon={faCartShopping}
-                                        className="text-gray-700 text-xl absolute bottom-2 right-2 cursor-pointer"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            openPanel(product);
-                                        }}
-                                    />
+                                    {/* 상품명 */}
+                                    <h3 className="text-sm text-gray-800 mb-10 text-left">
+                                        {product.pname}
+                                    </h3>
+                                    {/* 가격과 장바구니 아이콘 (하단 정렬) */}
+                                    <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+                                        {/* 가격 */}
+                                        <p className="text-lg font-bold text-gray-700 text-left">
+                                            {new Intl.NumberFormat("ko-KR").format(product.price)}
+                                        </p>
+                                        {/* 장바구니 아이콘 */}
+                                        <FontAwesomeIcon
+                                            icon={faCartShopping}
+                                            className="text-gray-700 text-lg cursor-pointer"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                openPanel(product);
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             );
                         })

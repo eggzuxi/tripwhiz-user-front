@@ -175,6 +175,8 @@ const NumberPicker: React.FC<{
             status: LuggageStorageStatus.PENDING, // 열거형 값 사용
         };
 
+        // 여기에서 payload를 출력
+        console.log("Payload to be sent to the server:", payload);
 
         try {
             await createLuggageStorage(payload);
@@ -195,7 +197,7 @@ const NumberPicker: React.FC<{
     return (
         <div>
             {/* 검색 섹션 */}
-            <div className="mb-4 mx-4 flex gap-2">
+            <div className="mb-4 mx-4 flex gap-2 pt-4">
                 <input
                     type="text"
                     value={searchInput}
