@@ -111,8 +111,8 @@ function CategoryFilterComponent({ onFilterChange }: { onFilterChange: (cno: num
         : [];
 
     return (
-        <div className="category-filter">
-            <div className="mb-4">
+        <div className={`category-filter ${selectedCategory === null ? "pb-4" : ""}`}>
+            <div>
                 {/* 상위 카테고리 */}
                 <div className="flex overflow-x-auto space-x-4 py-2 scrollbar-hide w-full">
                     <button
@@ -140,8 +140,8 @@ function CategoryFilterComponent({ onFilterChange }: { onFilterChange: (cno: num
 
             {/* 하위 카테고리 */}
             {filteredSubCategories.length > 0 && (
-                <div className="overflow-x-auto scrollbar-hide py-2">
-                    <div className="flex space-x-4">
+                <div className="overflow-x-auto scrollbar-hide py-2 pb-4">
+                    <div className="flex space-x-4 pl-2">
                         <button
                             onClick={() => handleSubCategoryChange(null)}
                             className={`text-lg whitespace-nowrap ${

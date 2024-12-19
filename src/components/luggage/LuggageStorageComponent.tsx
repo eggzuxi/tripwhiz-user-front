@@ -213,7 +213,7 @@ const NumberPicker: React.FC<{
     return (
         <div>
             {/* 검색 섹션 */}
-            <div className="mb-4 mx-4 flex gap-2">
+            <div className="mb-4 mx-4 flex gap-2 pt-4">
                 <input
                     type="text"
                     value={searchInput}
