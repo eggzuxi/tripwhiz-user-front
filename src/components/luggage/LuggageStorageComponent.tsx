@@ -6,6 +6,7 @@ import { LuggageStorageStatus, SpotDTO } from "../../types/luggage";
 import useAuthStore from "../../store/AuthStore";
 import {storeAPI} from "../../api/storeAPI.ts";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // GoogleMap 컴포넌트
 const GoogleMap: React.FC<{
@@ -184,16 +185,13 @@ const NumberPicker: React.FC<{
             alert("데이터가 성공적으로 저장되었습니다.");
 
             // FCM 알림 전송
-            await fetch("https://tripwhiz.store/api/storeowner/luggagestorage/create", {
+            await fetch(`${BASE_URL}/api/storeowner/luggagestorage/create`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    title: "새 짐 보관 요청이 등록되었습니다!",
-                    message: `보관 장소: ${selectedSpot.spotname}, 보관 시간: ${formattedStorageDate}`,
-                    spno: selectedSpot.spno, // 점주 식별을 위한 spno
-                }),
+                mode: "cors",
+                body: JSON.stringify(payload),
             });
 
             // 성공적으로 저장 및 알림 전송 완료 시 알림
