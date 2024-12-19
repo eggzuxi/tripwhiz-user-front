@@ -6,7 +6,7 @@ import { useChatAdapter } from "@nlux/langchain-react";
 import "@nlux/themes/nova.css";
 
 const adapterOptions = {
-    url: "https://main-meet-robin.ngrok-free.app/llm/",
+    url: "https://main-meet-robin.ngrok-free.app/rag/",
 };
 
 const SampleChatUI: React.FC = () => {
