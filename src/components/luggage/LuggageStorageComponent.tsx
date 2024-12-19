@@ -6,7 +6,6 @@ import { LuggageStorageStatus, SpotDTO } from "../../types/luggage";
 import useAuthStore from "../../store/AuthStore";
 import {storeAPI} from "../../api/storeAPI.ts";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // GoogleMap 컴포넌트
 const GoogleMap: React.FC<{
@@ -180,28 +179,13 @@ const NumberPicker: React.FC<{
         console.log("Payload to be sent to the server:", payload);
 
         try {
-            // API 호출로 데이터 저장
             await createLuggageStorage(payload);
-            alert("데이터가 성공적으로 저장되었습니다.");
-
-            // FCM 알림 전송
-            await fetch(`${BASE_URL}/api/storeowner/luggagestorage/create`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                mode: "cors",
-                body: JSON.stringify(payload),
-            });
-
-            // 성공적으로 저장 및 알림 전송 완료 시 알림
-            alert("알림이 성공적으로 전송되었습니다.");
+            alert("수화물 보관 신청이 완료되었습니다.");
         } catch (error) {
-            console.error("데이터 저장 또는 알림 전송 중 오류 발생:", error);
-            alert("작업 중 오류가 발생했습니다. 다시 시도해 주세요.");
+            console.error("수화물 보관 신청 실패:", error);
+            alert("신청 중 오류가 발생했습니다.");
         }
     };
-
     const handleSpotSelect = (spot: SpotDTO) => setSelectedSpot(spot);
 
     const renderMap = (status: Status) => {
