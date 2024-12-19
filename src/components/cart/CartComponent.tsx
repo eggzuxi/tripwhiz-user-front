@@ -1,23 +1,11 @@
 import { useEffect, useState } from "react";
-import {getList, deleteCartItem, clearCart, changeQty} from "../../api/cartAPI";
+import { getList, deleteCartItem, clearCart, changeQty } from "../../api/cartAPI";
 import { ICartItems } from "../../types/cart.ts";
-import {useNavigate} from "react-router-dom";
-import {cartStore} from "../../store/CartStore.ts";
-
-const initialState: ICartItems[] = [
-    {
-        email: "",
-        bno: 0,
-        pno: 0,
-        pname: "",
-        price: 0,
-        qty: 0,
-        delFlag: false,
-    },
-];
+import { useNavigate } from "react-router-dom";
+import { cartStore } from "../../store/CartStore.ts";
 
 const CartComponent = () => {
-    const [cartItems, setCartItems] = useState<ICartItems[]>(initialState);
+    const [cartItems, setCartItems] = useState<ICartItems[]>([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -42,97 +30,36 @@ const CartComponent = () => {
         }
     };
 
-    const handleClearCart = async () => {
-        try {
-            await clearCart();
-            setCartItems([]);
-        } catch (error) {
-            console.error("Failed to clear cart:", error);
+    const handleUpdateQty = async (pno: number, isIncrease: boolean) => {
+        const item = cartItems.find((item) => item.pno === pno);
+
+        if (item) {
+            const newQty = isIncrease ? item.qty + 1 : item.qty - 1;
+            if (newQty < 1) return;
+
+            try {
+                await changeQty(pno, newQty);
+                setCartItems((prevItems) =>
+                    prevItems.map((item) =>
+                        item.pno === pno ? { ...item, qty: newQty } : item
+                    )
+                );
+            } catch (error) {
+                console.error("Failed to update quantity:", error);
+            }
         }
     };
-
-    // const handleCheckout = () => {
-    //     // 결제 페이지로 이동하면서 cartItems를 state로 전달
-    //     navigate("/maps", { state: { cartItems } });
-    // };
 
     const handleCheckout = () => {
         if (cartItems.length === 0) {
             console.warn("Cart is empty. Cannot proceed to checkout.");
             return;
         }
-        console.log("Navigating to checkout with cart items:", cartItems);
         cartStore.setState({ cartItems });
         navigate("/order/spot");
     };
 
-    // const handleIncreaseQty = async (pno: number) => {
-    //     const item = cartItems.find((item) => item.pno === pno);
-    //     if (item) {
-    //         const newQty = item.qty + 1;
-    //         try {
-    //             await addCart(pno, newQty);
-    //             setCartItems((prevItems) =>
-    //                 prevItems.map((item) =>
-    //                     item.pno === pno ? { ...item, qty: newQty } : item
-    //                 )
-    //             );
-    //         } catch (error) {
-    //             console.error("Failed to increase quantity:", error);
-    //         }
-    //     }
-    // };
-    //
-    // const handleDecreaseQty = async (pno: number) => {
-    //     const item = cartItems.find((item) => item.pno === pno);
-    //     if (item && item.qty > 1) {
-    //         const newQty = item.qty - 1;
-    //         try {
-    //             await addCart(pno, newQty);
-    //             setCartItems((prevItems) =>
-    //                 prevItems.map((item) =>
-    //                     item.pno === pno ? { ...item, qty: newQty } : item
-    //                 )
-    //             );
-    //         } catch (error) {
-    //             console.error("Failed to decrease quantity:", error);
-    //         }
-    //     }
-    // };
-
-    const handleUpdateQty = async (pno: number, isIncrease: boolean) => {
-        const item = cartItems.find((item) => item.pno === pno);
-
-        if (item) {
-            const newQty = isIncrease ? item.qty + 1 : item.qty - 1;
-
-            // 수량이 1 미만이 되지 않도록 제한
-            if (newQty < 1) {
-                console.warn("Quantity cannot be less than 1.");
-                return;
-            }
-
-            try {
-                // 서버에 수량 변경 요청
-                await changeQty(pno, newQty);
-
-                // 상태 업데이트 (클라이언트에서도 즉시 반영)
-                setCartItems((prevItems) =>
-                    prevItems.map((item) =>
-                        item.pno === pno ? { ...item, qty: newQty } : item
-                    )
-                );
-                // 서버에서 최신 장바구니 데이터를 다시 가져오지 않아도 클라이언트 상태로 충분
-                console.log(`Quantity updated for product ${pno}: ${newQty}`);
-            } catch (error) {
-                console.error("Failed to update quantity:", error);
-                alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
-            }
-        }
-    };
-
-
-
+    const totalAmount = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
 
     useEffect(() => {
         fetchCartItems();
@@ -144,71 +71,97 @@ const CartComponent = () => {
 
     return (
         <div className="container mx-auto mt-10 px-4 sm:px-6 lg:px-8">
-            <h1 className="text-2xl font-bold text-center mb-6">장바구니</h1>
             {cartItems.length === 0 ? (
-                <p className="text-center text-gray-500">장바구니가 비어 있습니다.</p>
+                <p className="text-center text-gray-500 mt-10">장바구니가 비어 있습니다.</p>
             ) : (
-                <div className="space-y-4">
-                    {cartItems.map((item) => (
-                        <div
-                            key={item.pno}
-                            className="flex justify-between items-center border p-4 rounded-md shadow-md bg-white"
-                        >
-                            {/* 상품 정보 */}
-                            <div>
-                                <h2 className="text-lg font-bold">상품명: {item.pname}</h2>
-                                <p className="text-gray-500">가격: {(item.price * item.qty).toLocaleString()}원</p>
-                            </div>
-
-                            {/* 수량 조절 버튼 */}
-                            <div className="flex items-center gap-2">
-                                <button
-                                    onClick={() => handleUpdateQty(item.pno, false)} //수량 감소
-                                    className="px-2 py-1 bg-gray-200 text-gray-700 rounded-md"
-                                >
-                                    -
-                                </button>
-                                <span className="text-gray-700 font-medium">{item.qty}</span>
-                                <button
-                                    onClick={() => handleUpdateQty(item.pno, true)} //수량 증가
-                                    className="px-2 py-1 bg-gray-200 text-gray-700 rounded-md"
-                                >
-                                    +
-                                </button>
-                            </div>
-
-                            {/* 삭제 버튼 */}
-                            <button
-                                onClick={() => handleDelete(item.pno)}
-                                className="px-3 py-1 text-red-500 hover:text-red-700"
+                <>
+                    {/* 장바구니 아이템 리스트 */}
+                    <div className="space-y-3 mb-24">
+                        {cartItems.map((item) => (
+                            <div
+                                key={item.pno}
+                                className="relative flex items-start gap-2 p-2 border rounded-xl bg-white"
                             >
-                                Remove
+                                {/* 삭제 버튼 (X 아이콘) */}
+                                <button
+                                    onClick={() => handleDelete(item.pno)}
+                                    className="absolute top-1 right-1 text-gray-500 hover:text-red-500"
+                                >
+                                    &times;
+                                </button>
+
+                                {/* 이미지 */}
+                                <div className="w-24 h-24 bg-gray-200 rounded-md flex-shrink-0">
+                                    <img
+                                        src={`http://localhost:8081/uploads/${item.pno}.jpg`}
+                                        alt={item.pname}
+                                        className="w-full h-full object-cover rounded-md"
+                                    />
+                                </div>
+
+                                {/* 상품 정보 */}
+                                <div className="flex-1 mt-2">
+                                    {/* 상품명 */}
+                                    <h2 className="text-sm text-left text-gray-500 font-bold mb-1">{item.pname}</h2>
+
+                                    {/* 가격과 수량 조절 */}
+                                    <div className="flex justify-between items-center mt-4">
+                                        {/* 가격 */}
+                                        <p className="text-gray-500 font-semibold text-[15px]">
+                                            {(item.price * item.qty).toLocaleString()}원
+                                        </p>
+
+                                        {/* 수량 조절 */}
+                                        <div className="flex items-center gap-1">
+                                            <button
+                                                onClick={() => handleUpdateQty(item.pno, false)}
+                                                className="px-2 py-1 border border-gray-200 text-gray-700 rounded-md bg-transparent hover:bg-gray-100"
+                                            >
+                                                -
+                                            </button>
+                                            <span className="text-sm font-medium">{item.qty}</span>
+                                            <button
+                                                onClick={() => handleUpdateQty(item.pno, true)}
+                                                className="px-2 py-1 border border-gray-200 text-gray-700 rounded-md bg-transparent hover:bg-gray-100"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* 총 금액 및 하단 버튼 */}
+                    <div className="fixed bottom-2 left-0 w-full bg-white px-4 py-3">
+                        <div className="flex justify-between items-center text-lg font-semibold mb-3">
+                            <span>총 금액:</span>
+                            <span>
+                                {totalAmount.toLocaleString()}원
+                            </span>
+                        </div>
+                        <div className="flex justify-between items-center gap-4 px-4">
+                            {/* 결제하기 버튼: 흰 배경, 테두리 색상 #1D2D5F */}
+                            <button
+                                onClick={handleCheckout}
+                                className="w-full px-6 py-2 text-[#1D2D5F] rounded-md border"
+                                style={{borderColor: "#1D2D5F", backgroundColor: "white"}}
+                            >
+                                결제하기
+                            </button>
+
+                            {/* 비우기 버튼: 배경색 #1D2D5F, 흰 텍스트 */}
+                            <button
+                                onClick={clearCart}
+                                className="w-full px-6 py-2 text-white rounded-md"
+                                style={{backgroundColor: "#1D2D5F"}}
+                            >
+                                비우기
                             </button>
                         </div>
-                    ))}
-
-                    {/* 하단 버튼들 */}
-                    <div className="flex justify-between mt-6 gap-2">
-                        <button
-                            onClick={() => navigate("/product/list")}
-                            className="px-6 py-2 bg-yellow-500 text-white rounded-md shadow hover:bg-yellow-600"
-                        >
-                            목록
-                        </button>
-                        <button
-                            onClick={handleCheckout}
-                            className="px-6 py-2 bg-green-600 text-white rounded-md shadow hover:bg-green-700"
-                        >
-                            결제
-                        </button>
-                        <button
-                            onClick={handleClearCart}
-                            className="px-6 py-2 bg-gray-600 text-white rounded-md shadow hover:bg-gray-700"
-                        >
-                            비우기
-                        </button>
                     </div>
-                </div>
+                </>
             )}
         </div>
     );

@@ -27,7 +27,7 @@ function LoginComponent() {
     const kakaoLoginLink = getKakaoLoginLink();
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-white">
+        <div className="flex flex-col items-center justify-start min-h-screen bg-white pt-64">
             {/* Title */}
             <h2 className="text-center text-2xl font-bold text-[#1D2D5F] mb-8">Sign In</h2>
 

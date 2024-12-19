@@ -6,6 +6,7 @@ interface Product{
     pname: string;
     price: number;
     cno: number;
+    attachFiles: { file_name: string }[]; // attachFiles 배열 추가
 }
 
 interface Category {
@@ -16,6 +17,8 @@ interface Category {
 interface MainProductListProps {
     categories: Category[]; // 카테고리 데이터를 상위에서 전달받음
 }
+
+const IMAGE_BASE_URL = "http://localhost:8082/api/admin/product/image";
 
 const MainProductListComponent: React.FC<MainProductListProps> = ({ categories }) => {
 
@@ -95,11 +98,18 @@ const MainProductListComponent: React.FC<MainProductListProps> = ({ categories }
                         className="bg-white border rounded-lg shadow-sm overflow-hidden"
                     >
                         <div className="relative">
-                            <img
-                                src={"/images/product/m2.jpg"}
-                                alt={product.pname}
-                                className="w-full h-[100px] object-cover"
-                            />
+                            {/* attachFiles의 첫 번째 이미지 표시 */}
+                            {product.attachFiles && product.attachFiles.length > 0 ? (
+                                <img
+                                    src={`${IMAGE_BASE_URL}/s_${product.attachFiles[0]?.file_name}`}
+                                    alt={product.pname}
+                                    className="w-full h-[100px] object-cover"
+                                />
+                            ) : (
+                                <div className="w-full h-[100px] bg-gray-200 flex items-center justify-center">
+                                    이미지 없음
+                                </div>
+                            )}
                         </div>
                         <div className="p-2">
                             <h3 className="text-sm text-gray-800 font-medium">{product.pname}</h3>
