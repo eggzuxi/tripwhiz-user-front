@@ -41,19 +41,6 @@ const OrderInfo: React.FC = () => {
             const response = await createOrder(email, spno, pickUpDate);
             console.log("주문 생성 응답:", response);
 
-            // FCM 알림 요청
-            await fetch("/api/send-notification", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    title: "새 주문이 도착했습니다!",
-                    message: `주문 번호: ${response.orderId}, 픽업 날짜: ${pickUpDate}`,
-                    spno,
-                }),
-            });
-
             alert("결제가 완료되었습니다!");
             navigate("/payment");
         } catch (error) {
