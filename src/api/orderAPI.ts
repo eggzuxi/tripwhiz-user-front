@@ -76,6 +76,6 @@ export const cancelOrder = async (ono: number, email: string) => {
 
 // 주문 완료 요청 (유저 → 점주에게 알림)
 export const completeOrder = async (data: CompleteOrderRequest) => {
-    const response = await axios.post(`${STORE_BASE_URL}/complete`, data);
+    const response = await axios.post(`${STORE_BASE_URL}/receive`, data);
     return response.data;
 };
