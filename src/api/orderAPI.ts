@@ -23,19 +23,25 @@ const STORE_BASE_URL = "/api/storeowner/order"; // 점주 백엔드 URL
 
 
 // 주문 생성 함수
-export const createOrder = async (
-    email: string,
-    spno: number,
-    pickUpDate: string
-) => {
-    const response = await axios.post(`${USER_BASE_URL}/create`, null, {
-        params: { spno, pickUpDate },
-        headers: { email }
-    });
-
-    console.log(email)
+// 주문 생성 함수
+export const createOrder = async (email: string, spno: number, pickUpDate: string) => {
+    const response = await axios.post(
+        "https://tripwhiz.shop/api/user/order/create",
+        null, // 요청 바디는 비워둠
+        {
+            headers: {
+                "Content-Type": "application/json",
+                email, // email을 Header로 전달
+            },
+            params: {
+                spno,
+                pickUpDate, // 쿼리 파라미터로 전달
+            },
+        }
+    );
     return response.data;
 };
+
 
 // 유저의 주문 목록 가져오기
 export const fetchOrderList = async (page: number, size: number) => {
