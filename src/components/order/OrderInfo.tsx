@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { cartStore } from "../../store/CartStore";
 import { createOrder } from "../../api/orderAPI";
 
-
 const OrderInfo: React.FC = () => {
     // Zustand 상태를 읽기
     const cartItems = cartStore((state) => state.cartItems);
@@ -12,7 +11,7 @@ const OrderInfo: React.FC = () => {
 
     const navigate = useNavigate();
 
-
+    // 날짜를 ISO 8601 형식으로 변환
     const formatDateForServer = (date: Date): string => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -38,6 +37,8 @@ const OrderInfo: React.FC = () => {
         }
 
         try {
+            console.log("주문 요청 데이터:", { email, spno, pickUpDate });
+
             const response = await createOrder(email, spno, pickUpDate);
             console.log("주문 생성 응답:", response);
 
